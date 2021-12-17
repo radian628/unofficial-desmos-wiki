@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+}
+
+header {
+    width: 50%;
+    margin: auto;
+}
+
+main {
+    width: 60%;
+    margin: auto;
+    line-height: 1.4;
+}
+
+a {
+    color: rgb(14, 141, 42);
+}

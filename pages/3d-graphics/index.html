@@ -2,7 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="../../index.css">
-        <title>Desmos Documentation (Unofficial)</title>
+        <title>3D Graphs | Desmos Documentation (Unofficial)</title>
     </head>
     <body>
         <aside>
@@ -13,6 +13,9 @@
         </header>
         <main>
             <article>
+                <h2>Video of this article</h2>
+                <p>Here is a video that goes over roughly the same content in this article (with a few additions).</p>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/qTSEbSwhUfY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <h2>Introduction</h2>
                 <p>This is a guide for creating basic 3D graphs in Desmos. You'll explore several techniques for creating 3D graphs, starting with a minimal implementation for a 3D graph, which will progressively gain more features until you've created an entire graphics pipeline within Desmos. Some experience with linear algebra is recommended but is by no means required. Programming experience is unnecessary, but will be helpful if you plan to import 3D meshes into Desmos.</p>
                 <h2>A minimal 3D graph</h2>
@@ -34,7 +37,7 @@
                 <p>In addition to defining the vertices of our cube, we need to define the position of the camera&mdash; in other words, the position in the world from which we'll be viewing the cube. We'll start the camera at the position (0.25, 0.25, -1). I've made the Z-position negative so that the camera will be <em>behind</em> the cube (remember, its lowest z-value is 0, so our camera needs to have a z-value below that). That way, we'll be able to see it.</p>
                 <h3>Projection</h3>
                 <p>At this point, we've defined all the data we need in order to draw something on the screen. However, Desmos has no idea what to do with this data, because it only works in 2D. We need to define some way of converting this 3D data into a 2D format that Desmos can then draw to your screen. This process of converting 3D to 2D is called <em>projection</em>. Let's create a function, called "p<sub>roject</sub>," that takes a 3D point (x, y, z) as input, and produces a 2D point as output representing where that 3D point should appear on the screen.</p>
-                <p>The nice thing is that projection is much simpler than you might think. After all, when we view things in 3D with our eyes, we're basically just viewing the world in 2D, except objects farther away in the Z-axis (depth) appear closer to the center of our field of view. This behavior can be accurately modeled by dividing the x- and y-positions by the z-position of a point. As such, our projection function outputs the 2D point (x / z, y / z).</p>
+                <p>The nice thing is that projection is much simpler than you might think. After all, when we view things in 3D with our eyes, we're basically just viewing the world in 2D, except objects farther away in the Z-axis (depth) appear closer to the center of our field of view. This behavior can be accurately modeled by dividing the x- and y-positions by the z-position of a point. As such, our projection function outputs the 2D point (x / z, y / z). This division by the z-position is known as the "perspective divide."</p>
                 <img class="big-image" src="projection-function.png">
                 <h3>Putting it All Together</h3>
                 <p>There's one final step we have to do: We need to actually project our points. A Desmos function that normally only takes numbers&mdash; like our projection function&dash; can also operate on lists, one element at a time. However, if we just tried to directly plug our vertex position lists into the projection function, it wouldn't work properly, because we wouldn't be taking the camera's position into account.</p>

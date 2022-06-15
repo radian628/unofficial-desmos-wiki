@@ -57,6 +57,7 @@
                 <p>Notice the pattern here? We can represent this generally with the formula <code>mod(floor(packed/2^(13i)), 2^13)</code>, where <code>i</code> determines which number we're retrieving&mdash; 0 for <code>n1</code>, 1 for <code>n2</code>, 2 for <code>n3</code>, and 3 for <code>n4</code>.</p>
                 <h3>Formulas for Storing and Retrieving:</h3>
                 <code>store(n1, n2, n3, n4) = n1 + 2^13*n2 + 2^26*n3 + 2^39*n4</code>
+                <br>
                 <code>retrieve(packed, i) = mod(floor(packed/2^(13i)), 2^13)</code>
                 <p>See <a href="https://www.desmos.com/calculator/o6yxkkngst">this example</a> to see these formulas in action.</p>
             </article>

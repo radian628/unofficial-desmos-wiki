@@ -45,6 +45,15 @@
                     <li><code>a -> a_4</code></li>
                 </ul>
                 <p>The first expression applies the function <code>f</code> to <code>a</code>. The next one applies <code>g</code> to result of that. And the third one applies <code>h</code> to the result of that, which is exactly what we want. We just use additional variables to store the intermediate steps. The final expression sets <code>a</code> to the result of this triply-nested function.This does exactly what we want it to do without the boilerplate, the loss of speed, nor the need to nest everything into a single expression. On top of that, if we want to use <code>f(a)</code> or <code>g(f(a))</code> somewhere else, we have both of those values stored in <code>a_2</code> and <code>a_3</code>, respectively. As a result, these expressions don't have to be recomputed wherever else we use them.</p>
+                <p>In more complicated projects, don't feel shy about making these variable chains reach tens or in rare cases hundreds of expressions long. You'll get immense speed boosts and will have simpler code relative to if you inserted actions throughout the chains of execution.</p>
+                <h2>Okay, but when should I use actions?</h2>
+                <p>Of course, chains of variables can only do so much. They can't loop back on themselves and loop forever. For instance, I couldn't do the following and expect <code>a</code> to be repeatedly updated in an arbitrarily-long cycle:</p>          
+                <ul>
+                    <li><code>a_2 = f(a)</code></li>
+                    <li><code>a_3 = g(a_2)</code></li>
+                    <li><code>a = h(a_3)</code></li>
+                </ul>
+                <p>Actions are useful here, as demonstrated above. If we wanted <code>a</code> to repeatedly be passed through those three functions in a loop&mdash; whether infinite or arbitrarily long&mdash; then we would use actions.</p>
             </article>
         </main>
     </body>

@@ -60,6 +60,11 @@
                 <br>
                 <code>retrieve(packed, i) = mod(floor(packed/2^(13i)), 2^13)</code>
                 <p>See <a href="https://www.desmos.com/calculator/o6yxkkngst">this example</a> to see these formulas in action.</p>
+                <h2>Generalizing the algorithm</h2>
+                <p>This can be extended to beyond just 13-bit numbers. Similar techniques can be applied to numbers of any size. You can store negative numbers in a "biased form," e.g. to store numbers from -500 to 500, you could add 500 to each number before storing, and subtract 500 after retrieving. You can even store fractional portions of numbers&mdash; for instance, you could store 16ths of a number by multiplying by 16 and flooring prior to storing; and dividing by 16 after retrieving. If you're feeling particularly crazy, you can even create <a href="https://en.wikipedia.org/wiki/Minifloat">your own smaller floating-point formats</a>.</p>
+                <h2>Possible Use Cases</h2>
+                <p>There are a few possible use cases for this technique. One very useful case is updating large amounts of data with actions performantly. Updating a large list with an action incurs a significant performance penalty. <a href="https://www.desmos.com/calculator/eqafyaphp7">This graph</a>, for instance, has to modify a grid of 1000 squares with an action, which can either be light or dark. This is sped up by noticing that&mdash; since each square has two possible states&mdash; each square only requires a single bit. To simplify things, I only used 50 bits per number (out of a theoretical 64), but this still allowed me to put 1000 squares in a list only 20 elements long.</p>
+                <p>Another use case is placing more than 10000 elements into a list when elements are small. I used this for <a href="https://www.desmos.com/calculator/l7nehb64nz">Desmos Plane</a> to help reduce expression count. A large number of expressions causes lag for unknown reasons, making this optimization very useful.</p>
             </article>
         </main>
     </body>

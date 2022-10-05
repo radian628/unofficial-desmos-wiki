@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="public/mathquill.css">
+        <link type="text/css" rel="stylesheet" href="public/tips-tricks.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="public/mathquill.min.js"></script>
+    </head>
+    <body>
+        <a href="./">Back</a>
+        <div id="main-content">
+            <!--template=tips-tricks-template.html-->
+
+<h1 id="two-argument-sort">Two-argument Sort</h1>
+<p><span class="math">\operatorname{sort}\left(A,B\right)</span></p>
+<h2 id="parameters">Parameters</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><span class="math">A</span></td>
+<td>List for sorting.</td>
+</tr>
+<tr>
+<td><span class="math">B</span></td>
+<td>List for determining sorting criteria.</td>
+</tr>
+</tbody></table>
+<h2 id="description">Description</h2>
+<p>Sort a list <span class="math">A</span> using the sorting criteria of the list <span class="math">B</span>. As an example, let&#39;s say you did <span class="math">\operatorname{sort}\left(\left[2,4,7\right],\left[14,5,27\right]\right)</span>. As stated before, the first list is actually the one whose elements are rearranged. However, it is as if the function <em>thinks</em> it is sorting the second list, and rearranges the first list like so. To sort the second list in this case, it would have to swap the 5 and the 14 (the first and second elements) to produce <span class="math">\left[5,14,27\right]</span>. However, since it&#39;s actually rearranging the first list the exact same way, it will acttually swap <em>its</em> first and second elements. In other words, it will convert <span class="math">\left[2,4,7\right]</span> to <span class="math">\left[4,2,7\right]</span> and return that.</p>
+
+        </div>
+        <script src="public/mq.js"></script>
+    </body>
+</html>

@@ -35,6 +35,13 @@ async function insertTemplate(input, inputPath, templatePath) {
 
 
 
+async function getH1(file) {
+    const fileContents = (await fs.readFile(file)).toString();
+    const headers = fileContents.match(/\#.*/g);
+    if (!headers) return file;
+    return headers[0].replace(/^\#\s+/g, "");
+}
+
 
 
 const transformers = {
@@ -45,6 +52,29 @@ const transformers = {
         return {
             contents: config.template ? await insertTemplate(parsedMarkdownHTML, file, config.template) : parsedMarkdownHTML,
             newName: path.parse(file).name + ".html"
+        };
+    },
+    ".html": async (file, stats) => {
+        let fileContents = (await fs.readFile(file)).toString();
+        if (fileContents.match(/<!--LISTDIR-->/g) !== null) {
+            const files = await fs.readdir(path.dirname(file));
+            const mdFiles = files.filter(file => path.extname(file) == ".md");
+            const mdFilesAndHeaders = await Promise.all(mdFiles.map(async f => {
+                return {
+                    htmlFile: path.parse(f).name + ".html",
+                    h1: await getH1(path.join(path.dirname(file), f))
+                }
+            }))
+
+            fileContents = fileContents.replace(/<!--LISTDIR-->/g, e => {
+                return `<ul>${
+                    mdFilesAndHeaders
+                    .map(s => `<li><a href=${s.htmlFile}>${s.h1}</a></li>`)}</ul>`
+            });
+        }
+        return {
+            contents: fileContents,
+            newName: path.parse(file).base
         };
     }
 };

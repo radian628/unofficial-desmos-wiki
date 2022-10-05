@@ -2,14 +2,41 @@
 <html>
     <head>
         <link type="text/css" rel="stylesheet" href="public/mathquill.css">
+        <link type="text/css" rel="stylesheet" href="public/tips-tricks.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="public/mathquill.min.js"></script>
     </head>
     <body>
-        <!--template=tips-tricks-template.html-->
-<h1 id="change-one-element-in-a-list">Change one element in a list</h1>
-<p>Test MathQuill: <span class="math">ax^2 + bx + c</span></p>
+        <a href="./">Back</a>
+        <div id="main-content">
+            <!--template=tips-tricks-template.html-->
 
+<h1 id="changereplce-one-element-in-a-list">Change/replce one element in a list</h1>
+<p><span class="math copy"><code>c_{hange}\left(l_{ist},i_{ndex},n_{ewvalue}\right)=\left\{\left[1...\operatorname{length}\left(l_{ist}\right)\right]=i_{ndex}:n_{ewvalue},l_{ist}\right\}</code></span></p>
+<h2 id="parameters">Parameters</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><span class="math">l_{ist}</span></td>
+<td>List for which one element should be replaced.</td>
+</tr>
+<tr>
+<td><span class="math">i_{ndex}</span></td>
+<td>The index of the element to be replaced.</td>
+</tr>
+<tr>
+<td><span class="math">n_{ewvalue}</span></td>
+<td>The new value that the element will be replaced with.</td>
+</tr>
+</tbody></table>
+<p>This function changes one element in a list. It works by running a piecewise over the list <span class="math">[1,2,3... length(l_{ist})]</span>. This implicitly runs the piecewise once per every element in this list. Since each element in thi list represents a list index, the <span class="math">n</span>th element has index <span class="math">n</span>. It then checks to see whether the given element is equal to <span class="math">i_{ndex}</span>, the index of the element to replace. If it is, we know to replace it, and set it to the new value of the element, <span class="math">n_{ewvalue}</span>. Otherwise, we return the corresponding element from the old list, <span class="math">l_{ist}</span>.</p>
+
+        </div>
         <script src="public/mq.js"></script>
     </body>
 </html>

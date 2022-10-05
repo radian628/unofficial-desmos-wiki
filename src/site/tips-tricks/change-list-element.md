@@ -2,7 +2,7 @@
 
 # Change/replce one element in a list
 
-<span class="math copy">`c_{hange}\left(l_{ist},i_{ndex},n_{ewvalue}\right)=\left\{\left[1...\operatorname{length}\left(l_{ist}\right)\right]=i_{ndex}:n_{ewvalue},l_{ist}\right\}`</span>
+<span class="math copy main-expr">`c_{hange}\left(l_{ist},i_{ndex},n_{ewvalue}\right)=\left\{\left[1...\operatorname{length}\left(l_{ist}\right)\right]=i_{ndex}:n_{ewvalue},l_{ist}\right\}`</span>
 
 ## Parameters
 | Name | Description |

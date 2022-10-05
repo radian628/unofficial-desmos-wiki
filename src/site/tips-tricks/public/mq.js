@@ -1,13 +1,10 @@
 const MQ = MathQuill.getInterface(2);
 
-// mathquill elements
-Array.from(document.querySelectorAll(".math")).forEach(elem => {
-    elem.dataset.text = elem.innerText;
-    MQ.StaticMath(elem);
-});
-
 // copyable mathquill
 Array.from(document.querySelectorAll(".copy")).forEach(elem => {
+    const container = document.createElement("div");
+    container.className = "copy-container";
+
     const btn = document.createElement("button");
 
     btn.innerText = "Copy";
@@ -20,5 +17,14 @@ Array.from(document.querySelectorAll(".copy")).forEach(elem => {
         }, 1000);
     }
     
-    elem.parentElement.insertBefore(btn, elem);
+    elem.parentElement.insertBefore(container, elem);
+    elem.parentElement.removeChild(elem);
+    container.appendChild(elem);
+    container.appendChild(btn);
+});
+
+// mathquill elements
+Array.from(document.querySelectorAll(".math")).forEach(elem => {
+    elem.dataset.text = elem.innerText;
+    MQ.StaticMath(elem);
 });

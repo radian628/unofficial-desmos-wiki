@@ -6,3 +6,37 @@
     width: 60%;
     margin: auto;
 }
+/* 
+.main-expr {
+    border: 1px solid black;
+    background: #eeeeee;
+} */
+
+.copy-container {
+    border: 1px solid black;
+    background: #eeeeee;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.copy-container > button {
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: rgb(124, 217, 124);
+    cursor: pointer;
+}
+
+td > * {
+    margin-right: 25px;
+}
+
+th {
+    text-align: left;
+}
+
+tr:nth-child(2n) {
+    background-color:rgb(192, 244, 192);
+}

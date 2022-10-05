@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="../../index.css">
+        <title>Actions | Desmos Documentation (Unofficial)</title>
+    </head>
+    <body>
+        <aside>
+            <a href="../../index.html">Back to Main Page</a>
+        </aside>
+        <header>
+            <h1>How to properly use actions</h1>
+        </header>
+        <main>
+            <article>
+                <h2>Introduction</h2>
+                <p>Actions are arguably one of the most powerful features of Desmos Graphing Calculator. They enable the calculator to become Turing-complete, theoretically giving it the same power as any other programming language. However, at the same time, actions are very easy to misuse, especially to people with prior programming experience in imperative languages, because they operate fundamentally differently from "normal" variable assignment in most programming languages.</p>
+                <h2>When to (not) use actions?</h2>
+                <p>Long story short, the general rule of when to use actions is "Don't."</p>
+                <p>Long story long, only use actions when they are absolutely necessary. This may be the case less often than you think it is. Consider the following example: you have a variable <code>a</code> that must be set to itself afer running through three functions, <code>f(x)</code>, <code>g(x)</code>, and <code>h(x)</code> (in that order). Assume that you can't just do <code> a -> h(g(f(a)))</code>. Maybe you have to use <code>f(a)</code> in multiple places and would rather not recompute it multiple times, or you just don't want deeply nested functions for the sake of readability.</p>
+                <p>An approach with actions might look like this:</p>
+                <code>a -> f(a),  a -> g(a),  a -> h(a)</code>
+                <p>If you try to type this into Desmos, however, you'd get an error, because actions cannot assign the same variable multiple times. This is because actions are executed in no set order&mdash; they are all executed as if they occurred simultaneously, all using the initial value of <code>a</code>. Since these actions are trying to set <code>a</code> three times, they're essentially assigning <code>a</code> to three separate values. This makes no sense, because we don't know what to set <code>a</code> to: Should it be set to <code>f(a)</code>, <code>g(a)</code>, or <code>h(a)</code>? One unfortunate way people often try to fix this is as follows:</p>
+                <ul>
+                    <li><code>i = 0</code></li>
+                    <li><code>{ i=0: a -> f(a), i=1: a -> g(a), i=2: a -> h(a) }, i->i+1</code></li>
+                </ul>
+                <p>Essentially, what this does is it determines which function to apply to <code>a</code> based on the value of <code>i</code>, and then switches through each function one-by-one by incrementing the value of <code>i</code>. As a reminder, actions are executed as if they occurred simultaneously, so the following would still work, even though <code>i</code> appears to be incremented first:</p>
+                <ul>
+                    <li><code>i = 0</code></li>
+                    <li><code>i->i+1, { i=0: a -> f(a), i=1: a -> g(a), i=2: a -> h(a) }</code></li>
+                </ul>
+                <p>Regardless, there are several problems with this approach:</p>
+                <ul>
+                    <li>It contains a lot of annoying boilerplate (the <code>i</code> variable, the piecewise, the conditions, etc.). This can get incredibly frustrating as the steps pile up, and also provides far more opportunities for errors to accumulate.</li>
+                    <li>It's very slow&mdash; actions only execute as fast as your screen's refresh rate, meaning that on a 60hz monitor, <code>a</code> will only be able to fully update once every 1/20th of a second, since it takes three whole actions to update.</li>
+                    <li>It's slow for an entirely different reason as well: Executing an action is slow in general, especially if there is a large amount of data being updated (e.g. a list).</li>
+                </ul>
+                <h2>The proper way to use actions</h2>
+                <p>How do you properly use actions in this case, without having to clump everything together into one big mega-expression? Fortunately, the solution is rather simple. Here it is:</p>
+                <ul>
+                    <li><code>a_2 = f(a)</code></li>
+                    <li><code>a_3 = g(a_2)</code></li>
+                    <li><code>a_4 = h(a_3)</code></li>
+                    <li><code>a -> a_4</code></li>
+                </ul>
+                <p>The first expression applies the function <code>f</code> to <code>a</code>. The next one applies <code>g</code> to result of that. And the third one applies <code>h</code> to the result of that, which is exactly what we want. We just use additional variables to store the intermediate steps. The final expression sets <code>a</code> to the result of this triply-nested function.This does exactly what we want it to do without the boilerplate, the loss of speed, nor the need to nest everything into a single expression. On top of that, if we want to use <code>f(a)</code> or <code>g(f(a))</code> somewhere else, we have both of those values stored in <code>a_2</code> and <code>a_3</code>, respectively. As a result, these expressions don't have to be recomputed wherever else we use them.</p>
+                <p>In more complicated projects, don't feel shy about making these variable chains reach tens or in rare cases hundreds of expressions long. You'll get immense speed boosts and will have simpler code relative to if you inserted actions throughout the chains of execution.</p>
+                <h2>Okay, but when should I use actions?</h2>
+                <p>Of course, chains of variables can only do so much. They can't loop back on themselves and loop forever. For instance, I couldn't do the following and expect <code>a</code> to be repeatedly updated in an arbitrarily-long cycle:</p>          
+                <ul>
+                    <li><code>a_2 = f(a)</code></li>
+                    <li><code>a_3 = g(a_2)</code></li>
+                    <li><code>a = h(a_3)</code></li>
+                </ul>
+                <p>Actions are useful here, as demonstrated above. If we wanted <code>a</code> to repeatedly be passed through those three functions in a loop&mdash; whether infinite or arbitrarily long&mdash; then we would use actions.</p>
+            </article>
+        </main>
+    </body>
+</html>

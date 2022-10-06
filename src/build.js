@@ -1,6 +1,9 @@
 const fs = require("node:fs/promises");
 const path = require('node:path');
 const marked = require("marked");
+const chokidar = require("chokidar");
+
+let lastbuild;
 
 async function recursiveReaddir(dir, callback) {
     const files = await fs.readdir(dir);
@@ -69,7 +72,9 @@ const transformers = {
             fileContents = fileContents.replace(/<!--LISTDIR-->/g, e => {
                 return `<ul>${
                     mdFilesAndHeaders
-                    .map(s => `<li><a href=${s.htmlFile}>${s.h1}</a></li>`)}</ul>`
+                    .map(s => `<li><a href=${s.htmlFile}>${s.h1}</a></li>`)
+                    .join("\n")
+                }</ul>`
             });
         }
         return {
@@ -82,7 +87,18 @@ const transformers = {
 
 
 (async () => {
-    recursiveReaddir(src, (file, stats) => {
+    const lastbuildFile = "lastbuild.json";
+    try {
+        lastbuild = JSON.parse((await fs.readFile(lastbuildFile)).toString())
+    } catch {
+        lastbuild = {
+            time: 0
+        };
+        fs.writeFile(lastbuildFile, JSON.stringify(lastbuild));
+    }
+
+
+    await recursiveReaddir(src, (file, stats) => {
         (async () => {
             const relativePath = path.join(dst, path.relative(src, file));
             if (stats.isDirectory()) {
@@ -92,15 +108,22 @@ const transformers = {
 
                 }
             } else {
-                const transformer = transformers[path.extname(file)];
-                if (transformer) {
-                    const transformedFile = await transformer(file, stats);
-                    await fs.writeFile(path.join(path.dirname(relativePath), transformedFile.newName), transformedFile.contents);
-                } else {
-                    await fs.copyFile(file, relativePath);
+                if (stats.mtimeMs >= lastbuild.time) {
+                    const transformer = transformers[path.extname(file)];
+                    if (transformer) {
+                        const transformedFile = await transformer(file, stats);
+                        await fs.writeFile(path.join(path.dirname(relativePath), transformedFile.newName), transformedFile.contents);
+                    } else {
+                        await fs.copyFile(file, relativePath);
+                    }
+                    console.log("Copied file: " + file);
                 }
             }
-            console.log("Copied file: " + file);
         })();
     });
+
+
+    fs.writeFile(lastbuildFile, JSON.stringify({
+        time: Date.now()
+    }));
 })();

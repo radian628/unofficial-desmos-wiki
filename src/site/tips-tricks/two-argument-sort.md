@@ -1,6 +1,6 @@
 <!--template=tips-tricks-template.html-->
 
-# Two-argument Sort
+# Two-argument Sort: Sorting One List with the Criteria of Another
 
 <span class="math">\operatorname{sort}\left(A,B\right)</span>
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="public/mathquill.css">
+        <link type="text/css" rel="stylesheet" href="public/tips-tricks.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="public/mathquill.min.js"></script>
+    </head>
+    <body>
+        <a href="./">Back</a>
+        <div id="main-content">
+            <!--template=tips-tricks-template.html-->
+
+<h1 id="list-filters-removing-multiple-elements-from-a-list">List Filters: Removing Multiple Elements from a List</h1>
+<div class="math">`L=\left[1,2,3,4,5\right]`</div>
+
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div class="math"><code>L\left[L&gt;3\right]</code></div></td>
+<td><div class="math"><code>\left[4,5\right]</code></div></td>
+</tr>
+<tr>
+<td><div class="math"><code>L\left[L\ge 3\right]</code></div></td>
+<td><div class="math"><code>\left[3,4,5\right]</code></div></td>
+</tr>
+<tr>
+<td><div class="math"><code>L\left[L=3\right]</code></div></td>
+<td><div class="math"><code>\left[3\right]</code></div></td>
+</tr>
+</tbody></table>
+<p>List filters are a method of allowing some elements in a list while removing others. They let you index a list using a condition. The only elements that exist in the list after the filter are those that meet the condition. You can see some examples above.</p>
+<h2 id="with-different-lists">With Different Lists</h2>
+<div class="math">`L=\left[1,2,3,4,5\right]`</div>
+<div class="math">`M=\left[5,4,3,2,1\right]`</div>
+
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div class="math"><code>L\left[M&gt;4\right]</code></div></td>
+<td><div class="math"><code>\left[1\right]</code></div></td>
+</tr>
+<tr>
+<td><div class="math"><code>L\left[M\ge 4\right]</code></div></td>
+<td><div class="math"><code>\left[1,2\right]</code></div></td>
+</tr>
+<tr>
+<td><div class="math"><code>L\left[M=4\right]</code></div></td>
+<td><div class="math"><code>\left[4\right]</code></div></td>
+</tr>
+</tbody></table>
+<p>You can also filter a list using a different list. Think of it like this: Desmos <em>thinks</em> it&#39;s filtering the second list as it applies its condition to that list. However, it&#39;s <em>actually</em> filtering the <em>first list</em>. So if it <em>would&#39;ve</em> filtered out the 1st and 2nd elements in the second list, had that been the one being filtered, it would actually remove the 1st and 2nd elements in the first list.</p>
+
+        </div>
+        <script src="public/mq.js"></script>
+    </body>
+</html>

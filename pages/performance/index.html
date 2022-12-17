@@ -17,7 +17,7 @@
                 <ul>
                     <li>In many cases, piecewise functions will compute every branch, even though they will resolve to only one branch. This is especially the case when you are not working with parametric, rectangular, or polar functions--- for instance, if you are using points or polygons. Do not rely on piecewises for conditional execution in this case!</li>
                     <li>Generally (but not always), implicit equations/inequalities are slow. Rectangular, polar, and parametric equations are faster. Points are faster still. Polygons are often the fastest. </li>
-                    <li>Disable the line outlines on polygons for best performance. These outlines are expensive to render onto the screen!</li>
+                    <li>(Note: this may no longer be the case) Disable the line outlines on polygons for best performance. These outlines are expensive to render onto the screen!</li>
                     <li>Do not directly update large lists with actions if at all possible, because the text underlying the displayed expression will have to be generated again. Instead, update the variable(s) that that list depends on; then, let the list update itself automatically.</li>
                     <li>Large numbers of expressions (a few hundred or more) will reduce FPS for unclear reasons.</li>
                     <li>Add ?simulationFPS or ?timeInWorker to your graph link to display the FPS or the approximate time taken to render a frame, respectively. </li>

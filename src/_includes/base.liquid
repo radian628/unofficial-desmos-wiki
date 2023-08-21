@@ -53,6 +53,7 @@
       }
 
       for (const staticMathContainer of document.querySelectorAll(".static-math-container")) {
+        let shouldHaveCopyButton = staticMathContainer.classList.contains("has-copy-button");
         const content = staticMathContainer.innerText;
         staticMathContainer.innerHTML = "";
         const rootblock = document.createElement("span");
@@ -60,6 +61,19 @@
         staticMathContainer.appendChild(rootblock);
         const staticMath = Desmos.MathQuill.StaticMath(rootblock);
         staticMath.latex(content);
+
+        if (shouldHaveCopyButton) {
+          const copyButton = document.createElement("button");
+          copyButton.innerText = "Copy to Clipboard"
+          staticMathContainer.appendChild(copyButton);
+          copyButton.onclick = () => {
+            navigator.clipboard.writeText(content);
+            copyButton.innerText = "Copied!";
+            setTimeout(() => {
+              copyButton.innerHTML = "Copy to Clipboard";
+            }, 750);
+          }
+        }
       }
     </script>
   </body>

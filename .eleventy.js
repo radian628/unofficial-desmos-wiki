@@ -1,3 +1,5 @@
+const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
+
 const createDesmosEmbedCode = (
   state,
   settings
@@ -12,6 +14,7 @@ const createDesmosEmbedCode = (
 }</script>`;
 
 module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addWatchTarget("./src/**");
   eleventyConfig.addPassthroughCopy("./src/css");
   eleventyConfig.addShortcode("graphstate", (state, settings) =>

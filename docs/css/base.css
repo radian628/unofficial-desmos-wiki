@@ -37,3 +37,13 @@ main h1 {
   width: 100%;
   height: 400px;
 }
+
+.breadcrumbs ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.breadcrumbs li:nth-child(n + 2):before {
+  content: "▸";
+}

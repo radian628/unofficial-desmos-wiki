@@ -10,10 +10,15 @@
   </head>
   <body>
     <header>
-      <h1>Desmos Wiki
-        <span class="unofficial">(Unofficial)</span>
-      </h1>
+      <a href="{{ '/' | url }}">
+        <h1>Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </h1>
+      </a>
     </header>
+    <nav class="breadcrumbs">
+      {{ collections.all | eleventyNavigationBreadcrumb: eleventyNavigation.key, includeSelf: true | eleventyNavigationToHtml }}
+    </nav>
     <main>
       <h1>{{ title }}</h1>
       {{ content }}

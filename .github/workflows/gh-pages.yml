@@ -32,4 +32,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           BRANCH: gh-pages
+          FOLDER: .
           single-commit: true

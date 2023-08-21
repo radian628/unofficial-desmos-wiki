@@ -27,6 +27,29 @@ module.exports = function (eleventyConfig) {
     const raw = tm.textToRaw(cfg, state);
     return createDesmosEmbedCode(JSON.stringify(raw[1]), settings);
   });
+
+  function handlePrefixedNav(nav) {
+    return `<ul>
+      ${nav
+        .map((navItem) => {
+          return `<li>
+          <a href="${eleventyConfig.getFilter("url")(navItem.url)}">${
+            navItem.title
+          }</a>${
+            navItem.children && navItem.children.length > 0
+              ? handlePrefixedNav(navItem.children)
+              : ""
+          }
+        </li>`;
+        })
+        .join("")}
+    </ul>`;
+  }
+
+  eleventyConfig.addFilter("prefixedEleventyNavigation", (nav) => {
+    console.log(nav[0].children);
+    return handlePrefixedNav(nav);
+  });
   return {
     dir: {
       input: "src",

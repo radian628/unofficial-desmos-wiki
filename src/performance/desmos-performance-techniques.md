@@ -2,7 +2,7 @@
 title: Desmos Performance Techniques
 eleventyNavigation:
   title: Desmos Performance Techniques
-  parent: Tips
+  parent: Main
   key: Desmos Performance Techniques
 ---
 

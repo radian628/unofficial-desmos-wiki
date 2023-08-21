@@ -2,7 +2,7 @@
 title: Update a Single List Item
 eleventyNavigation:
   title: Update a Single List Item
-  parent: Tips
+  parent: Main
   key: Update a Single List Item
 ---
 

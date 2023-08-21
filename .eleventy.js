@@ -47,7 +47,6 @@ module.exports = function (eleventyConfig) {
   }
 
   eleventyConfig.addFilter("prefixedEleventyNavigation", (nav) => {
-    console.log(nav[0].children);
     return handlePrefixedNav(nav);
   });
   return {

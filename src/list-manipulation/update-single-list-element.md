@@ -4,6 +4,9 @@ eleventyNavigation:
   title: Update a Single List Item
   parent: Main
   key: Update a Single List Item
+tags:
+  - list-manipulation
+  - tip
 ---
 
 Here is a function that updates a single element in a list:

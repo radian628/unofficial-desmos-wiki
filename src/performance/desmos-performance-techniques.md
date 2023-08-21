@@ -4,6 +4,9 @@ eleventyNavigation:
   title: Desmos Performance Techniques
   parent: Main
   key: Desmos Performance Techniques
+tags:
+  - list-manipulation
+  - performance
 ---
 
 Here are a list of guidelines that will generally make your graph run faster.

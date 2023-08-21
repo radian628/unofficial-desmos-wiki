@@ -29,8 +29,8 @@ main {
 }
 
 main h1 {
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 10px;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .desmos-container {
@@ -46,4 +46,19 @@ main h1 {
 
 .breadcrumbs li:nth-child(n + 2):before {
   content: "▸";
+}
+
+.tags {
+  list-style: none;
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  padding-inline-start: 0;
+}
+
+.tags .tag {
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-right: 10px;
 }

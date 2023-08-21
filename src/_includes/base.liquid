@@ -17,7 +17,14 @@
       </a>
     </header>
     <nav class="breadcrumbs">
-      {{ collections.all | eleventyNavigationBreadcrumb: eleventyNavigation.key, includeSelf: true | eleventyNavigationToHtml }}
+      {% assign breadcrumbs = collections.all | eleventyNavigationBreadcrumb: eleventyNavigation.key %}
+      <ul>
+        {% for breadcrumb in breadcrumbs %}
+          <li>
+            <a href="{{ breadcrumb.url | url }}">{{ breadcrumb.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
     </nav>
     <main>
       <h1>{{ title }}</h1>

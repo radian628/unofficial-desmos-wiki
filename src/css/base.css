@@ -30,6 +30,7 @@ main {
 
 main h1 {
   border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
 }
 
 .desmos-container {

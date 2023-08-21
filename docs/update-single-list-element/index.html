@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <link rel="stylesheet" href="/css/base.css" />
     <title>Update a Single List Item</title>
     
     <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
@@ -16,10 +16,14 @@
       <h1>Update a Single List Item</h1>
       <p>Here is a function that updates a single element in a list:</p>
 <div class="desmos-container"></div><script>{ 
-    let graphstate = {"version":10,"randomSeed":"92e5cc1ecbbd6f2324bd38c48bfcf667","graph":{"viewport":{"xmin":-10,"ymin":-32.55182164112397,"xmax":10,"ymax":32.55182164112397}},"expressions":{"list":[{"type":"expression","id":"1","color":"#c74440","latex":"u_{pdate}\\left(l_{ist},i_{ndex},n_{ewValue}\\right)=\\left\\{\\left[1...\\operatorname{length}\\left(l_{ist}\\right)\\right]=i_{ndex}:n_{ewValue},l_{ist}\\right\\}"}]}}; 
-    let Calc = Desmos.GraphingCalculator(document.currentScript.previousSibling, { graphpaper: false });
+  let calcContainer = document.currentScript.previousSibling;
+  let observer = new IntersectionObserver(() => {
+    let graphstate = {"version":9,"graph":{"viewport":{"xmin":-10,"xmax":10,"ymin":-10,"ymax":10}},"expressions":{"list":[{"id":"1","secret":false,"type":"expression","color":"#c74440","hidden":false,"latex":"u_{pdate}\\left(l_{ist},i_{ndex},n_{ewValue}\\right)=\\left\\{\\left[1...\\operatorname{length}\\left(l_{ist}\\right)\\right]=i_{ndex}:n_{ewValue},l_{ist}\\right\\}","regressionParameters":{},"slider":{"hardMin":false,"hardMax":false},"displayEvaluationAsFraction":false,"vizProps":{}}]}}; 
+    let Calc = Desmos.GraphingCalculator(calcContainer, { graphpaper: false });
     Calc.setState(graphstate);
-  }</script>
+  });
+  observer.observe(calcContainer);
+}</script>
 
     </main>
   </body>

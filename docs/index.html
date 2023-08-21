@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <link rel="stylesheet" href="/css/base.css" />
     <title>Unofficial Desmos Wiki</title>
     
     <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
@@ -16,6 +16,15 @@
       <h1>Unofficial Desmos Wiki</h1>
       <p>Welcome to the Unofficial Desmos Wiki, the collaborative site for sharing knowledge about the <a href="https://www.desmos.com/calculator">Desmos Graphing Calculator</a> and other Desmos tools!</p>
 <p>Want to add content? <a href="https://github.com/DesModder/DesModder-website">Submit a PR!</a></p>
+<div class="desmos-container"></div><script>{ 
+  let calcContainer = document.currentScript.previousSibling;
+  let observer = new IntersectionObserver(() => {
+    let graphstate = {"version":9,"graph":{"viewport":{"xmin":-10,"xmax":10,"ymin":-10,"ymax":10}},"expressions":{"list":[{"id":"1","secret":false,"type":"expression","color":"#c74440","hidden":false,"latex":"y=x","regressionParameters":{},"slider":{"hardMin":false,"hardMax":false},"displayEvaluationAsFraction":false,"vizProps":{}}]}}; 
+    let Calc = Desmos.GraphingCalculator(calcContainer, {});
+    Calc.setState(graphstate);
+  });
+  observer.observe(calcContainer);
+}</script>
 
     </main>
   </body>

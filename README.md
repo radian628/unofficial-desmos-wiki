@@ -1,5 +1,3 @@
-# Unofficial Desmos Wiki
-
 Instructions for development:
 
 `npm i`

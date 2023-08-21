@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="/css/base.css" />
     <title>{{ title }}</title>
     {% if description %}
       <meta name="Description" content="{{ description }}">
     {% endif %}
   </head>
   <body>
-    <h1>{{ title }}</h1>
-    {{ content }}
+    <header>
+      <h1>Desmos Wiki
+        <span class="unofficial">(Unofficial)</span>
+      </h1>
+    </header>
+    <main>
+      <h1>{{ title }}</h1>
+      {{ content }}
+    </main>
   </body>
 </html>

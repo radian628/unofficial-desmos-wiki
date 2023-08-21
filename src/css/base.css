@@ -1,0 +1,33 @@
+:root {
+  font-family: sans-serif;
+  --border: #888888;
+  --background: white;
+  --foreground: black;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  border-bottom: 1px solid var(--border);
+  margin: 0;
+  padding: 10px;
+  padding-left: 30px;
+}
+
+.unofficial {
+  font-size: 50%;
+}
+
+main {
+  margin: auto;
+  width: calc(min(50em, 90%));
+}
+
+main h1 {
+  border-bottom: 1px solid var(--border);
+}

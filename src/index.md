@@ -9,6 +9,4 @@ Welcome to the Unofficial Desmos Wiki, the collaborative site for sharing knowle
 
 Want to add content? [Submit a PR!](https://github.com/DesModder/DesModder-website)
 
-{% textmode 'y=x' %}
-
 {{ collections.all | eleventyNavigation | eleventyNavigationToMarkdown }}

@@ -1,7 +1,7 @@
 ---
 title: Tips
 eleventyNavigation:
-  parent: Reference
+  parent: Main
   title: Tips
   key: Tips
 ---

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx @11ty/eleventy",
+    "build-production": "npx @11ty/eleventy --pathprefix=unofficial-desmos-wiki",
     "serve": "npx @11ty/eleventy --serve"
   },
   "keywords": [],

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    {% if description %}
+      <meta name="Description" content="{{ description }}">
+    {% endif %}
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    {{ content }}
+  </body>
+</html>

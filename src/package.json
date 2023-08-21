@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "chokidar": "^3.5.3",
-    "marked": "^4.1.1"
-  }
-}

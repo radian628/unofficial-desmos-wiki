@@ -32,18 +32,28 @@ The steps below assume that you are using GitHub Desktop. However, if you know w
    ![Image of the 'fork' button on the radian628/unofficial-desmos-wiki repository page](../../img/meta/fork.png)
 2. Clone the repository.
 
-   ![Image of the 'Clone repository' option in the GitHub Desktop dropdown](../../img/meta/clone1.png)
-   ![Searching the word 'unofficial' in the GitHub Desktop repository list. The repository found is listed as 'radian628/unofficial-desmos-wiki'](../../img/meta/clone2.png)
+<div class="side-by-side">
 
-   (note: If you clone your fork, this should say `YOURUSERNAME/unofficial-desmos-wiki` where `YOURUSERNAME` is your GitHub username)
+![Image of the 'Clone repository' option in the GitHub Desktop dropdown](../../img/meta/clone1.png)
+
+![Searching the word 'unofficial' in the GitHub Desktop repository list. The repository found is listed as 'radian628/unofficial-desmos-wiki'](../../img/meta/clone2.png)
+
+</div>
+
+(note: If you clone your fork, this should say `YOURUSERNAME/unofficial-desmos-wiki` where `YOURUSERNAME` is your GitHub username)
 
 3. Install dependencies. If you're on Windows, run the file `init.ps1`, which will open a terminal that installs NodeJS, NPM, and all the dependencies of the project. It will then generate a local copy the website.
    On any other platform (or if you already have NodeJS and NPM installed), you can alternatively run `npm i` to install dependencies and `npm run serve` to generate the website. This will require that you have NodeJS and NPM installed beforehand (as per the prerequisites listed above)
 4. The terminal will tell you where the server is running. This should be a localhost URL&mdash; e.g. http://localhost:8080. Open that URL in your browser to view the local copy of the site.
 5. Make your changes. The site in the browser will update to reflect the changes you made. _See the "How do I make a page?" section below for more details on how to make changes._
 6. Upload your changes back to your fork on GitHub by committing and then pushing.
+<div class="side-by-side">
 
-![The GitHub Desktop commit screen with staged changes. The commit summary is listed as "you need a summary to commit!"](commit.png)
+![The GitHub Desktop commit screen with staged changes. The commit summary is listed as "you need a summary to commit!"](../../img/meta/commit.png)
+
+![The "push origin" button in GitHub Desktop](../../img/meta/push.png)
+
+</div>
 
 7. Submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 

@@ -80,3 +80,11 @@ h2 {
 .static-math-container .dcg-mq-root-block {
   display: inline !important;
 }
+
+.side-by-side {
+  display: flex;
+}
+
+.side-by-side img {
+  margin: 10px;
+}

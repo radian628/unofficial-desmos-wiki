@@ -16,7 +16,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addShortcode("graphstate", (state, settings) =>
     createDesmosEmbedCode(state, settings)
   );
-  eleventyConfig.addShortcode("textmode", async (state, settings) => {
+  eleventyConfig.addAsyncShortcode("textmode", async (state, settings) => {
     const tm = await import("@desmodder/text-mode-core");
 
     const cfg = tm.buildConfig({});

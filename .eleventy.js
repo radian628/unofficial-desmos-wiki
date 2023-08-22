@@ -13,6 +13,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addWatchTarget("./src/**");
   eleventyConfig.addPassthroughCopy("./src/css");
+  eleventyConfig.addPassthroughCopy("./src/img");
   eleventyConfig.addShortcode("graphstate", (state, settings) =>
     createDesmosEmbedCode(state, settings)
   );

@@ -8,31 +8,47 @@ eleventyNavigation:
 
 ## How to Contribute
 
+This is a guide for how to contribute to the wiki. It's geared toward people with little programming experience, if any. If you're already an experienced programmer and have NodeJS installed, all you really need to know is that:
+
+1. To build it, you need to do `npm i` and `npm run serve`.
+2. There's some custom shortcodes and macros and whatnot that this site uses. These are described in the "How do I make a page?" section.
+3. Contributions are accepted through PRs and commits to [this GitHub repository](https://github.com/radian628/unofficial-desmos-wiki).
+
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/en) and NPM (should be bundled with node.js by default) for building the site.
 - Some form of Git client (If you're not sure, I recommend [GitHub Desktop](https://desktop.github.com/)) for sending over your changes.
-- Some kind of code editor.
-- A GitHub account.
+- A GitHub account. The site is hosted on GitHub.
+- Some kind of code editor for editing the files that make up the website. I recommend [VSCode](https://code.visualstudio.com/) if you're not sure what to choose.
+- (MACOS AND LINUX ONLY) NodeJS and NPM, which can both be installed [by downloading NodeJS from here](https://nodejs.org/).
 
 ### Steps to Contribute
 
+The steps below assume that you are using GitHub Desktop. However, if you know what you're doing with Git then that shouldn't matter.
+
 1. Fork [this repository](https://github.com/radian628/unofficial-desmos-wiki). It contains all the code that's used to generate the site.
+   ![Alt text](../../img/meta/fork.png)
 2. Clone the repository.
-3. Navigate to the root directory of the repository in a terminal.
-4. Run `npm i` to install dependencies
-5. Run `npm run serve` to start the local dev server.
-6. 11ty will tell you where the server is running (e.g. http://localhost:8080). Open that site in your browser to run the local copy of the site.
-7. Make your changes. See the section below for more details.
-8. Submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+
+   ![Alt text](../../img/meta/clone1.png)
+   ![Alt text](../../img/meta/clone2.png)
+
+   (note: If you clone your fork, this should say `YOURUSERNAME/unofficial-desmos-wiki` where `YOURUSERNAME` is your GitHub username)
+
+3. Install dependencies. If you're on Windows, run the file `init.ps1`, which will open a terminal that installs NodeJS, NPM, and all the dependencies of the project. It will then generate a local copy the website.
+   On any other platform (or if you already have NodeJS and NPM installed), you can alternatively run `npm i` to install dependencies and `npm run serve` to generate the website. This will require that you have NodeJS and NPM installed beforehand (as per the prerequisites listed above)
+4. The termial will tell you where the server is running. This should be a localhost URL&mdash; e.g. http://localhost:8080. Open that URL in your browser to view the local copy of the site.
+5. Make your changes. The site in the browser will update to reflect the changes you made. See the section below for more details on how to make changes.
+6. Submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 
 ## How do I make a page?
 
 This site uses [11ty](https://11ty.dev/) for static site generation with the [Liquid](https://shopify.github.io/liquid/) templating engine.
 
-All of the pages that make up the site are Markdown (`.md`) files under the `src` directory. Create a file ending in `.md` there. I recommend looking at other `.md` files to get a sense of the syntax and how it's used.
+All of the pages that make up the site are [Markdown](https://www.markdownguide.org/) (`.md`) files under the `src` directory. Create a file ending in `.md` there. I recommend looking at other `.md` files to get a sense of the syntax and how it's used.
 
-All files use [Markdown](https://www.markdownguide.org/) for syntax with YAML Front Matter for site navigation and metadata (e.g. page titles). Learning YAML syntax doesn't matter all that much&mdash; you can probably infer how the Front Matter should look based on how it looks on most pages. Front Matter is the stuff delimited by `---`s at the start of the pages.
+All files use Markdown for syntax (with HTML support) with YAML Front Matter for site navigation and metadata (e.g. page titles). Learning YAML syntax doesn't matter all that much&mdash; you can probably infer how the Front Matter should look based on how it looks on most pages. Front Matter is the stuff delimited by `---`s at the start of the pages.
+
+### Shortcodes
 
 Use shortcodes to embed Desmos content and equations into pages.
 

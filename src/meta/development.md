@@ -22,7 +22,7 @@ This is a guide for how to contribute to the wiki. It's geared toward people wit
 - Some form of Git client (If you're not sure, I recommend [GitHub Desktop](https://desktop.github.com/)) for sending over your changes.
 - A GitHub account. The site is hosted on GitHub.
 - Some kind of code editor for editing the files that make up the website. I recommend [VSCode](https://code.visualstudio.com/) if you're not sure what to choose.
-- (MACOS AND LINUX ONLY) NodeJS and NPM, which can both be installed [by downloading NodeJS from here](https://nodejs.org/).
+- (REQUIRED for MacOS and Linux, OPTIONAL for Windows) NodeJS and NPM, which can both be installed [by downloading NodeJS from here](https://nodejs.org/).
 
 ### Steps to Contribute
 

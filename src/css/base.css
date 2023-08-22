@@ -68,6 +68,11 @@ h2 {
   margin-right: 10px;
 }
 
+.tags .tag a {
+  text-decoration: none;
+  color: var(--foreground);
+}
+
 .invisible {
   display: none;
 }

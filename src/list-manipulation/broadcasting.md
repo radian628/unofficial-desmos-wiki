@@ -7,6 +7,9 @@ eleventyNavigation:
 tags:
   - list-manipulation
   - explanation
+crosslinks:
+  - broadcasting
+  - broadcast
 ---
 
 Broadcasting is a feature in Desmos that allows for operations between lists and non-lists. In short, under certain contexts, operations on Desmos lists will instead be applied separately on each _element_ of the list, before being merged back together in the same order to create a new list. This is best shown with an example.

@@ -37,7 +37,9 @@
           </li>
         {% endfor %}
       </ul>
-      {{ content }}
+      {% crosslink, collections.all, page.url %}
+        {{content}}
+      {% endcrosslink %}
     </main>
     <script>
       function addDesmosEmbed(calcContainer) {

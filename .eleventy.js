@@ -1,5 +1,7 @@
 const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
 const fs = require("node:fs/promises");
+const parse5 = require("parse5");
+const { finished, Duplex } = require("node:stream");
 
 const createDesmosEmbedCode = (state, settings) =>
   `<div class="desmos-container invisible"><div>${state}</div><div>${settings}</div></div>`;
@@ -55,6 +57,74 @@ module.exports = function (eleventyConfig) {
       })
     );
   });
+  eleventyConfig.addPairedAsyncShortcode(
+    "crosslink",
+    async function (content, otherPages, thisPageUrl) {
+      const crosslinkList = new Set();
+
+      for (const op of otherPages) {
+        if (op.url === thisPageUrl) continue;
+
+        const crosslinks = op.data.crosslinks;
+        if (crosslinks) {
+          for (const crosslink of crosslinks) {
+            crosslinkList.add({
+              phrase: new RegExp(`(\\W)(${crosslink})(\\W)`, "i"),
+              link: op.url,
+            });
+          }
+        }
+      }
+
+      const { RewritingStream } = await import("parse5-html-rewriting-stream");
+      const rewriter = new RewritingStream();
+
+      const tagStack = [];
+
+      rewriter.on("startTag", (node, rawHTML) => {
+        tagStack.push(node.tagName);
+        rewriter.emitStartTag(node);
+      });
+      rewriter.on("endTag", (node, rawHTML) => {
+        tagStack.pop();
+        rewriter.emitEndTag(node);
+      });
+
+      rewriter.on("text", (node, raw) => {
+        if (tagStack[tagStack.length - 1] !== "p") {
+          rewriter.emitRaw(raw);
+          return;
+        }
+
+        let text = raw;
+        for (const crosslink of crosslinkList) {
+          let newText = text.replace(
+            crosslink.phrase,
+            `$1<a href="${eleventyConfig.getFilter("url")(
+              crosslink.link
+            )}">$2</a>$3`
+          );
+          if (text !== newText) {
+            for (const crosslink2 of crosslinkList) {
+              if (crosslink2.link === crosslink.link)
+                crosslinkList.delete(crosslink2);
+            }
+          }
+          text = newText;
+        }
+
+        rewriter.emitRaw(text);
+      });
+
+      const chunks = [];
+
+      rewriter.on("data", (chunk) => chunks.push(chunk));
+
+      rewriter.write(content);
+
+      return chunks.join("");
+    }
+  );
 
   function handlePrefixedNav(nav) {
     return `<ul>

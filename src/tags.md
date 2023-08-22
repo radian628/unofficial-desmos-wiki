@@ -3,7 +3,7 @@ pagination:
   data: collections
   size: 1
   alias: tag
-permalink: "{{ '/tag/' | append: tag }}"
+permalink: "{{ '/tag/' | append: tag | append: '/' }}"
 eleventyComputed:
   title: "Tagged With {{ '' | append: tag }}"
 ---

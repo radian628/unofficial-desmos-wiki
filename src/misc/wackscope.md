@@ -10,6 +10,8 @@ crosslinks:
   - wackscope
 ---
 
+## What are Wackscope Variables?
+
 Wackscope variables are best described using an example:
 
 {% textmode 'f(m, n) = a + 1; a = 3 * n + m; f(3, 4)', '{ "graphpaper": false }' %}
@@ -22,3 +24,17 @@ In general, a "wackscope" variable is any such variable that fits the following 
 
 1. The wackscope uses other variables that _aren't in the global scope_.
 2. The wackscope is used in another context that defines variables (e.g. function parameters, list comprehensions, sums) which have the same name as the ones the wackscope uses that aren't defined in the global scope.
+
+## Why use Wackscope Variables?
+
+When you write a complex function in Desmos, you will often want to use the same "sub-expression" twice. Consider the example below:
+
+{% statictext 'f(a, b) = sin(a + b) + (a + 2^sin(a + b)) / sin(a + b)' %}
+
+Notice how {% statictext 'sin(a + b)' %} is repeated three times throughout this function. We can fix this by moving {% statictext 'sin(a + b)' %} to a dedicated wackscope variable {% statictext 'w' %} and replacing all instances of {% statictext 'sin(a + b)' %} with {% statictext 'w' %}. This might seem a bit silly for a function this small, but keep in mind that you can write much larger functions in Desmos which will benefit much more from wackscopes. Here is what you will have with a wackscope applied:
+
+{% statictext 'w = sin(a + b)' %}
+
+{% statictext 'f(a, b) = w + (a + 2^w) / w' %}
+
+As you can see, this example is a lot simpler. It's also a lot more performant&mdash; in the example above, {% statictext 'sin(a + b)' %} is calculated _three times_. In the example below, {% statictext 'sin(a + b)' %} is calculated _once_ and assigned to {% statictext 'w' %}, which is then reused without recalculating it. So not only did adding a wackscope make this function simpler&mdash; it also made it run faster.

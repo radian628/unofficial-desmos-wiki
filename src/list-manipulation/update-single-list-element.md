@@ -11,11 +11,14 @@ tags:
 
 ## Update Single List Element Function
 
+{% mainPreview %}
 Here is a function that updates a single element in a list:
 
 {% statictext
-'update(list, i_ndex, newValue) = { [1 ... length(list)] = i_ndex: newValue, list }', '{ "copyButton": true }'
-%}
+  'update(list, i_ndex, newValue) = { [1 ... length(list)] = i_ndex: newValue, list }', '{ "copyButton": true }'
+  %}
+
+{% endmainPreview %}
 
 ## Parameters
 

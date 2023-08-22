@@ -1,4 +1,5 @@
 const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
+const fs = require("node:fs/promises");
 
 const createDesmosEmbedCode = (state, settings) =>
   `<div class="desmos-container invisible"><div>${state}</div><div>${settings}</div></div>`;
@@ -35,6 +36,24 @@ module.exports = function (eleventyConfig) {
       settings ? JSON.parse(settings) : {}
     );
   });
+  eleventyConfig.addPairedAsyncShortcode("mainPreview", function (content) {
+    return content;
+  });
+  eleventyConfig.addFilter("getPreviews", async function (collection) {
+    return await Promise.all(
+      collection.map(async (page) => {
+        const inputPath = page.data.page.inputPath;
+        const inputData = (await fs.readFile(inputPath)).toString();
+        const mainPreview = (await inputData).match(
+          /\{%\s+mainPreview\s+%\}([\s\S]+)\{%\s+endmainPreview\s+%\}/g
+        )?.[0];
+        if (!mainPreview) return "";
+        return `<h2><a href="${eleventyConfig.getFilter("url")(page.url)}">${
+          page.data.title
+        }</a></h2>\n${await this.liquid.parseAndRender(mainPreview, this)}`;
+      })
+    );
+  });
 
   function handlePrefixedNav(nav) {
     return `<ul>
@@ -62,5 +81,6 @@ module.exports = function (eleventyConfig) {
       input: "src",
       output: "docs",
     },
+    pathPrefix: "/unofficial-desmos-wiki/",
   };
 };

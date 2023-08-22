@@ -26,17 +26,17 @@ This is a guide for how to contribute to the wiki. It's geared toward people wit
 The steps below assume that you are using GitHub Desktop. However, if you know what you're doing with Git then that shouldn't matter.
 
 1. Fork [this repository](https://github.com/radian628/unofficial-desmos-wiki). It contains all the code that's used to generate the site.
-   ![Alt text](../../img/meta/fork.png)
+   ![Image of the 'fork' button on the radian628/unofficial-desmos-wiki repository page](../../img/meta/fork.png)
 2. Clone the repository.
 
-   ![Alt text](../../img/meta/clone1.png)
-   ![Alt text](../../img/meta/clone2.png)
+   ![Image of the 'Clone repository' option in the GitHub Desktop dropdown](../../img/meta/clone1.png)
+   ![Searching the word 'unofficial' in the GitHub Desktop repository list. The repository found is listed as 'radian628/unofficial-desmos-wiki'](../../img/meta/clone2.png)
 
    (note: If you clone your fork, this should say `YOURUSERNAME/unofficial-desmos-wiki` where `YOURUSERNAME` is your GitHub username)
 
 3. Install dependencies. If you're on Windows, run the file `init.ps1`, which will open a terminal that installs NodeJS, NPM, and all the dependencies of the project. It will then generate a local copy the website.
    On any other platform (or if you already have NodeJS and NPM installed), you can alternatively run `npm i` to install dependencies and `npm run serve` to generate the website. This will require that you have NodeJS and NPM installed beforehand (as per the prerequisites listed above)
-4. The termial will tell you where the server is running. This should be a localhost URL&mdash; e.g. http://localhost:8080. Open that URL in your browser to view the local copy of the site.
+4. The terminal will tell you where the server is running. This should be a localhost URL&mdash; e.g. http://localhost:8080. Open that URL in your browser to view the local copy of the site.
 5. Make your changes. The site in the browser will update to reflect the changes you made. See the section below for more details on how to make changes.
 6. Submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 

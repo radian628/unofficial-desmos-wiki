@@ -91,7 +91,7 @@ module.exports = function (eleventyConfig) {
       });
 
       rewriter.on("text", (node, raw) => {
-        if (tagStack[tagStack.length - 1] !== "p") {
+        if (!["li", "p"].includes(tagStack[tagStack.length - 1])) {
           rewriter.emitRaw(raw);
           return;
         }

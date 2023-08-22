@@ -8,6 +8,7 @@ tags:
   - explanation
 crosslinks:
   - wackscope
+  - wackscopes
 ---
 
 ## What are Wackscope Variables?

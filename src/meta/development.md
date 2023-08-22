@@ -50,3 +50,5 @@ type StaticMathOptions = {
 ```
 
 - `statictext` is identical to `staticmath`, except it uses Text Mode syntax.
+
+When in doubt, look over other pages to see how they're using the shortcodes.

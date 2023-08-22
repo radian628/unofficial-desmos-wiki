@@ -4,6 +4,8 @@ eleventyNavigation:
   title: Wackscope Variables
   parent: Main
   key: Wackscope Variables
+tags:
+  - explanation
 ---
 
 Wackscope variables are best described using an example:

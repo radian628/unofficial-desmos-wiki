@@ -7,6 +7,7 @@ eleventyNavigation:
 tags:
   - list-manipulation
   - tip
+  - list-utility-fn
 ---
 
 {% mainPreview %}

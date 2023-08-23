@@ -10,6 +10,7 @@ tags:
 crosslinks:
   - list utilities
   - list utility
+layout: base.liquid
 ---
 
 This is a list of many useful list manipulation functions. Feel free to use them in your graph; no attribution necessary!

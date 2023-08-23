@@ -10,6 +10,7 @@ tags:
 crosslinks:
   - third party tools
   - third-party tools
+layout: base.liquid
 ---
 
 This is a list of useful third-party tools for enhancing the Desmos experience.

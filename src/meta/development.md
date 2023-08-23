@@ -7,6 +7,7 @@ eleventyNavigation:
 tags:
   - meta
   - explanation
+layout: base.liquid
 ---
 
 ## How to Contribute

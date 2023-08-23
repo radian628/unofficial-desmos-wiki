@@ -9,6 +9,7 @@ tags:
 crosslinks:
   - wackscope
   - wackscopes
+layout: base.liquid
 ---
 
 ## What are Wackscope Variables?

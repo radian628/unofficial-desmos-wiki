@@ -8,6 +8,7 @@ tags:
   - tool
 crosslinks:
   - desmoscript
+layout: base.liquid
 ---
 
 {% mainPreview %}

@@ -9,6 +9,7 @@ tags:
 crosslinks:
   - organizing graphs
   - organize graphs
+layout: base.liquid
 ---
 
 This is a guide on how to organize your larger graphs.

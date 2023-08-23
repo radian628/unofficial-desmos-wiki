@@ -6,6 +6,7 @@ pagination:
 permalink: "{{ '/tag/' | append: tag | append: '/' }}"
 eleventyComputed:
   title: "Tagged With {{ '' | append: tag }}"
+layout: base.liquid
 ---
 
 <ol>

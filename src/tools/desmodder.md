@@ -8,6 +8,7 @@ tags:
   - tool
 crosslinks:
   - desmodder
+layout: base.liquid
 ---
 
 {% mainPreview %}

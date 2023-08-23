@@ -8,6 +8,7 @@ tags:
   - list-manipulation
   - tip
   - list-utility-fn
+layout: base.liquid
 ---
 
 {% mainPreview %}

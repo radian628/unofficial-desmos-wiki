@@ -3,6 +3,8 @@ const fs = require("node:fs/promises");
 const parse5 = require("parse5");
 const { finished, Duplex } = require("node:stream");
 const slugify = require("slugify");
+var less = require("less");
+const path = require("path");
 
 const createDesmosEmbedCode = (state, settings) =>
   `<div class="desmos-container invisible"><div>${state}</div><div>${settings}</div></div>`;
@@ -15,7 +17,6 @@ const createStaticMathCode = (state, settings) =>
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addWatchTarget("./src/**");
-  eleventyConfig.addPassthroughCopy("./src/css");
   eleventyConfig.addPassthroughCopy("./src/img");
   eleventyConfig.addShortcode("graphstate", (state, settings) =>
     createDesmosEmbedCode(state, settings)
@@ -160,7 +161,6 @@ module.exports = function (eleventyConfig) {
           case "h6":
             const txt = innerText(node);
             const slug = slugify(txt);
-            console.log(txt);
             node.attrs.push({
               name: "id",
               value: slug,
@@ -235,6 +235,23 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("prefixedEleventyNavigation", (nav) => {
     return handlePrefixedNav(nav);
   });
+
+  eleventyConfig.addTemplateFormats("less");
+
+  eleventyConfig.addExtension("less", {
+    outputFileExtension: "css",
+
+    compile: async function (inputContent, inputPath) {
+      const result = less.render(inputContent, {
+        filename: inputPath,
+      });
+
+      return async (data) => {
+        return (await result).css;
+      };
+    },
+  });
+
   return {
     dir: {
       input: "src",

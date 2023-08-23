@@ -111,6 +111,16 @@ h6:hover .link-to-header {
   align-self: flex-start;
 }
 
+.header-nav li {
+  text-indent: -1em;
+  margin-left: 1em;
+}
+
+.header-nav li a {
+  margin-bottom: 5px;
+  display: block;
+}
+
 .header-nav ul {
   list-style: none;
   border-left: 1px solid var(--border);

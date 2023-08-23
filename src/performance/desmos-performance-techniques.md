@@ -8,6 +8,7 @@ tags:
   - list-manipulation
   - performance
 layout: base.liquid
+crosslinks: []
 ---
 
 Here are a list of guidelines that will generally make your graph run faster.

@@ -43,7 +43,7 @@
             </li>
           {% endfor %}
         </ul>
-        {% contentTransform, collections.all, page.url %}
+        {% contentTransform, collections.all, page.url, globalThis %}
           {{content}}
         {% endcontentTransform %}
       </main>

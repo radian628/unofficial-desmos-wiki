@@ -4,6 +4,8 @@ eleventyNavigation:
   title: Main
   key: Main
 layout: base.liquid
+crosslinks: []
+tags:
 ---
 
 Welcome to the Unofficial Desmos Wiki, the collaborative site for sharing knowledge about the [Desmos Graphing Calculator](https://www.desmos.com/calculator) and other Desmos tools!

@@ -125,6 +125,21 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPairedAsyncShortcode(
     "contentTransform",
     async function (content, otherPages, thisPageUrl) {
+      const warn = (msg) => console.warn(`⚠️  ${thisPageUrl}: ${msg}`);
+
+      if (path.extname(this.page.inputPath) === ".md") {
+        const env = this?.ctx?.environments;
+        if (!this.ctx.environments.pagination) {
+          if (!env?.eleventyNavigation) warn("Missing eleventyNavigation");
+          if (!env?.tags) warn("Missing tags (use an empty list for no tags)");
+          if (!env?.crosslinks)
+            warn("Missing crosslinks (use an empty list for no crosslinks)");
+        }
+        if (!env?.title) warn("Missing title");
+        if (!env?.layout)
+          warn("Missing layout (use an empty list for no layout)");
+      }
+
       const crosslinkList = new Set();
 
       for (const op of otherPages) {

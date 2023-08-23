@@ -2,6 +2,7 @@ const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
 const fs = require("node:fs/promises");
 const parse5 = require("parse5");
 const { finished, Duplex } = require("node:stream");
+const slugify = require("slugify");
 
 const createDesmosEmbedCode = (state, settings) =>
   `<div class="desmos-container invisible"><div>${state}</div><div>${settings}</div></div>`;
@@ -57,8 +58,71 @@ module.exports = function (eleventyConfig) {
       })
     );
   });
+
+  function innerText(node) {
+    if (node.nodeName === "#text") return node.value;
+    return node?.childNodes.map((n) => innerText(n)).join("");
+  }
+
+  eleventyConfig.addAsyncShortcode(
+    "generateHeaderNav",
+    async function (content) {
+      const headers = [];
+
+      const level = (node) => (node ? Number(node.tagName[1]) : 0);
+
+      const tree = parse5.parseFragment(content);
+
+      function createHeaderTree(node) {
+        if (node.tagName && node.tagName.match(/h[1-6]/)) {
+          headers.push(node);
+        }
+        for (const child of node.childNodes ?? []) createHeaderTree(child);
+      }
+
+      createHeaderTree(tree);
+
+      const headerTree = {
+        header: undefined,
+        children: [],
+      };
+
+      const headerStack = [headerTree];
+
+      for (const h of headers) {
+        let top = headerStack.at(-1);
+        while (level(h) <= level(top.header)) {
+          headerStack.pop();
+          top = headerStack.at(-1);
+        }
+
+        const treeEntry = {
+          header: h,
+          children: [],
+        };
+
+        top.children.push(treeEntry);
+        headerStack.push(treeEntry);
+      }
+
+      function generateHeaderNav({ header, children }) {
+        const it = header ? innerText(header) : "";
+        const headerHTML = header ? `<a href="#${slugify(it)}">${it}</a>` : "";
+        const childrenListHTML =
+          children && children.length > 0
+            ? `<ul>${children
+                .map((c) => {
+                  return `<li>${generateHeaderNav(c)}</li>`;
+                })
+                .join("")}</ul>`
+            : "";
+        return `${headerHTML}${childrenListHTML}`;
+      }
+      return generateHeaderNav(headerTree);
+    }
+  );
   eleventyConfig.addPairedAsyncShortcode(
-    "crosslink",
+    "contentTransform",
     async function (content, otherPages, thisPageUrl) {
       const crosslinkList = new Set();
 
@@ -76,53 +140,77 @@ module.exports = function (eleventyConfig) {
         }
       }
 
-      const { RewritingStream } = await import("parse5-html-rewriting-stream");
-      const rewriter = new RewritingStream();
+      const tree = parse5.parseFragment(content);
 
-      const tagStack = [];
+      function containsLinks(node) {
+        return node.childNodes.some(containsLinks) || node.tagName === "a";
+      }
 
-      rewriter.on("startTag", (node, rawHTML) => {
-        tagStack.push(node.tagName);
-        rewriter.emitStartTag(node);
-      });
-      rewriter.on("endTag", (node, rawHTML) => {
-        tagStack.pop();
-        rewriter.emitEndTag(node);
-      });
-
-      rewriter.on("text", (node, raw) => {
-        if (!["li", "p"].includes(tagStack[tagStack.length - 1])) {
-          rewriter.emitRaw(raw);
-          return;
+      function crosslinkify(node) {
+        if (node.childNodes) {
+          for (const child of node.childNodes) crosslinkify(child);
         }
 
-        let text = raw;
-        for (const crosslink of crosslinkList) {
-          let newText = text.replace(
-            crosslink.phrase,
-            `$1<a href="${eleventyConfig.getFilter("url")(
-              crosslink.link
-            )}">$2</a>$3`
-          );
-          if (text !== newText) {
-            for (const crosslink2 of crosslinkList) {
-              if (crosslink2.link === crosslink.link)
-                crosslinkList.delete(crosslink2);
-            }
-          }
-          text = newText;
+        switch (node.tagName) {
+          case "h1":
+          case "h2":
+          case "h3":
+          case "h4":
+          case "h5":
+          case "h6":
+            const txt = innerText(node);
+            const slug = slugify(txt);
+            console.log(txt);
+            node.attrs.push({
+              name: "id",
+              value: slug,
+            });
+            node.childNodes.push(
+              parse5.parseFragment(
+                `<a class="link-to-header" href="#${slug}"> #</a>`
+              ).childNodes[0]
+            );
+            break;
+          case "li":
+          case "p":
+            node.childNodes = node.childNodes
+              .map((cn) => {
+                if (cn.nodeName === "#text") {
+                  let text = cn.value;
+
+                  for (const crosslink of crosslinkList) {
+                    const newText = text.replace(
+                      crosslink.phrase,
+                      `$1<a href="${eleventyConfig.getFilter("url")(
+                        crosslink.link
+                      )}">$2</a>$3`
+                    );
+
+                    if (newText !== text) {
+                      for (const crosslink2 of crosslinkList) {
+                        if (crosslink2.link === crosslink.link)
+                          crosslinkList.delete(crosslink2);
+                      }
+
+                      text = newText;
+                    }
+                  }
+
+                  const fragment = parse5.parseFragment(text);
+
+                  return fragment.childNodes;
+                }
+
+                return cn;
+              })
+              .flat(1);
+            break;
         }
+      }
 
-        rewriter.emitRaw(text);
-      });
+      crosslinkify(tree);
 
-      const chunks = [];
-
-      rewriter.on("data", (chunk) => chunks.push(chunk));
-
-      rewriter.write(content);
-
-      return chunks.join("");
+      return parse5.serialize(tree);
     }
   );
 

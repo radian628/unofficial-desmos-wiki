@@ -3,6 +3,26 @@
   --border: #888888;
   --background: white;
   --foreground: black;
+  --button: #eeeeee;
+  --link: #557898;
+  --link-visited: #55316d;
+}
+
+body.dark {
+  --border: #555555;
+  --background: #121212;
+  --foreground: white;
+  --button: #333333;
+  --link: #84bdeb;
+  --link-visited: #c7b4df;
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--link-visited);
 }
 
 body {
@@ -66,6 +86,7 @@ h2 {
   border-radius: 10px;
   border: 1px solid var(--border);
   margin-right: 10px;
+  background-color: var(--button);
 }
 
 .tags .tag a {
@@ -132,4 +153,16 @@ h6:hover .link-to-header {
   display: flex;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.header-side-by-side {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--button);
+  cursor: pointer;
 }

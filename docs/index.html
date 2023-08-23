@@ -7,12 +7,13 @@
     <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
   </head>
   <body>
-    <header>
+    <header class="header-side-by-side">
       <a href="/unofficial-desmos-wiki/">
         <h1>Desmos Wiki
           <span class="unofficial">(Unofficial)</span>
         </h1>
       </a>
+      <button id="light-dark-toggle"></button>
     </header>
     <nav class="breadcrumbs">
       
@@ -71,6 +72,31 @@
       </main>
     </div>
     <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+
       function addDesmosEmbed(calcContainer) {
         let observer = new IntersectionObserver(() => {
           let graphstate = JSON.parse(calcContainer.children[0].innerText);

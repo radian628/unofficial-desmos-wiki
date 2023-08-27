@@ -87,3 +87,15 @@ type StaticMathOptions = {
 - `statictext` is identical to `staticmath`, except it uses Text Mode syntax.
 
 When in doubt, look over other pages to see how they're using the shortcodes.
+
+### Crosslinks
+
+Crosslinks come in two forms: Internal crosslinks, and external crosslinks.
+
+#### Internal Crosslinks
+
+Any page can define a `crosslinks` frontmatter attribute that denotes a list of phrases that will be converted into links to that page fully automatically. As more pages are added, including ones that might have names that correspond to common words, this auto-crosslinking behavior may be revised, with auto-crosslinks being treated more like external crosslinks.
+
+#### External Crosslinks
+
+External crosslinks (crosslinks to other sites) are specified in a `crosslinks.json` file in the root directory of this repository. Any phrase surrounded by double parens which corresponds to a key in `crosslinks.json` will be turned into a crosslink, similar to what Wikipedia does with double brackets (double brackets aren't used here because they mess up Markdown syntax highlighting). As an example, `{{ "((" }}list{{ "))" }}` becomes ((list)).

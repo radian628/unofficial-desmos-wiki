@@ -5,6 +5,7 @@ const { finished, Duplex } = require("node:stream");
 const slugify = require("slugify");
 var less = require("less");
 const path = require("path");
+const externalCrosslinks = require("./crosslinks.json");
 
 const createDesmosEmbedCode = (state, settings) =>
   `<div class="desmos-container invisible"><div>${state}</div><div>${settings}</div></div>`;
@@ -140,7 +141,17 @@ module.exports = function (eleventyConfig) {
           warn("Missing layout (use an empty list for no layout)");
       }
 
+      const crosslinkRegexp = (crosslink) =>
+        new RegExp(`(\\W)${crosslink}(\\W)`, "i");
+
       const crosslinkList = new Set();
+
+      for (const [phraseStr, link] of Object.entries(externalCrosslinks)) {
+        crosslinkList.add({
+          phrase: crosslinkRegexp(`\\(\\((${phraseStr})\\)\\)`),
+          link,
+        });
+      }
 
       for (const op of otherPages) {
         if (op.url === thisPageUrl) continue;
@@ -149,7 +160,7 @@ module.exports = function (eleventyConfig) {
         if (crosslinks) {
           for (const crosslink of crosslinks) {
             crosslinkList.add({
-              phrase: new RegExp(`(\\W)(${crosslink})(\\W)`, "i"),
+              phrase: crosslinkRegexp(`(${crosslink})`),
               link: op.url,
             });
           }

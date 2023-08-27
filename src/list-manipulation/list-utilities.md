@@ -13,6 +13,6 @@ crosslinks:
 layout: base.liquid
 ---
 
-This is a list of many useful list manipulation functions. Feel free to use them in your graph; no attribution necessary!
+This is a list of many useful ((list)) manipulation functions. Feel free to use them in your graph; no attribution necessary!
 
 {{ collections["list-utility-fn"] | getPreviews }}

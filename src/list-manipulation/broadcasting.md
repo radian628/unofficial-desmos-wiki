@@ -13,7 +13,7 @@ crosslinks:
 layout: base.liquid
 ---
 
-Broadcasting is a feature in Desmos that allows for operations involving lists that would normally not work with lists. In short, under certain contexts, operations on Desmos lists will instead be applied separately on each _element_ of the list, before being merged back together in the same order to create a new list. This is best shown with an example.
+Broadcasting is a feature in Desmos that allows for operations involving ((lists)) that would normally not work with lists. In short, under certain contexts, operations on Desmos lists will instead be applied separately on each _element_ of the list, before being merged back together in the same order to create a new list. This is best shown with an example.
 
 In an ordinary programming language, an expression like {% statictext '[1,2,3]+1' %} would be an error&mdash; it doesn't usually make sense to add a _list of numbers_ to a _number_. However, Desmos uses broadcasting to apply the addition operation to each element separately. As a result, {% statictext '[1,2,3]+1' %} evaluates to {% statictext '[2,3,4]' %}. Broadcasting works on list-list operations too&mdash; {% statictext '[1,2,3]+[4,5,6]' %} evaluates to {% statictext '[5,7,9]' %}, for example. Here are a few more examples:
 

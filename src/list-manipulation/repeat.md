@@ -14,7 +14,7 @@ crosslinks: []
 
 {% mainPreview %}
 
-Given a list, create a list consisting of it concatenated with itself N times.
+Given a ((list)), create a list consisting of it concatenated with itself N times.
 
 {% statictext
   'repeat(list, N) = [i for i = list, nrepeat = [1 ... N]]', '{ "copyButton": true }'

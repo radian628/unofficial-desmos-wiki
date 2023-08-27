@@ -13,7 +13,7 @@ crosslinks: []
 ---
 
 {% mainPreview %}
-Get the one-based index of the smallest or largest element of a list.
+Get the one-based index of the smallest or largest element of a ((list)).
 
 {% statictext
   'posMin(list) = [1 ... length(list)][list = min(list)][1]', '{ "copyButton": true }'

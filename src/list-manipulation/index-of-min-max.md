@@ -15,11 +15,11 @@ crosslinks: []
 {% mainPreview %}
 Get the one-based index of the smallest or largest element of a ((list)).
 
-{% statictext
+{% mq
   'posMin(list) = [1 ... length(list)][list = min(list)][1]', '{ "copyButton": true }'
   %}
 
-{% statictext
+{% mq
   'posMax(list) = [1 ... length(list)][list = max(list)][1]', '{ "copyButton": true }'
   %}
 

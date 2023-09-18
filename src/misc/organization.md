@@ -22,7 +22,7 @@ Organizing graphs is a lot like organizing code. As such, many of the same tips 
 
 With Desmos's status as a "mathematics" tool, it can be tempting to use single-letter variable names, like you may often see in mathematical equations. However, this hinders your graph's readability considerably, especially if it's large. How are you going to remember what any of these variables mean a week from now, especially if there are 30 of them?
 
-The solution is to use subscripted variables. If you type an underscore (`_`) after a single-letter variable name, you will go into "subscript" mode. You can put any combination of numbers and letters into the subscript. For instance, if you type `t_est` (just to be clear, you have to _type_ this, not copy-and-paste), you will get the variable name {% statictext 't_est' %}. With the ability to use subscripts, you can now write variable names that consist of entire words, allowing them to be descriptive and thus more memorable. To be clear, variables with the same starting letter but different subscripts are different variables (and vice-versa). For instance, {% statictext 't_est' %}, {% statictext 't_123' %}, and {% statictext 'b_est' %} are all different variables.
+The solution is to use subscripted variables. If you type an underscore (`_`) after a single-letter variable name, you will go into "subscript" mode. You can put any combination of numbers and letters into the subscript. For instance, if you type `t_est` (just to be clear, you have to _type_ this, not copy-and-paste), you will get the variable name {% mq 't_est' %}. With the ability to use subscripts, you can now write variable names that consist of entire words, allowing them to be descriptive and thus more memorable. To be clear, variables with the same starting letter but different subscripts are different variables (and vice-versa). For instance, {% mq 't_est' %}, {% mq 't_123' %}, and {% mq 'b_est' %} are all different variables.
 
 Of course, there are downsides to this strategy: These variables take far longer to type out and take up more space. Both issues can be partially remedied with tools like [DesModder](https://desmodder.com). DesModder has Intellisense features that can auto-complete these long variable names, and has plugins like Multiline Expressions and Compact View for allowing you to see more expressions on the screen at once, mitigating the issue of space usage.
 
@@ -46,7 +46,7 @@ One of the most powerful tools you have for organizing Desmos graphs is folders.
 
 ### Build Scripts
 
-In some rare cases, your graph may require things that are unavoidably inconvenient to do in regular Desmos. For instance, you might need to frequently use functions nested with themselves many times (i.e. something like {% statictext 'f(f(f(f(f(f(x))))))' %}). This is annoying to type out, especially if you have to do it with several different functions or find that you have to switch it to a different function.
+In some rare cases, your graph may require things that are unavoidably inconvenient to do in regular Desmos. For instance, you might need to frequently use functions nested with themselves many times (i.e. something like {% mq 'f(f(f(f(f(f(x))))))' %}). This is annoying to type out, especially if you have to do it with several different functions or find that you have to switch it to a different function.
 
 Another case of unavoidable inconvenience is when your graph has to load external resources, such as SVG images or 3D models. These are generally impracticably annoying to import by hand.
 

@@ -16,7 +16,7 @@ crosslinks: []
 
 Given a ((list)), create a list consisting of it concatenated with itself N times.
 
-{% statictext
+{% mq
   'repeat(list, N) = [i for i = list, nrepeat = [1 ... N]]', '{ "copyButton": true }'
   %}
 

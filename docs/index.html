@@ -3,8 +3,44 @@
   <head>
     <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
     <title>Unofficial Desmos Wiki</title>
+        
     
-    <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver(() => {
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e);
+  }
+
+})</script>
+    
   </head>
   <body>
     <header class="header-side-by-side">
@@ -65,6 +101,8 @@
           <a href="/unofficial-desmos-wiki/tools/desmoscript/">Desmoscript</a>
         </li><li>
           <a href="/unofficial-desmos-wiki/animation/animation-basics/">Animation Basics</a>
+        </li><li>
+          <a href="/unofficial-desmos-wiki/3d/">Guide to 3D</a>
         </li>
     </ul>
         </li>

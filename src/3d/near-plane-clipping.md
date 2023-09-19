@@ -203,21 +203,21 @@ z2case2 = zBehind[2] + (zInFront[1] - zBehind[2]) \* t2case2;
 
 getClippedPolygon(
 ZNear, x1, y1, z1, x2, y2, z2, x3, y3, z3
-) = {
-length(xBehind) = 3: polygon((x1/-z1,y1/-z1), (x2/-z2, y2/-z2), (x3/-z3, y3/-z3)),
-length(xBehind) = 2: polygon(
+) = [
+polygon((x1/-z1,y1/-z1), (x2/-z2, y2/-z2), (x3/-z3, y3/-z3)),
+polygon(
 (xBehind[2] / -zBehind[2], yBehind[2] / -zBehind[2]),
 (xBehind[1] / -zBehind[1], yBehind[1] / -zBehind[1]),
 (x1case2 / -z1case2, y1case2 / -z1case2),
 (x2case2 / -z2case2, y2case2 / -z2case2)
 ),
-length(xBehind) = 1: polygon(
+polygon(
 (xBehind[1] / -zBehind[1], yBehind[1] / -zBehind[1]),
 (x1case3 / -z1case3, y1case3 / -z1case3),
 (x2case3 / -z2case3, y2case3 / -z2case3)
 ),
-length(xBehind) = 0: polygon()
-};
+polygon()
+][4 - length(xBehind)];
 };
 
 folder "Internals" {
@@ -266,3 +266,5 @@ lines: @{ width: 0 }
 {% enddesmos %}
 
 </div>
+
+Note: you should probably use a piecewise for {%mq 'getClippedPolygon' %}. I'm only indexing a list to choose the proper polygon due to a bug with Text Mode and/or 11ty-desmos.

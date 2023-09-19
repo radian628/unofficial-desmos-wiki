@@ -20,7 +20,7 @@ Piecewises can be used to add multiple "branches" to a Desmos expression, choosi
 
 ## Left-to-right Evaluation
 
-Piecewises are evaluated left-to-right. That is, they will try the leftmost condition first, then the next one, then the next one, then the next one, et cetera. That means that if you have more than one true condition in a piecewise, only the first one will run.
+Piecewises are evaluated left-to-right. That is, they will try the leftmost condition first, then the next one, then the next one, then the next one, et cetera. That means that if you have more than one true condition in a piecewise, only the first one will be chosen.
 
 {% mq '{1=2: 2, 5=5: 3, 10=10: 4}' %}
 
@@ -80,3 +80,22 @@ Alternatively, you can define your own custom boolean type where (for example) 0
 #### NOT
 
 {% mq 'not(p) = 1 - p' %}
+
+## Use with Actions
+
+Actions can be placed within piecewises to cause them to run conditionally. For instance, try using the following piecewise action, which will increment {% mq 'a' %} until it reaches 3.
+
+{% desmos %}
+a = 0;
+{ a < 3: a -> a + 1 }
+{% enddesmos %}
+
+Multiple actions can be encased in a piecewise, but take care to surround them with parentheses. These two actions mean different things:
+
+In this first one, {% mq 'b -> 1' %} is the fallback condition that runs if the condition is false.
+
+{% mq '{ a = 1: a -> 0, b -> 1 }' %}
+
+In this second one, both actions run when {%mq 'a=1' %}, and nothing runs if that's false.
+
+{% mq '{ a = 1: (a -> 0, b -> 1) }' %}

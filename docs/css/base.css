@@ -139,3 +139,6 @@ button {
   background-color: var(--button);
   cursor: pointer;
 }
+img {
+  max-width: 100%;
+}

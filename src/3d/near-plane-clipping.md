@@ -202,8 +202,11 @@ y2case2 = yBehind[2] + (yInFront[1] - yBehind[2]) \* t2case2;
 z2case2 = zBehind[2] + (zInFront[1] - zBehind[2]) \* t2case2;
 
 getClippedPolygon(
+
 ZNear, x1, y1, z1, x2, y2, z2, x3, y3, z3
+
 ) = {
+
 length(xBehind) = 3: polygon((x1/-z1,y1/-z1), (x2/-z2, y2/-z2), (x3/-z3, y3/-z3)),
 
 length(xBehind) = 2: polygon(
@@ -220,7 +223,9 @@ length(xBehind) = 1: polygon(
 ),
 
 length(xBehind) = 0: polygon()
+
 };
+
 };
 
 folder "Internals" {

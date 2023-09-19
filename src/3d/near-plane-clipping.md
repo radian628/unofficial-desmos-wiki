@@ -153,7 +153,7 @@ polygon((5,5),(-5,-5),(-5,5),(5,-5));
 
 ## The End Result
 
-Here is a full implementation of near plane clipping as described above:
+Here is a full implementation of near plane clipping as described above. **Note that the clipping has been exaggerated here for effect&mdash; in your graph it should probably be a lot more subtle (consider a smaller cutoff, maybe 0.1 or 0.05)**:
 
 <div class="big-desmos">
 {% desmos %}
@@ -162,7 +162,7 @@ settings @{
 viewport: @{ xmin: -2, ymin: -2, xmax: 2, ymax: 2 },
 };
 
-NearClippingPlaneZ = -0.25;
+NearClippingPlaneZ = -1 @{ slider: @{ min: -2, max: -0.01 }};
 CameraX = 0;
 CameraY = 0;
 CameraZ = 0 @{ slider: @{ playing: true, min: -8, max: -3 }};

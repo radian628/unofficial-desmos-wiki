@@ -155,6 +155,7 @@ polygon((5,5),(-5,-5),(-5,5),(5,-5));
 
 Here is a full implementation of near plane clipping as described above:
 
+<div class="big-desmos">
 {% desmos %}
 
 settings @{
@@ -266,3 +267,5 @@ lines: @{ width: 0 }
 } @{ collapsed: true };
 
 {% enddesmos %}
+
+</div>

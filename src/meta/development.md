@@ -11,6 +11,10 @@ layout: base.liquid
 crosslinks: []
 ---
 
+## Contribution Philosophy
+
+This site doesn't have very high standards. We'll basically take anything you throw at us, whether that be articles, article ideas, complaints about articles, et cetera. Don't feel the need to ask for permission or dismiss your own ability to write for this wiki. As long as you can imagine someone using your article to help make a Desmos graph or some form of tooling for Desmos, it's 100% welcome here. And if you're not sure, open an [issue](https://github.com/radian628/unofficial-desmos-wiki/issues) here. Even unfinished articles or article ideas are completely fine.
+
 ## How to Contribute
 
 This is a guide for how to contribute to the wiki. It's geared toward people with little programming experience, if any. If you're already an experienced programmer and have NodeJS installed, all you really need to know is that:

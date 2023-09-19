@@ -71,7 +71,7 @@ Alternatively, you can define your own custom boolean type where (for example) 0
 
 #### AND
 
-{% mq 'and(p, q) = pq' %}
+{% mq 'and(p, q) = p*q' %}
 
 #### OR
 

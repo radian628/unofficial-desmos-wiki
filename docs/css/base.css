@@ -38,7 +38,7 @@ header {
 }
 main {
   margin: auto;
-  width: calc(min(50em, 90%));
+  width: calc(min(60em, 90%));
 }
 main h1 {
   margin-bottom: 0;
@@ -51,10 +51,10 @@ h2 {
 .desmos-container,
 .eleventy-desmos-dcg-container {
   width: 100%;
-  height: 400px;
+  height: 60vh;
 }
 .big-desmos .eleventy-desmos-dcg-container {
-  height: 800px;
+  height: 95vh;
 }
 .breadcrumbs ul {
   list-style: none;

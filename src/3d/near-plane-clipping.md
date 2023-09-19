@@ -8,7 +8,7 @@ tags:
   - 3d
   - guide
 layout: base.liquid
-crosslinks: []
+crosslinks: ["Near Plane Clipping", "Near Plane"]
 ---
 
 If you've ever messed around with 3D rendering in Desmos, you almost certainly will have encountered this issue:

@@ -3,7 +3,7 @@ title: Repeat List N Times
 eleventyNavigation:
   title: Repeat List N Times
   parent: Main
-  key: Update a Single List Item
+  key: Repeat List N Times
 tags:
   - list-manipulation
   - tip

@@ -36,7 +36,9 @@ module.exports = function (eleventyConfig) {
         if (!mainPreview) return "";
         return `<h2><a href="${eleventyConfig.getFilter("url")(page.url)}">${
           page.data.title
-        }</a></h2>\n${await this.liquid.parseAndRender(mainPreview, this)}`;
+        }</a></h2>\n${(
+          await this.liquid.parseAndRender(mainPreview, this)
+        ).replace(/\(\((.*?)\)\)/, "$1")}`;
       })
     );
   });
@@ -103,122 +105,124 @@ module.exports = function (eleventyConfig) {
       return generateHeaderNav(headerTree);
     }
   );
-  eleventyConfig.addPairedAsyncShortcode(
-    "contentTransform",
-    async function (content, otherPages, thisPageUrl) {
-      const warn = (msg) => console.warn(`⚠️  ${thisPageUrl}: ${msg}`);
 
-      if (path.extname(this.page.inputPath) === ".md") {
-        const env = this?.ctx?.environments;
-        if (!this.ctx.environments.pagination) {
-          if (!env?.eleventyNavigation) warn("Missing eleventyNavigation");
-          if (!env?.tags) warn("Missing tags (use an empty list for no tags)");
-          if (!env?.crosslinks)
-            warn("Missing crosslinks (use an empty list for no crosslinks)");
-        }
-        if (!env?.title) warn("Missing title");
-        if (!env?.layout)
-          warn("Missing layout (use an empty list for no layout)");
+  async function contentTransform(content, otherPages, thisPageUrl) {
+    const warn = (msg) => console.warn(`⚠️  ${thisPageUrl}: ${msg}`);
+
+    if (path.extname(this.page.inputPath) === ".md" && this.ctx) {
+      const env = this?.ctx?.environments;
+      if (!this.ctx.environments.pagination) {
+        if (!env?.eleventyNavigation) warn("Missing eleventyNavigation");
+        if (!env?.tags) warn("Missing tags (use an empty list for no tags)");
+        if (!env?.crosslinks)
+          warn("Missing crosslinks (use an empty list for no crosslinks)");
       }
+      if (!env?.title) warn("Missing title");
+      if (!env?.layout)
+        warn("Missing layout (use an empty list for no layout)");
+    }
 
-      const crosslinkRegexp = (crosslink) =>
-        new RegExp(`(\\W)${crosslink}(\\W)`, "i");
+    const crosslinkRegexp = (crosslink) =>
+      new RegExp(`(\\W)${crosslink}(\\W)`, "i");
 
-      const crosslinkList = new Set();
+    const crosslinkList = new Set();
 
-      for (const [phraseStr, link] of Object.entries(externalCrosslinks)) {
-        crosslinkList.add({
-          phrase: crosslinkRegexp(`\\(\\((${phraseStr})\\)\\)`),
-          link,
-        });
-      }
+    for (const [phraseStr, link] of Object.entries(externalCrosslinks)) {
+      crosslinkList.add({
+        phrase: crosslinkRegexp(`\\(\\((${phraseStr})\\)\\)`),
+        link,
+      });
+    }
 
-      for (const op of otherPages) {
-        if (op.url === thisPageUrl) continue;
+    for (const op of otherPages) {
+      if (op.url === thisPageUrl) continue;
 
-        const crosslinks = op.data.crosslinks;
-        if (crosslinks) {
-          for (const crosslink of crosslinks) {
-            crosslinkList.add({
-              phrase: crosslinkRegexp(`(${crosslink})`),
-              link: op.url,
-            });
-          }
+      const crosslinks = op.data.crosslinks;
+      if (crosslinks) {
+        for (const crosslink of crosslinks) {
+          crosslinkList.add({
+            phrase: crosslinkRegexp(`(${crosslink})`),
+            link: op.url,
+          });
         }
       }
+    }
 
-      const tree = parse5.parseFragment(content);
+    const tree = parse5.parseFragment(content);
 
-      function containsLinks(node) {
-        return node.childNodes.some(containsLinks) || node.tagName === "a";
+    function containsLinks(node) {
+      return node.childNodes.some(containsLinks) || node.tagName === "a";
+    }
+
+    function crosslinkify(node) {
+      if (node.childNodes) {
+        for (const child of node.childNodes) crosslinkify(child);
       }
 
-      function crosslinkify(node) {
-        if (node.childNodes) {
-          for (const child of node.childNodes) crosslinkify(child);
-        }
+      switch (node.tagName) {
+        case "h1":
+        case "h2":
+        case "h3":
+        case "h4":
+        case "h5":
+        case "h6":
+          const txt = innerText(node);
+          const slug = slugify(txt);
+          node.attrs.push({
+            name: "id",
+            value: slug,
+          });
+          node.childNodes.push(
+            parse5.parseFragment(
+              `<a class="link-to-header" href="#${slug}"> #</a>`
+            ).childNodes[0]
+          );
+          break;
+        case "li":
+        case "p":
+          node.childNodes = node.childNodes
+            .map((cn) => {
+              if (cn.nodeName === "#text") {
+                let text = cn.value;
 
-        switch (node.tagName) {
-          case "h1":
-          case "h2":
-          case "h3":
-          case "h4":
-          case "h5":
-          case "h6":
-            const txt = innerText(node);
-            const slug = slugify(txt);
-            node.attrs.push({
-              name: "id",
-              value: slug,
-            });
-            node.childNodes.push(
-              parse5.parseFragment(
-                `<a class="link-to-header" href="#${slug}"> #</a>`
-              ).childNodes[0]
-            );
-            break;
-          case "li":
-          case "p":
-            node.childNodes = node.childNodes
-              .map((cn) => {
-                if (cn.nodeName === "#text") {
-                  let text = cn.value;
+                for (const crosslink of crosslinkList) {
+                  const newText = text.replace(
+                    crosslink.phrase,
+                    `$1<a href="${eleventyConfig.getFilter("url")(
+                      crosslink.link
+                    )}">$2</a>$3`
+                  );
 
-                  for (const crosslink of crosslinkList) {
-                    const newText = text.replace(
-                      crosslink.phrase,
-                      `$1<a href="${eleventyConfig.getFilter("url")(
-                        crosslink.link
-                      )}">$2</a>$3`
-                    );
-
-                    if (newText !== text) {
-                      for (const crosslink2 of crosslinkList) {
-                        if (crosslink2.link === crosslink.link)
-                          crosslinkList.delete(crosslink2);
-                      }
-
-                      text = newText;
+                  if (newText !== text) {
+                    for (const crosslink2 of crosslinkList) {
+                      if (crosslink2.link === crosslink.link)
+                        crosslinkList.delete(crosslink2);
                     }
+
+                    text = newText;
                   }
-
-                  const fragment = parse5.parseFragment(text);
-
-                  return fragment.childNodes;
                 }
 
-                return cn;
-              })
-              .flat(1);
-            break;
-        }
+                const fragment = parse5.parseFragment(text);
+
+                return fragment.childNodes;
+              }
+
+              return cn;
+            })
+            .flat(1);
+          break;
       }
-
-      crosslinkify(tree);
-
-      return parse5.serialize(tree);
     }
-  );
+
+    crosslinkify(tree);
+
+    return parse5.serialize(tree);
+  }
+
+  eleventyConfig.addPairedAsyncShortcode("contentTransform", contentTransform);
+
+  eleventyConfig.addFilter("contentTransform", contentTransform);
 
   function handlePrefixedNav(nav) {
     return `<ul>

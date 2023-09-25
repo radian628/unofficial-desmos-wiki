@@ -39,6 +39,7 @@ ymin: 0,
 ymax: 12,
 },
 squareAxes: false,
+lockViewport: true
 };
 
 y = [0,2,4,5,7,9,11,11.999999][0.5 * x + 5];

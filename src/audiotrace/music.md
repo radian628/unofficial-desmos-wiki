@@ -25,6 +25,7 @@ If you already know a bit of music theory, these facts should get you up and run
 - Audiotrace is controlled by the graphpaper bounds. That is, if you shift the graphpaper bounds, all the frequencies of the audio will change. For that reason, you should probably lock the viewport if you're working with audiotrace.
 - The X-axis represents time and the Y-axis represents pitch. Higher y-values represent higher pitches.
 - Static is added to sounds with Y-values below 0.
+- The scale ranges in pitch from E4 to E5. Every 1/12th of the screen in the Y-direction is one semitone.
 
 ## An example
 

@@ -31,12 +31,13 @@ window.addEventListener("load", () => {
   }
 
   for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
-    const observer = new IntersectionObserver(() => {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
       const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
       Calc.setState(JSON.parse(e.dataset.state))
       observer.disconnect()
     });
-    observer.observe(e);
+    observer.observe(e, { threshold: 0.01 });
   }
 
 })</script>
@@ -80,7 +81,7 @@ window.addEventListener("load", () => {
   </div>
 </div>
 <h2 id="All-Tags">All Tags<a class="link-to-header" href="#All-Tags"> #</a></h2>
-<ul><li> <a href="/unofficial-desmos-wiki/tag/all/">all</a></li><li> <a href="/unofficial-desmos-wiki/tag/3d/">3d</a></li><li> <a href="/unofficial-desmos-wiki/tag/guide/">guide</a></li><li> <a href="/unofficial-desmos-wiki/tag/animation/">animation</a></li><li> <a href="/unofficial-desmos-wiki/tag/audiotrace/">audiotrace</a></li><li> <a href="/unofficial-desmos-wiki/tag/music/">music</a></li><li> <a href="/unofficial-desmos-wiki/tag/list-manipulation/">list-manipulation</a></li><li> <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a></li><li> <a href="/unofficial-desmos-wiki/tag/tip/">tip</a></li><li> <a href="/unofficial-desmos-wiki/tag/list-utility-fn/">list-utility-fn</a></li><li> <a href="/unofficial-desmos-wiki/tag/list/">list</a></li><li> <a href="/unofficial-desmos-wiki/tag/meta/">meta</a></li><li> <a href="/unofficial-desmos-wiki/tag/performance/">performance</a></li><li> <a href="/unofficial-desmos-wiki/tag/tool/">tool</a></li></ul>
+<ul><li> <a href="/unofficial-desmos-wiki/tag/all/">all</a></li><li> <a href="/unofficial-desmos-wiki/tag/3d/">3d</a></li><li> <a href="/unofficial-desmos-wiki/tag/guide/">guide</a></li><li> <a href="/unofficial-desmos-wiki/tag/animation/">animation</a></li><li> <a href="/unofficial-desmos-wiki/tag/list-manipulation/">list-manipulation</a></li><li> <a href="/unofficial-desmos-wiki/tag/tip/">tip</a></li><li> <a href="/unofficial-desmos-wiki/tag/list-utility-fn/">list-utility-fn</a></li><li> <a href="/unofficial-desmos-wiki/tag/meta/">meta</a></li><li> <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a></li><li> <a href="/unofficial-desmos-wiki/tag/list/">list</a></li><li> <a href="/unofficial-desmos-wiki/tag/tool/">tool</a></li><li> <a href="/unofficial-desmos-wiki/tag/performance/">performance</a></li><li> <a href="/unofficial-desmos-wiki/tag/audiotrace/">audiotrace</a></li><li> <a href="/unofficial-desmos-wiki/tag/music/">music</a></li></ul>
 <h2 id="All-Pages">All Pages<a class="link-to-header" href="#All-Pages"> #</a></h2>
 <ul>
       <li>

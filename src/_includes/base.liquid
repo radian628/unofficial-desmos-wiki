@@ -61,46 +61,6 @@
       }
 
       setTheme();
-
-      function addDesmosEmbed(calcContainer) {
-        let observer = new IntersectionObserver(() => {
-          let graphstate = JSON.parse(calcContainer.children[0].innerText);
-          let settings = JSON.parse(calcContainer.children[1].innerText);
-          calcContainer.innerHTML = "";
-          let Calc = Desmos.GraphingCalculator(calcContainer, settings);
-          Calc.setState(graphstate);
-        });
-        observer.observe(calcContainer);
-      }
-
-      for (const calcContainer of document.querySelectorAll(".desmos-container")) {
-        addDesmosEmbed(calcContainer);
-        calcContainer.classList.toggle("invisible", false);
-      }
-
-      for (const staticMathContainer of document.querySelectorAll(".static-math-container")) {
-        let shouldHaveCopyButton = staticMathContainer.classList.contains("has-copy-button");
-        const content = staticMathContainer.innerText;
-        staticMathContainer.innerHTML = "";
-        const rootblock = document.createElement("span");
-        rootblock.classList.toggle("dcg-mq-root-block", true);
-        staticMathContainer.appendChild(rootblock);
-        const staticMath = Desmos.MathQuill.StaticMath(rootblock);
-        staticMath.latex(content);
-
-        if (shouldHaveCopyButton) {
-          const copyButton = document.createElement("button");
-          copyButton.innerText = "Copy to Clipboard"
-          staticMathContainer.appendChild(copyButton);
-          copyButton.onclick = () => {
-            navigator.clipboard.writeText(content);
-            copyButton.innerText = "Copied!";
-            setTimeout(() => {
-              copyButton.innerHTML = "Copy to Clipboard";
-            }, 750);
-          }
-        }
-      }
     </script>
   </body>
 </html>

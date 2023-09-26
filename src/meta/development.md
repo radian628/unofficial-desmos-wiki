@@ -13,7 +13,7 @@ crosslinks: []
 
 ## Contribution Philosophy
 
-This site doesn't have very high standards. We'll basically take anything you throw at us, whether that be articles, article ideas, complaints about articles, et cetera. Don't feel the need to ask for permission or dismiss your own ability to write for this wiki. As long as you can imagine someone using your article to help make a Desmos graph or some form of tooling for Desmos, it's 100% welcome here. And if you're not sure, open an [issue](https://github.com/radian628/unofficial-desmos-wiki/issues) here. Even unfinished articles or article ideas are completely fine.
+This site doesn't have very high standards. We'll basically take anything you throw at us, whether that be articles, article ideas, complaints about articles, et cetera. Don't feel the need to ask for permission or dismiss your own ability to write for this wiki. As long as you can imagine someone using your article to help make a Desmos graph or some form of tooling for Desmos, it's 100% welcome here. And if you're not sure, open an [issue](https://github.com/radian628/unofficial-desmos-wiki/issues) here. Even unfinished articles or article ideas are completely fine. [This editing philosophy was inspired by Wikipedia's "Be Bold" policy on edits.](https://en.wikipedia.org/wiki/Wikipedia:Be_bold)
 
 ## How to Contribute
 
@@ -88,3 +88,19 @@ Any page can define a `crosslinks` frontmatter attribute that denotes a list of 
 #### External Crosslinks
 
 External crosslinks (crosslinks to other sites) are specified in a `crosslinks.json` file in the root directory of this repository. Any phrase surrounded by double parens which corresponds to a key in `crosslinks.json` will be turned into a crosslink, similar to what Wikipedia does with double brackets (double brackets aren't used here because they mess up Markdown syntax highlighting). As an example, `{{ "((" }}list{{ "))" }}` becomes ((list)).
+
+### Tags
+
+This wiki uses tags to organize pages. See the [main page](/) for a list of all the tags in use. You can also create your own tags if you deem it necessary.
+
+Remember that even if an article you make seems ambiguous, don't overthink tagging. We can always change the tags later if necessary.
+
+There's a few tags in use in this site that have some potential to be confused:
+
+#### Explanation
+
+Use this tag for a page that explains some concept in a more theoretical sense. For instance, the broadcasting article falls into this category because it explains how a more general technique works.
+
+#### Guide
+
+Use this tag for a page that explains some concept in a more practical sense&mdash; The [Guide to 3D](../../3d/) article falls into this category because it walks the user through creating a specific graph.

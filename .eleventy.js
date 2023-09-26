@@ -224,6 +224,10 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("contentTransform", contentTransform);
 
+  eleventyConfig.addFilter("keys", (obj) => {
+    return Object.keys(obj);
+  });
+
   function handlePrefixedNav(nav) {
     return `<ul>
       ${nav

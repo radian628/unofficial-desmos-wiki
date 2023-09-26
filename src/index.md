@@ -25,7 +25,7 @@ Here's a small sampling of some of the content on this site.
 <div class="frontpage-panels-h">
   <div class="frontpage-panels-v">
     <div>
-      <h2>List Utility Functions</h2>
+      <h3>List Utility Functions</h3>
       <ul>
         {%- for post in collections["list-utility-fn"] -%}
           <li><a href="{{ post.page.url | url }}">{{ post.data.title }}</a></li>
@@ -35,7 +35,7 @@ Here's a small sampling of some of the content on this site.
   </div>
   <div class="frontpage-panels-v">
     <div>
-      <h2>3D</h2>
+      <h3>3D</h3>
       <ul>
         {%- for post in collections["3d"] -%}
           <li><a href="{{ post.page.url | url }}">{{ post.data.title }}</a></li>
@@ -43,7 +43,7 @@ Here's a small sampling of some of the content on this site.
       </ul>
     </div>
     <div>
-      <h2>Guides</h2>
+      <h3>Guides</h3>
       <ul>
         {%- for post in collections["guide"] -%}
           <li><a href="{{ post.page.url | url }}">{{ post.data.title }}</a></li>
@@ -52,6 +52,14 @@ Here's a small sampling of some of the content on this site.
     </div>
   </div>
 </div>
+
+## All Tags
+
+<ul>
+{%- for key in collections | keys -%}
+  <li> <a href="{{ "/tag/" | append: key[0] | append: "/" | url }}">{{key[0]}}</a></li>
+{%- endfor -%}
+</ul>
 
 ## All Pages
 

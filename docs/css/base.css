@@ -143,6 +143,8 @@ button {
   border-radius: 10px;
   background-color: var(--button);
   cursor: pointer;
+  color: var(--foreground);
+  padding: 5px;
 }
 img {
   max-width: 100%;

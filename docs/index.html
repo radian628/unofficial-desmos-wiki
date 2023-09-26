@@ -3,7 +3,7 @@
   <head>
     <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
     <title>Unofficial Desmos Wiki</title>
-        
+    
     
 <script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
 
@@ -51,19 +51,35 @@ window.addEventListener("load", () => {
       </a>
       <button id="light-dark-toggle"></button>
     </header>
-    <div class="main-content-side-by-side">
-      <nav class="header-nav">
-        <span class="header-nav-title">Unofficial Desmos Wiki</span>
+    
+    <main>
         
-      </nav>
-      <main>
-        <h1>Unofficial Desmos Wiki</h1>
-        <ul class="tags">
-          
-        </ul>
-        
-          <p>Welcome to the Unofficial Desmos Wiki, the collaborative site for sharing knowledge about the <a href="https://www.desmos.com/calculator">Desmos Graphing Calculator</a> and other Desmos tools!</p>
+          <div style=" height: 50px"></div>
+<h2 id="About">About<a class="link-to-header" href="#About"> #</a></h2>
+<div class="big-text">
+<p>Welcome to the Unofficial Desmos Wiki, the collaborative site for sharing knowledge about Desmos Studio PBC's <a href="https://www.desmos.com/calculator">Desmos Graphing Calculator</a> and other Desmos tools!</p>
 <p>Want to add content? <a href="https://github.com/radian628/unofficial-desmos-wiki">Submit a PR!</a> If you're not sure how to write code for this project, check out the <a href="./meta/development/">development guide</a></p>
+<p>Here's a small sampling of some of the content on this site.</p>
+</div>
+<div class="frontpage-panels-h">
+  <div class="frontpage-panels-v">
+    <div>
+      <h2 id="List-Utility-Functions">List Utility Functions<a class="link-to-header" href="#List-Utility-Functions"> #</a></h2>
+      <ul><li><a href="">Update a Single List Item</a></li><li><a href="">Repeat List N Times</a></li><li><a href="">Filter Undefined</a></li><li><a href="">Index of Min/Max</a></li><li><a href="">Reverse a List</a></li><li><a href="">Does a List Contain some Value?</a></li><li><a href="">Index of Element in List</a></li><li><a href="">Set Operations Between Lists</a></li></ul>
+    </div>
+  </div>
+  <div class="frontpage-panels-v">
+    <div>
+      <h2 id="3D">3D<a class="link-to-header" href="#3D"> #</a></h2>
+      <ul><li><a href="">Guide to 3D</a></li><li><a href="">Near Plane Clipping</a></li><li><a href="">Backface Culling</a></li></ul>
+    </div>
+    <div>
+      <h2 id="Guides">Guides<a class="link-to-header" href="#Guides"> #</a></h2>
+      <ul><li><a href="">Organizing Graphs</a></li><li><a href="">Guide to 3D</a></li><li><a href="">Near Plane Clipping</a></li><li><a href="">Backface Culling</a></li><li><a href="">Introduction To Per Pixel Rendering</a></li></ul>
+    </div>
+  </div>
+</div>
+<h2 id="All-Pages">All Pages<a class="link-to-header" href="#All-Pages"> #</a></h2>
 <ul>
       <li>
           <a href="/unofficial-desmos-wiki/">Main</a><ul>
@@ -122,13 +138,12 @@ window.addEventListener("load", () => {
 
         
       </main>
-    </div>
     <script>
       const ldt = document.getElementById("light-dark-toggle");
 
       let colorScheme = localStorage.getItem("color-scheme");
 
-      if (!colorScheme) {
+      if (! colorScheme) {
         localStorage.setItem("color-scheme", "light");
         let colorScheme = "light";
       }
@@ -138,56 +153,22 @@ window.addEventListener("load", () => {
 
         document.body.classList.toggle("dark", colorScheme === "dark");
 
-        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+        ldt.innerText = colorScheme === "light"
+          ? "☀️"
+          : "🌙"
       }
-      
+
       ldt.onclick = () => {
-        localStorage.setItem("color-scheme", 
-          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        localStorage.setItem(
+          "color-scheme",
+          localStorage.getItem("color-scheme") === "light"
+            ? "dark"
+            : "light"
+        )
         setTheme();
-      }
-
-      setTheme();
-
-      function addDesmosEmbed(calcContainer) {
-        let observer = new IntersectionObserver(() => {
-          let graphstate = JSON.parse(calcContainer.children[0].innerText);
-          let settings = JSON.parse(calcContainer.children[1].innerText);
-          calcContainer.innerHTML = "";
-          let Calc = Desmos.GraphingCalculator(calcContainer, settings);
-          Calc.setState(graphstate);
-        });
-        observer.observe(calcContainer);
-      }
-
-      for (const calcContainer of document.querySelectorAll(".desmos-container")) {
-        addDesmosEmbed(calcContainer);
-        calcContainer.classList.toggle("invisible", false);
-      }
-
-      for (const staticMathContainer of document.querySelectorAll(".static-math-container")) {
-        let shouldHaveCopyButton = staticMathContainer.classList.contains("has-copy-button");
-        const content = staticMathContainer.innerText;
-        staticMathContainer.innerHTML = "";
-        const rootblock = document.createElement("span");
-        rootblock.classList.toggle("dcg-mq-root-block", true);
-        staticMathContainer.appendChild(rootblock);
-        const staticMath = Desmos.MathQuill.StaticMath(rootblock);
-        staticMath.latex(content);
-
-        if (shouldHaveCopyButton) {
-          const copyButton = document.createElement("button");
-          copyButton.innerText = "Copy to Clipboard"
-          staticMathContainer.appendChild(copyButton);
-          copyButton.onclick = () => {
-            navigator.clipboard.writeText(content);
-            copyButton.innerText = "Copied!";
-            setTimeout(() => {
-              copyButton.innerHTML = "Copy to Clipboard";
-            }, 750);
-          }
-        }
-      }
+      } 
+      
+setTheme();
     </script>
   </body>
 </html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ '/css/base.css' | url }}" />
+    <title>{{ title }}</title>
+    {% if description %}
+      <meta name="Description" content="{{ description }}">
+    {% endif %}
+    {% desmosSupport "dcb31709b452b1cf9dc26972add0fda6" %}
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="{{ '/' | url }}">
+        <h1>Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </h1>
+      </a>
+      <button id="light-dark-toggle"></button>
+    </header>
+    
+    <main>
+        {% contentTransform, collections.all, page.url %}
+          {{content}}
+        {% endcontentTransform %}
+      </main>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (! colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light"
+          ? "☀️"
+          : "🌙"
+      }
+
+      ldt.onclick = () => {
+        localStorage.setItem(
+          "color-scheme",
+          localStorage.getItem("color-scheme") === "light"
+            ? "dark"
+            : "light"
+        )
+        setTheme();
+      } 
+      
+setTheme();
+    </script>
+  </body>
+</html>

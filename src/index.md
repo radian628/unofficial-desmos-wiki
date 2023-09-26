@@ -28,7 +28,7 @@ Here's a small sampling of some of the content on this site.
       <h2>List Utility Functions</h2>
       <ul>
         {%- for post in collections["list-utility-fn"] -%}
-          <li><a href="{{ post.data.url }}">{{ post.data.title }}</a></li>
+          <li><a href="{{ post.page.url | url }}">{{ post.data.title }}</a></li>
         {%- endfor -%}
       </ul>
     </div>
@@ -38,7 +38,7 @@ Here's a small sampling of some of the content on this site.
       <h2>3D</h2>
       <ul>
         {%- for post in collections["3d"] -%}
-          <li><a href="{{ post.data.url }}">{{ post.data.title }}</a></li>
+          <li><a href="{{ post.page.url | url }}">{{ post.data.title }}</a></li>
         {%- endfor -%}
       </ul>
     </div>
@@ -46,7 +46,7 @@ Here's a small sampling of some of the content on this site.
       <h2>Guides</h2>
       <ul>
         {%- for post in collections["guide"] -%}
-          <li><a href="{{ post.data.url }}">{{ post.data.title }}</a></li>
+          <li><a href="{{ post.page.url | url }}">{{ post.data.title }}</a></li>
         {%- endfor -%}
       </ul>
     </div>

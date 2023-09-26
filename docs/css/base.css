@@ -107,6 +107,7 @@ h6:hover .link-to-header {
   opacity: 0.7;
 }
 .header-nav {
+  margin-left: 20px;
   font-size: 20px;
   margin-right: 10px;
   position: sticky;

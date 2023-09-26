@@ -24,7 +24,7 @@ Piecewises are evaluated left-to-right. That is, they will try the leftmost cond
 
 {% mq '{1=2: 2, 5=5: 3, 10=10: 4}' %}
 
-This example, for instance, evaluates to 3, even though the {% latex '10=10: 4' %} branch would suggest that it could evaluate to 5. This is because the {% latex '5=5: 3' %} branch is the leftmost true branch.
+This example, for instance, evaluates to 3, even though the {% latex '10=10: 4' %} branch would suggest that it could evaluate to 4. This is because the {% latex '5=5: 3' %} branch is the leftmost true branch.
 
 ## Default Values and Domain Restrictions
 

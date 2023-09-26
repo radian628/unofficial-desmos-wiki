@@ -90,7 +90,7 @@ a = 0;
 { a < 3: a -> a + 1 }
 {% enddesmos %}
 
-Multiple actions can be encased in a piecewise, but take care to surround them with parentheses. These two actions mean different things:
+Multiple actions can be encased in a piecewise, but take care to surround them with parentheses where necessary. These two actions mean different things:
 
 In this first one, {% mq 'b -> 1' %} is the fallback condition that runs if the condition is false.
 

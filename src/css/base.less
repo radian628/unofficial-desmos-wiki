@@ -15,6 +15,14 @@ body.dark {
   --button: rgba(255, 255, 255, 0.1);
   --link: #6cbadd;
   --link-visited: #b39ad5;
+
+  .invert-if-dark img {
+    filter: invert(100%);
+  }
+
+  .difference-blend-if-dark img {
+    mix-blend-mode: difference;
+  }
 }
 a {
   color: var(--link);

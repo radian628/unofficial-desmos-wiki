@@ -93,7 +93,11 @@ The Winding Order Method is nice because it doesn't require face normals, which 
 
 This method relies on the assumption that all polygons in the mesh have the same _winding order_ when rendered. The "winding order" of a polygon describes whether its vertices are given in clockwise or counterclockwise order:
 
+<div class="invert-if-dark difference-blend-if-dark">
+
 ![see text above](../../img/3d/winding-order.png)
+
+</div>
 
 Importantly, the winding order of a polygon changes as soon as you flip it over. You can easily demonstrate this by taking a sheet of paper, drawing a bunch of arrows in a circle (or triangle like above) in a thick marker, and then flipping it over. You'll see that the arrows change direction&mdash; clockwise to counterclockwise, or vice-versa. What this means is that you can define the "front face" of a triangle by intentionally choosing its winding order when it's projected to 2D. For instance, you could arbitrarily say that any counterclockwise polygon is considered to be facing toward the camera. Therefore, if you were to see that a face is clockwise, you know that it's a backface and therefore must be culled.
 

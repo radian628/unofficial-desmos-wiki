@@ -9,7 +9,7 @@
 }
 body.dark {
   --border: #5e646d;
-  --background: #282C34;
+  --background: #282c34;
   --foreground: #dfe3e9;
   color: #dfe3e9;
   --button: rgba(255, 255, 255, 0.1);

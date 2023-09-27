@@ -80,7 +80,11 @@ How does it do this? There are four important cases here:
 3. Two of the vertices are in front of the near clipping plane and the third is behind it, creating a new triangle.
 4. All of the vertices are in front of the near clipping plane, making the entire triangle invisible.
 
+<div class="invert-if-dark difference-blend-if-dark">
+
 ![See the text above.](../../img/3d/near-plane-clipping-1.png)
+
+</div>
 
 ### Which vertices are in front of the near clipping plane?
 
@@ -108,7 +112,11 @@ Let's start with case 3, since triangles tend to be easier to work with than qua
 
   - Altogether I'll call this the "far vertex"
 
-  ![See text above](../../img/3d/near-plane-clipping-case-3.png)
+<div class="invert-if-dark difference-blend-if-dark">
+
+![See text above](../../img/3d/near-plane-clipping-case-3.png)
+
+</div>
 
 With all of this said, the two new vertices are defined as follows:
 
@@ -141,7 +149,11 @@ And now that we have these two points, we can connect them together with the _fa
 
 The process for Case 2 is virtually identical. I'll let you derive it on your own, with the help of this picture.
 
+<div class="invert-if-dark difference-blend-if-dark">
+
 ![See text above](../../img/3d/near-plane-clipping-case-2.png)
+
+</div>
 
 Just make sure to render the points of the quadrilerateral in the _correct order_, otherwise the quadrilateral will look like this, which you _don't_ want:
 

@@ -297,3 +297,7 @@ Labels are text attached to coordinate points.
 ## Geo Calc
 
 Short for "Geometry Calculator", referring to Desmos's [Geometry Calculator](https://www.desmos.com/geometry)
+
+## Regression Bug
+
+See [this article on Reddit](https://www.reddit.com/r/desmos/wiki/regression_bug/) for info on the infamous "Regression Bug" that caused Desmos to become accidentally Turing-complete before the implementation of actions.

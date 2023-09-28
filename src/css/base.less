@@ -2,6 +2,7 @@
   font-family: sans-serif;
   --border: #888888;
   --background: white;
+  --background-2: #eeeeee;
   --foreground: black;
   --button: #eeeeee;
   --link: #5d5dff;
@@ -10,6 +11,7 @@
 body.dark {
   --border: #5e646d;
   --background: #282c34;
+  --background-2: #1e1f23;
   --foreground: #dfe3e9;
   color: #dfe3e9;
   --button: rgba(255, 255, 255, 0.1);
@@ -44,7 +46,8 @@ header {
   background: #46a356;
   align-items: center;
 }
-header a {
+header h1,
+header .site-name {
   color: white !important;
   text-decoration: none;
 }
@@ -192,4 +195,25 @@ body.dark .frontpage-panels-v > * {
 }
 .big-text {
   font-size: 125%;
+}
+.site-name {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 20px 0px;
+}
+
+// search
+.pagefind-ui__results-area {
+  position: absolute;
+  background-color: var(--background-2);
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  padding: 10px;
+  left: 20vw;
+  z-index: 999;
+  margin-right: 20px;
+
+  .pagefind-ui__result-title {
+    font-size: 125%;
+  }
 }

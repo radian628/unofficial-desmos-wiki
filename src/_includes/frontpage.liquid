@@ -7,6 +7,7 @@
       <meta name="Description" content="{{ description }}">
     {% endif %}
     {% desmosSupport "dcb31709b452b1cf9dc26972add0fda6" %}
+    <script src="{{ '/pagefind/pagefind-ui.js' | url }}"></script>
   </head>
   <body>
     <header class="header-side-by-side">
@@ -15,6 +16,10 @@
           <span class="unofficial">(Unofficial)</span>
         </h1>
       </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
       <button id="light-dark-toggle"></button>
     </header>
     

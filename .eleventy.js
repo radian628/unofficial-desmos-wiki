@@ -266,6 +266,25 @@ module.exports = function (eleventyConfig) {
     },
   });
 
+  eleventyConfig.on(
+    "eleventy.after",
+    async ({ dir, results, runMode, outputMode }) => {
+      const pagefind = await import("pagefind");
+
+      const { index } = await pagefind.createIndex({
+        excludeSelectors: ["img"],
+      });
+
+      await index.addDirectory({
+        path: "docs",
+      });
+
+      await index.writeFiles({
+        outputPath: "docs/pagefind",
+      });
+    }
+  );
+
   return {
     dir: {
       input: "src",

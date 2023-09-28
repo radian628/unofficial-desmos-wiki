@@ -7,14 +7,19 @@
       <meta name="Description" content="{{ description }}">
     {% endif %}    
     {% desmosSupport "dcb31709b452b1cf9dc26972add0fda6" %}
+    <script src="{{ '/pagefind/pagefind-ui.js' | url }}"></script>
   </head>
   <body>
     <header class="header-side-by-side">
       <a href="{{ '/' | url }}">
-        <h1>Desmos Wiki
+        <div class="site-name">Desmos Wiki
           <span class="unofficial">(Unofficial)</span>
-        </h1>
+        </div>
       </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
       <button id="light-dark-toggle"></button>
     </header>
     <div class="main-content-side-by-side">
@@ -23,7 +28,7 @@
         {% generateHeaderNav content %}
       </nav>
       <main>
-        <h1>{{ title }}</h1>
+        <h1 data-weight="{{ data.searchWeight | default: 0 }}">{{ title }}</h1>
         <ul class="tags">
           {% for tag in tags %}
             <li class="tag">

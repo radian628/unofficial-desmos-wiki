@@ -202,3 +202,7 @@ A "transformation" is generally a combination of the three following operations:
 - Translation (moving something around)
 - Rotation (rotating something about a point, or axis in 3D)
 - Scale (making something bigger or smaller)
+
+## List Filter
+
+A specific feature in Desmos that allows you to filter values out of lists. For instance, if {% mq 'L=[1,2,3,4,5]' %}, then {% mq 'L[L>3]' %} is {% mq '[4,5]' %} because we only include the elements which are greater than 3. Note that you can also do things like {% mq 'A[B > 3]' %} where you're filtering one list using the criteria of another.

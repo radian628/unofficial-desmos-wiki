@@ -148,11 +148,8 @@ h6:hover .link-to-header {
   margin-left: 20px;
   font-size: 20px;
   margin-right: 10px;
-  position: sticky;
   top: 20px;
   align-self: flex-start;
-  max-height: 100vh;
-  overflow: scroll;
 }
 .header-nav li {
   text-indent: -1em;
@@ -168,8 +165,25 @@ h6:hover .link-to-header {
   padding-inline-start: 10px;
   font-size: 85%;
 }
+
+@media screen and (min-width: 900px) {
+  .main-content-side-by-side {
+    display: flex;
+  }
+  .header-nav {
+    position: sticky;
+    max-height: 100vh;
+    overflow: scroll;
+  }
+
+  .float-right .eleventy-desmos-dcg-container {
+    float: right;
+    display: inline;
+    margin: 0 !important;
+  }
+}
+
 .main-content-side-by-side {
-  display: flex;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -215,12 +229,6 @@ body.dark .frontpage-panels-v > * {
   font-size: 32px;
   font-weight: bold;
   margin: 20px 0px;
-}
-
-.float-right .eleventy-desmos-dcg-container {
-  float: right;
-  display: inline;
-  margin: 0 !important;
 }
 
 h2 {

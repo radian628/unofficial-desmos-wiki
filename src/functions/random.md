@@ -13,6 +13,14 @@ crosslinks: ["random()"]
 
 The {% mq 'random()' %} function in Desmos has many overloads (possible sets of parameters) that might make it confusing to use. These are as follows:
 
+## Before we Begin: What is a Random Seed?
+
+For the most part, randomness on a computer is not _truly_ "random". Instead, these "random" functions tend to take in some sort of specific input, scramble it to the point of being unrecognizable, and then output the "scrambled" value as output. Crucially, if you have the same input, you will always get the same output. If the input `3` is scrambled to `0.3194380234`, then using `3` as the input to the random function will _always_ give you `0.3194380234`. This input value `3` is referred to as the _seed_, because you're using it as a "seed" to "grow" the output random value. Just like the same seed produces the same kind of tree, the same seed in a random number generator should produce the same output.
+
+### What are seeds for?
+
+Seeds are nice if you want consistent, repeatable output.
+
 ## random()
 
 ### Explanation

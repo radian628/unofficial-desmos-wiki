@@ -172,7 +172,7 @@ The action in a graph that can be run repeatedly in a loop. The following graph 
 
 ## State / Graph State / State Object
 
-The above terms can refer to many things, but in many conversations they refer to a specific data structure that can be used to unambiguously and completely define a Desmos graph. Desmos uses graph state internally to store Desmos graphs. You can also use the Desmos API function `Calc.getState()` to get the state of the current graph and `Calc.setState(state)` to modify the state (where `state` is the state object).
+The above terms can refer to many things, but in many conversations they refer to a specific data structure that can be used to unambiguously and completely define a Desmos graph. Desmos uses graph state internally to store Desmos graphs. You can also use the ((Desmos API)) function `Calc.getState()` to get the state of the current graph and `Calc.setState(state)` to modify the state (where `state` is the state object).
 
 ## Model / Item Model
 

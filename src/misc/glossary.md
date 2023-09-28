@@ -126,13 +126,21 @@ x^2 + y^2 < 4;
 
 {% enddesmos %}
 
+## Implicit
+
+Short for "Implicit Inequality". This can also be used to mean "Implicit Equation"
+
 ## Note
 
-A "note" is an expression containing regular text, generally used to explain how a graph works.
+<div class="tiny-desmos float-right">
 
 {% desmos %}
 "This is a note!"
 {% enddesmos %}
+
+</div>
+
+A "note" is an expression containing regular text, generally used to explain how a graph works.
 
 ## Piecewise
 
@@ -146,7 +154,7 @@ An ((action)) is an expression using the {% latex '\\to' %} operator. It's used 
 
 ## Ticker
 
-The action in a graph that can be run repeatedly in a loop. The following graph has a ticker which repeatedly increments {% mq 'a' %}
+<div class="tiny-desmos float-right">
 
 {%desmos '{ "graphpaper": false }' %}
 
@@ -158,6 +166,10 @@ a = 0;
 
 {% enddesmos %}
 
+</div>
+
+The action in a graph that can be run repeatedly in a loop. The following graph has a ticker which repeatedly increments {% mq 'a' %}
+
 ## State / Graph State / State Object
 
 The above terms can refer to many things, but in many conversations they refer to a specific data structure that can be used to unambiguously and completely define a Desmos graph. Desmos uses graph state internally to store Desmos graphs. You can also use the Desmos API function `Calc.getState()` to get the state of the current graph and `Calc.setState(state)` to modify the state (where `state` is the state object).
@@ -166,26 +178,34 @@ The above terms can refer to many things, but in many conversations they refer t
 
 A "model" is the internal representation of an expression _while the graph is running_. It contains both all the data necessary to store the item as graph state, but also contains information that's only useful while the graph is running and loaded in, such as a reference to the UI element for the expression, the actual value the expression evaluates to, et cetera.
 
-## Graphpaper
+## Graphpaper / Viewport
 
-The part of the screen that shows the stuff that's actually being graphed. This is on the right of the screen on larger screens, and on the top of the screen on smaller/mobile screens.
+<div class="small-narrow-desmos float-right">
 
 {% desmos %}
 
 {% enddesmos %}
 
+</div>
+
+The part of the screen that shows the stuff that's actually being graphed. This is on the right of the screen on larger screens, and on the top of the screen on smaller/mobile screens.
+
 ## List Comprehension (Listcomp)
+
+<div class="small-narrow-desmos float-right">
+
+{% desmos %}
+[(a, b) for a=[1...3], b=[1...3]]
+
+{% enddesmos %}
+
+</div>
 
 A list comprehension is a feature in Desmos that aids in the construction of lists. For example, this list comprehension creates the list {% mq '[2,4,6,8,10]' %}:
 
 {% mq '[2 * n for n = [1,2,3,4,5]]' %}.
 
 List comprehensions can also be used like cartesian products, iterating over multiple lists pairwise. Here is an example that generates a 3x3 grid of points:
-
-{% desmos %}
-[(a, b) for a=[1...3], b=[1...3]]
-
-{% enddesmos %}
 
 ## Points
 
@@ -206,3 +226,74 @@ A "transformation" is generally a combination of the three following operations:
 ## List Filter
 
 A specific feature in Desmos that allows you to filter values out of lists. For instance, if {% mq 'L=[1,2,3,4,5]' %}, then {% mq 'L[L>3]' %} is {% mq '[4,5]' %} because we only include the elements which are greater than 3. Note that you can also do things like {% mq 'A[B > 3]' %} where you're filtering one list using the criteria of another.
+
+## Bernard
+
+A famous shape that can generate in graphs of implicits with high-frequency data. Bernard is caused by a quirk in the quadtree algorithm used by Desmos. This is arguably the most famous example of Bernard:
+
+{% desmos %}
+
+tan(35.6\*x)=0
+
+{% enddesmos %}
+
+## Fill
+
+The interior of a parametric, implicit inequality, polygon, et cetera.
+
+## Stroke
+
+The line drawn by an equation, the edge of a polygon, et cetera.
+
+## Y-Up / Z-Up
+
+The convention for what axis should be considered "up" in a 3D coordinate system. Y-Up coordinate systems have Y as the up-axis and Z-Up coordinate systems have Z as the up axis.
+
+## Folder
+
+<div class="tiny-desmos float-right">
+
+{%desmos '{ "graphpaper": false }' %}
+
+folder "This is a folder!" {
+y = x;
+}
+
+{% enddesmos %}
+
+</div>
+
+Desmos supports folders, which allow you to put multiple expressions into a collapsible section for better organization.
+
+You can create a folder by typing the word "folder" into an empty expression, or by using the "+" in the top left corner and selecting "folder".
+
+## Label
+
+<div class="small-narrow-desmos float-right">
+
+{% desmos %}
+
+(0, 0) @{
+color: "#c74440",
+label: @{
+text: "Label",
+size: 1,
+orientation: "default",
+angle: 0,
+editableMode: "NONE",
+},
+}
+
+{% enddesmos %}
+
+</div>
+
+Labels are text attached to coordinate points.
+
+## DesModder
+
+[DesModder](https://desmodder.com) is a browser extension which adds a lot of quality of life functionality to Desmos while still keeping graphs completely compatible with unmodded Desmos.
+
+## Geo Calc
+
+Short for "Geometry Calculator", referring to Desmos's [Geometry Calculator](https://www.desmos.com/geometry)

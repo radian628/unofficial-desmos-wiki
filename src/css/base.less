@@ -25,6 +25,23 @@ body.dark {
   .difference-blend-if-dark img {
     mix-blend-mode: difference;
   }
+  .eleventy-desmos-dcg-container {
+    mix-blend-mode: exclusion;
+    filter: hue-rotate(180deg) invert(100%);
+  }
+
+  .dont-invert-colors .eleventy-desmos-dcg-container {
+    mix-blend-mode: initial;
+    filter: initial;
+
+    .dcg-graph-inner {
+      background-color: var(--background-2);
+    }
+
+    .dcg-exppanel-outer {
+      filter: hue-rotate(180deg) invert(100%);
+    }
+  }
 }
 a {
   color: var(--link);

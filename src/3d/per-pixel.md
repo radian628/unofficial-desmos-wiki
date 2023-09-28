@@ -78,6 +78,8 @@ Now that we actually have a grid, we still have to draw to them somehow, and the
 
 As an example lets do something simple: a basic point light. First we'll create a point {% latex "l_{ight}" %} which will represent the position of some light in screen-space coordinates, and then for each pixel we will find the distance from it, and with that using the inverse square law we can calculate the brightness of the light at that point. We can then use that brightness to create a custom colour, and assign that colour to the pixel. To make it easier to see we will disable the lines of the polygons, and set the opacity to 1.
 
+<div class="dont-invert-colors">
+
 {% desmos %}
 
 settings @{
@@ -118,6 +120,8 @@ fill: 1,
 };
 
 {% enddesmos %}
+
+</div>
 
 This setup lets us simulate a point light shining onto a plane that we are looking directly onto.
 

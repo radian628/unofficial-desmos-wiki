@@ -300,4 +300,8 @@ Short for "Geometry Calculator", referring to Desmos's [Geometry Calculator](htt
 
 ## Regression Bug
 
-See [this article on Reddit](https://www.reddit.com/r/desmos/wiki/regression_bug/) for info on the infamous "Regression Bug" that caused Desmos to become accidentally Turing-complete before the implementation of actions.
+See [this article on Reddit](https://www.reddit.com/r/desmos/wiki/regression_bug/) for info on the infamous "Regression Bug" that caused Desmos to become accidentally Turing-complete before adding actions.
+
+## Broadcasting
+
+[Broadcasting](../../list-manipulation/broadcasting/) is the ability for Desmos lists to do elementwise operations when it otherwise wouldn't make sense to operate on the lists themselves in that way. An example of broadcasting is how {% mq '[1,2,3] + [4,5,6]' %} is {% mq '[5,7,9]' %}.

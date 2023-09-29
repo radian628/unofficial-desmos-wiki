@@ -39,6 +39,8 @@ In Desmos, there are several overloads of the {% mq 'random()' %} function that 
 
 In other words, you can still use seeds to keep {% mq 'random()' %} predictable, but don't expect _two different calls_ to {% mq 'random()' %} with the same seed to be the same. If you desire consistency, assign the random value to a variable and use _that_ everywhere you need.
 
+Note that Desmos also uses a [graph-wide random seed](https://www.desmos.com/api/v1.8/docs/index.html#document-randomness) to determine random values as well.
+
 ## random()
 
 ### Explanation

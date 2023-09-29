@@ -11,7 +11,7 @@ crosslinks:
 layout: base.liquid
 ---
 
-This is a collection of terms that are Desmos-specific, are used in a different sense to how you would normally see them in a non-Desmos context, or just aren't that commonly known yet tend to be thrown around without regard by experienced Desmos users.
+This is a collection of terms which are thrown around by Desmos users a lot and tend to be confusing.
 
 ## Wackscope
 
@@ -305,3 +305,17 @@ See [this article on Reddit](https://www.reddit.com/r/desmos/wiki/regression_bug
 ## Broadcasting
 
 [Broadcasting](../../list-manipulation/broadcasting/) is the ability for Desmos lists to do elementwise operations when it otherwise wouldn't make sense to operate on the lists themselves in that way. An example of broadcasting is how {% mq '[1,2,3] + [4,5,6]' %} is {% mq '[5,7,9]' %}.
+
+## Slider
+
+<div class="tiny-desmos float-right">
+
+{%desmos '{ "graphpaper": false }' %}
+
+a = 5;
+
+{% enddesmos %}
+
+</div>
+
+When you create a variable and set it equal to a constant number in Desmos, it creates a UI element that you can click and drag to change that variable's value. That UI element is called a slider.

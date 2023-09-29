@@ -319,3 +319,17 @@ a = 5;
 </div>
 
 When you create a variable and set it equal to a constant number in Desmos, it creates a UI element that you can click and drag to change that variable's value. That UI element is called a slider.
+
+## Evaluation
+
+<div class="small-narrow-desmos float-right">
+
+{%desmos %}
+
+1 + 2 + 3;
+
+{% enddesmos %}
+
+</div>
+
+In Desmos, an "evaluation" is the box that displays below an expression which explains what it evaluates to. In the provided example, the evaluation is the box containing {% mq '6' %}.

@@ -21,6 +21,24 @@ For the most part, randomness on a computer is not _truly_ "random". Instead, th
 
 Seeds are nice if you want consistent, repeatable output.
 
+## WARNING: Seeds are weird in Desmos!
+
+<div class="small-narrow-desmos float-right">
+
+{% desmos %}
+
+random(1, 1)[1];
+
+random(1, 1)[1];
+
+{% enddesmos %}
+
+</div>
+
+In Desmos, there are several overloads of the {% mq 'random()' %} function that let you specify a seed. Keep in mind that these seeds are only local to _one specific call_ of the {% mq 'random()' %} function. What this means is that even if you use the same seed for two calls to {% mq 'random()' %}, they will produce _different_ outputs. See the graph for an example of this. Think of it as if the specific function call is part of the seed as well.
+
+In other words, you can still use seeds to keep {% mq 'random()' %} predictable, but don't expect _two different calls_ to {% mq 'random()' %} with the same seed to be the same. If you desire consistency, assign the random value to a variable and use _that_ everywhere you need.
+
 ## random()
 
 ### Explanation

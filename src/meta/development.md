@@ -79,6 +79,10 @@ All of the pages that make up the site are [Markdown](https://www.markdownguide.
 
 All files use Markdown for syntax (with HTML support) with YAML Front Matter for site navigation and metadata (e.g. page titles). Learning YAML syntax doesn't matter all that much&mdash; you can probably infer how the Front Matter should look based on how it looks on most pages. Front Matter is the stuff delimited by `---`s at the start of the pages.
 
+### I like to learn by example!
+
+Here's [an example page](./example/) and its [source](https://github.com/radian628/unofficial-desmos-wiki/blob/main/src/meta/example.md).
+
 ### Shortcodes
 
 Use shortcodes to embed Desmos content and equations into pages. This wiki uses [11ty-desmos](https://github.com/radian628/11ty-desmos) for embedding Desmos content.

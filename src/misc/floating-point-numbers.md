@@ -34,7 +34,7 @@ All of these bugs are actually caused by the same underlying issue: **Floating P
 
 ## What are Floating Point Numbers?
 
-To understand floating point imprecision, you have to understand floating point numbers. If you want a more in-depth explanation of how these numbers work, see [https://en.wikipedia.org/wiki/Floating-point_arithmetic](the wikipedia article on floating-point arithmetic).
+To understand floating point imprecision, you have to understand floating point numbers. If you want a more in-depth explanation of how these numbers work, see [this Wikipedia article](https://en.wikipedia.org/wiki/Floating-point_arithmetic).
 
 ### Binary Numbers
 

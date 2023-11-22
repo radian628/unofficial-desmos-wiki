@@ -10,7 +10,7 @@ crosslinks:
 layout: base.liquid
 ---
 
-There are a lot of things that seem like they _should_ be possible in Desmos, but aren't. These are listed below, along with explanations as to why they don't work andn (in some cases) partial fixes.
+There are a lot of things that seem like they _should_ be possible in Desmos, but aren't. These are listed below, along with explanations as to why they don't work and (in some cases) partial fixes.
 
 ## Recursion and/or Iteration
 

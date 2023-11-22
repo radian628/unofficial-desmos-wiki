@@ -6,7 +6,7 @@ eleventyNavigation:
   key: Things Desmos Can't Do (Yet)
 tags:
   - explanation
-crosslinks:
+crosslinks: []
 layout: base.liquid
 ---
 

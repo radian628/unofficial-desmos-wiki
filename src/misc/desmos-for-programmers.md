@@ -7,7 +7,7 @@ eleventyNavigation:
 tags:
   - guide
   - explanation
-crosslinks:
+crosslinks: []
 layout: base.liquid
 ---
 

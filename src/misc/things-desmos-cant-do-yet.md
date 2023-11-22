@@ -30,4 +30,20 @@ If your inner lists are all the same length, lists can be indexed in a multi-dim
 
 ## Lists greater than 10000 elements long
 
-This does not work. However, there are [many workarounds that allow for >10000-element lists](../../list-manipulation/more-than-10k-elements/).
+This does not work. However, there are [many workarounds that allow for >10000-element lists](../../list-manipulation/more-than-10k-elements/). Do keep in mind that all of these have their own caveats.
+
+## Matrices
+
+Desmos does not support matrices outside of its (somewhat limited) [Matrix Calculator](https://www.desmos.com/matrix). However, you can emulate them with lists and implement the matrix operations yourself.
+
+## Complex Numbers
+
+No Desmos calculator supports complex numbers. However, you can emulate them using points and by implementing the various complex number operations manually using those points. [Here is a graph that does just that](https://www.desmos.com/calculator/tuczbjt0ae).
+
+## Viewport/Graphpaper Bounds Variables
+
+Desmos does not have a way of telling your graph where on the graphpaper the user has currently focused. The developers have cited flickering-related bugs as the main reason why they have not implemented this feature yet. The closest thing that exists are the {% mq "width" %} and {% mq "height" %} variables, which get the size of the viewport in pixels. In practice, they're most useful for finding the aspect ratio (ratio of width to height) of the viewport and adjusting onscreen elements to work better on larger and smaller screens.
+
+### Orientation Variables (3D Calculator)
+
+In the [3D calculator](https://www.desmos.com/3d), Desmos does not have variables for determining the current camera orientation. As such, you cannot make graphs that change shape based on the direction in which the user is facing.

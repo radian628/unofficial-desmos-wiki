@@ -14,7 +14,7 @@ There are a lot of things that seem like they _should_ be possible in Desmos, bu
 
 ## Recursion and/or Iteration
 
-Desmos does not support recursion, nor does it support generalized iteration. However, you can simulate the _effects_ of recursion using the ((actions)) system, though the speed at which recursive steps can occur is limited to your screen refresh rate.
+Desmos does not support recursion, nor does it support generalized iteration. However, you can simulate the _effects_ of iteration (and thus, by extension, recursion) using the ((actions)) system, though the speed at which iterative steps can occur is limited to your screen refresh rate.
 
 ## Lists of Lists (Nested Lists)
 

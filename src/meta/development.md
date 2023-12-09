@@ -81,7 +81,7 @@ All files use Markdown for syntax (with HTML support) with YAML Front Matter for
 
 ### I like to learn by example!
 
-Here's [an example page](./example/) and its [source](https://github.com/radian628/unofficial-desmos-wiki/blob/main/src/meta/example.md).
+Here's [an example page](../example/) and its [source](https://github.com/radian628/unofficial-desmos-wiki/blob/main/src/meta/example.md).
 
 ### Shortcodes
 

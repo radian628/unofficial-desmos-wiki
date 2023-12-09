@@ -59,7 +59,7 @@ Unfortunately, Desmos doesn't support logical operators (AND, OR, NOT, etc.) nat
 
 ### OR
 
-{% mq '{ {a=b}*{c=d}=1: T, F }' %}
+{% latex '\\left\\{ \\left\\{a=b\\right\\}\\left\\{c=d\\right\\}=1: T, F \\right\\}' %}
 
 ### NOT
 

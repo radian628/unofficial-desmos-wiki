@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>How to make a List with more than 10000 Elements</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">How to make a List with more than 10000 Elements</span>
+        <ul><li><a href="#Disclaimer:-There-is-a-chance-that-none-of-these-will-work">Disclaimer: There is a chance that none of these will work</a></li><li><a href="#Use-a-list-of-points">Use a list of points</a></li><li><a href="#Pack-multiple-numbers-into-one-number">Pack multiple numbers into one number</a></li><li><a href="#Use-Polygon-.vertices-(geometry-calculator-only)">Use Polygon .vertices (geometry calculator only)</a></li><li><a href="#Store-Multiple-Polygons-in-One-Polygon-(polygons-only)">Store Multiple Polygons in One Polygon (polygons only)</a></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">How to make a List with more than 10000 Elements</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/guide/">guide</a>
+            </li>
+          
+        </ul>
+        
+          <h2 id="Disclaimer:-There-is-a-chance-that-none-of-these-will-work">Disclaimer: There is a chance that none of these will work<a class="link-to-header" href="#Disclaimer:-There-is-a-chance-that-none-of-these-will-work"> #</a></h2>
+<p>First things first, all of these solutions are quite clunky and are by no means perfect. There is no absolutely foolproof way to get more than 10000 elements in a list.</p>
+<h2 id="Use-a-list-of-points">Use a list of points<a class="link-to-header" href="#Use-a-list-of-points"> #</a></h2>
+<p>If you store a list of points, you can effectively store 20000 numbers in a single list.</p>
+<h2 id="Pack-multiple-numbers-into-one-number">Pack multiple numbers into one number<a class="link-to-header" href="#Pack-multiple-numbers-into-one-number"> #</a></h2>
+<p>If you don't need the full precision of the numbers offered by desmos (64-bit floating point numbers), you can relatively easily pack multiple numbers into each number. Let's say you want to store two numbers <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a" data-settings="{}"></span></span> and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="b" data-settings="{}"></span></span>— both of which are integers from 0 to 999— in a Desmos number <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="N" data-settings="{}"></span></span>. We can represent <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="N" data-settings="{}"></span></span> as follows:</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="N=1000\cdot b+a" data-settings="{}"></span></span></p>
+<p>Then to extract <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a" data-settings="{}"></span></span> and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="b" data-settings="{}"></span></span>, we can do the following:</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a=\operatorname{mod}\left(N,1000\right)" data-settings="{}"></span></span></p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="b=\operatorname{floor}\left(\frac{N}{1000}\right)" data-settings="{}"></span></span></p>
+<p>This process can be expanded to store more numbers within numbers. However, keep in mind that Desmos numbers can only accurately store integers up to around <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{52}" data-settings="{}"></span></span>.</p>
+<h2 id="Use-Polygon-.vertices-(geometry-calculator-only)">Use Polygon .vertices (geometry calculator only)<a class="link-to-header" href="#Use-Polygon-.vertices-(geometry-calculator-only)"> #</a></h2>
+<p>The Desmos Geometry Calculator exposes a <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{polygon}\left(\right).\mathrm{vertices}" data-settings="{}"></span></span> variable, which contains a list of a polygon's vertices. By storing a list of 10000 polygons, each with 10000 vertices, you can effectively store 100 million points in a single list, or 200 million numbers. You can effectively store a list of lists too because of this.</p>
+<h2 id="Store-Multiple-Polygons-in-One-Polygon-(polygons-only)">Store Multiple Polygons in One Polygon (polygons only)<a class="link-to-header" href="#Store-Multiple-Polygons-in-One-Polygon-(polygons-only)"> #</a></h2>
+<p>If you need to store a list of more than 10000 polygons, there is a chance you'll be able to get away with storing multiple polygons in a single call to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{polygon}\left(\right)" data-settings="{}"></span></span>. They will have to be the same color and won't handle overlap very well, but this will work nonetheless. This works because <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{polygon}\left(\right)" data-settings="{}"></span></span> splits up polygons with undefined values like <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(\frac{0}{0},\frac{0}{0}\right)" data-settings="{}"></span></span>.</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\operatorname{polygon}\\left(\\left(0,0\\right),\\left(1,1\\right),\\left(2,0\\right),\\left(\\frac{0}{0},\\frac{0}{0}\\right),\\left(3,0\\right),\\left(4,1\\right),\\left(5,0\\right),\\left(\\frac{0}{0},\\frac{0}{0}\\right)\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

@@ -44,3 +44,6 @@ Notice how {% mq 'sin(a + b)' %} is repeated three times throughout this functio
 {% mq 'f(a, b) = w + (a + 2^w) / w' %}
 
 As you can see, this example is a lot simpler. It's also a lot more performant&mdash; in the example above, {% mq 'sin(a + b)' %} is calculated _three times_. In the example below, {% mq 'sin(a + b)' %} is calculated _once_ and assigned to {% mq 'w' %}, which is then reused without recalculating it.<sup>_[citation needed]_</sup> So not only did adding a wackscope make this function simpler&mdash; it also made it run faster.
+
+### Wackscope for lambda functions
+Wackscope variables can be used to simulate the effects of lambda functions. See [this graph](https://www.desmos.com/calculator/shclsp3195) for an example of this use case.

@@ -16,7 +16,7 @@ crosslinks: []
 
 Get a list representing the set-theoretic difference between the lists {% mq 'L1' %} and {% mq 'L2' %}.
 
-{% mq 'SetDifference(L1, L2) = unique(join(L1, L2))[L2.length+1...]'  '{"copyButton": true}'%}
+{% mq 'SetDifference(L1, L2) = unique(join(L2, L1))[L2.length+1...]'  '{"copyButton": true}'%}
 
 Set-theoretic intersection.
 

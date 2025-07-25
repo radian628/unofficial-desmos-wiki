@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Glossary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Glossary</span>
+        <ul><li><a href="#Wackscope">Wackscope</a></li><li><a href="#Expression">Expression</a><ul><li><a href="#Definition-1:-Anything-in-the-Expression-Panel">Definition 1: Anything in the Expression Panel</a></li><li><a href="#Definition-2:-Only-Math-Expressions">Definition 2: Only Math Expressions</a></li><li><a href="#Definition-3:-Anything-that-resolves-to-a-value.">Definition 3: Anything that resolves to a value.</a></li></ul></li><li><a href="#Expression-Panel-(Exppanel)">Expression Panel (Exppanel)</a></li><li><a href="#Rectangular-or-Cartesian-Equation">Rectangular or Cartesian Equation</a></li><li><a href="#Polar-Equation">Polar Equation</a></li><li><a href="#Parametric-Equation">Parametric Equation</a></li><li><a href="#Implicit-Equation">Implicit Equation</a></li><li><a href="#Implicit-Inequality">Implicit Inequality</a></li><li><a href="#Implicit">Implicit</a></li><li><a href="#Note">Note</a></li><li><a href="#Piecewise">Piecewise</a></li><li><a href="#Action">Action</a></li><li><a href="#Ticker">Ticker</a></li><li><a href="#State-Graph-State-State-Object">State / Graph State / State Object</a></li><li><a href="#Model-Item-Model">Model / Item Model</a></li><li><a href="#Graphpaper-Viewport">Graphpaper / Viewport</a></li><li><a href="#List-Comprehension-(Listcomp)">List Comprehension (Listcomp)</a></li><li><a href="#Points">Points</a></li><li><a href="#Regressions">Regressions</a></li><li><a href="#Transformation">Transformation</a></li><li><a href="#List-Filter">List Filter</a></li><li><a href="#Bernard">Bernard</a></li><li><a href="#Fill">Fill</a></li><li><a href="#Stroke">Stroke</a></li><li><a href="#Y-Up-Z-Up">Y-Up / Z-Up</a></li><li><a href="#Folder">Folder</a></li><li><a href="#Label">Label</a></li><li><a href="#DesModder">DesModder</a></li><li><a href="#Geo-Calc">Geo Calc</a></li><li><a href="#Regression-Bug">Regression Bug</a></li><li><a href="#Broadcasting">Broadcasting</a></li><li><a href="#Slider">Slider</a></li><li><a href="#Evaluation">Evaluation</a></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Glossary</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a>
+            </li>
+          
+        </ul>
+        
+          <p>This is a collection of terms which are thrown around by Desmos users a lot and tend to be confusing.</p>
+<h2 id="Wackscope">Wackscope<a class="link-to-header" href="#Wackscope"> #</a></h2>
+<p>A <a href="/unofficial-desmos-wiki/misc/wackscope/">wackscope</a> is a variable which is dependent on a variable which isn't in the global scope, producing an error, but is used in a scope where it <em>is</em> defined, allowing it to work as normal. See the main article for more examples.</p>
+<h2 id="Expression">Expression<a class="link-to-header" href="#Expression"> #</a></h2>
+<p>"Expression" has several meanings in a Desmos context.</p>
+<h3 id="Definition-1:-Anything-in-the-Expression-Panel">Definition 1: Anything in the Expression Panel<a class="link-to-header" href="#Definition-1:-Anything-in-the-Expression-Panel"> #</a></h3>
+<p>It can refer to anything in the "expression panel" which by default is to the left of the screen on desktop and is on the bottom half of the screen on mobile. For example, in the graph below, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y=x" data-settings="{}"></span></span> is an expression, <code>this is an expression, and so is the thing above!</code> is an expression, the folder is an expression, and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y=x^{2}" data-settings="{}"></span></span> is an expression. Internally, these are also called "items."</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=x&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;this is an expression, and so is the thing above!&quot;},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;folder&quot;,&quot;hidden&quot;:false,&quot;collapsed&quot;:false,&quot;title&quot;:&quot;this is also considered an expression, and so is the thing inside of it&quot;},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=x^{2}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;3&quot;}]}}" data-settings="{}"></div>
+<h3 id="Definition-2:-Only-Math-Expressions">Definition 2: Only Math Expressions<a class="link-to-header" href="#Definition-2:-Only-Math-Expressions"> #</a></h3>
+<p>A more restricted definition states that an "expression" only refers to the mathematical expressions. Applied to the graph above, this would mean that only <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y=x" data-settings="{}"></span></span> and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y=x^{2}" data-settings="{}"></span></span> are considered expressions.</p>
+<h3 id="Definition-3:-Anything-that-resolves-to-a-value.">Definition 3: Anything that resolves to a value.<a class="link-to-header" href="#Definition-3:-Anything-that-resolves-to-a-value."> #</a></h3>
+<p>The more "programmer-y" definition to "Expression" is that it refers to something that resolves to a value. So, for instance <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="1+2" data-settings="{}"></span></span> is an expression because it resolves to a value (<span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="3" data-settings="{}"></span></span>), but <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a=1+2" data-settings="{}"></span></span> is <em>not</em> an expression because it's an <em>assignment</em> operation which <em>doesn't</em> resolve to a value. Sure, it assigns a value to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a" data-settings="{}"></span></span>, but the entire block of code <em>itself</em> doesn't resolve to a value. You couldn't just do something like <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="1+\left(a=1+2\right)" data-settings="{}"></span></span> and expect it to make sense.</p>
+<h2 id="Expression-Panel-(Exppanel)">Expression Panel (Exppanel)<a class="link-to-header" href="#Expression-Panel-(Exppanel)"> #</a></h2>
+<p>The exppanel is the thing on the left-hand side of a Desmos window (or on the bottom on smaller screens or on mobile) where you write all your mathematical expressions.</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[]}}" data-settings="{}"></div>
+<h2 id="Rectangular-or-Cartesian-Equation">Rectangular or Cartesian Equation<a class="link-to-header" href="#Rectangular-or-Cartesian-Equation"> #</a></h2>
+<p>A rectangular equation is one of the form <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y=f\left(x\right)" data-settings="{}"></span></span>, where <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="f\left(x\right)" data-settings="{}"></span></span> can really be any function of <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="x" data-settings="{}"></span></span>. It's the classic kind of equation you might encounter in math class early on. Note that the variable on the left need not necessarily be <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y" data-settings="{}"></span></span>. Here are some examples of rectangular equations:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=x&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=x^{2}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=\\operatorname{sin}\\left(x\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#fa7e19&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;a=\\operatorname{cos}\\left(x\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;5&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#6042a6&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;f\\left(x\\right)=3\\cdot x+2&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Polar-Equation">Polar Equation<a class="link-to-header" href="#Polar-Equation"> #</a></h2>
+<p>A polar equation is one of the form <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="r=f\left(\theta\right)" data-settings="{}"></span></span>. These equations relate an <em>angle</em> (<span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\theta" data-settings="{}"></span></span>) to a <em>radius</em> (<span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="r" data-settings="{}"></span></span>), effectively making them spirals. Because they have potential to loop around the origin forever, producing an inordinate amount of lag, they are domain-restricted by default. Here are some examples of polars:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;r=\\theta&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;r=2\\cdot \\theta&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;r=2&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#fa7e19&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;r=\\operatorname{sin}\\left(\\theta\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;5&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#6042a6&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;r=\\operatorname{sin}\\left(10\\cdot \\theta\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Parametric-Equation">Parametric Equation<a class="link-to-header" href="#Parametric-Equation"> #</a></h2>
+<p>A parametric equation is one of the form <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(X\left(t\right),Y\left(t\right)\right)" data-settings="{}"></span></span>. These equations are defined by defining a domain of <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t" data-settings="{}"></span></span>-values (e.g. that <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t" data-settings="{}"></span></span> must be between 0 and 1, though these bounds can be anything), plugging in those <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t" data-settings="{}"></span></span>-values into the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="X\left(t\right)" data-settings="{}"></span></span> and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="Y\left(t\right)" data-settings="{}"></span></span> functions, and then plotting the line formed as <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t" data-settings="{}"></span></span> changes. These ones can be rather confusing to explain, so here is an example:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left(3\\cdot t,2\\cdot t\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<p>This parametric equation has <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t" data-settings="{}"></span></span> ranging from 0 to 1. Its x-axis is defined by <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="3\cdot t" data-settings="{}"></span></span>. Since t ranges from 0 to 1, the x-position of the line that's plotted ranges from <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="3\cdot 0" data-settings="{}"></span></span> to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="3\cdot 1" data-settings="{}"></span></span>, or from 0 to 3. Similarly, since the y-axis is defined by <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2\cdot t" data-settings="{}"></span></span>, the y-position of the line ranges from <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2\cdot 0" data-settings="{}"></span></span> to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2\cdot 1" data-settings="{}"></span></span>, or from 0 to 2.</p>
+<p>Parametrics can help answer questions like "An ant is crawling on a board. Plot its <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(x,y\right)" data-settings="{}"></span></span> position as a function of time <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t" data-settings="{}"></span></span>" and others where you want to convert a 1D variable into 2D data.</p>
+<p>Here are some more examples of parametrics:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left(t,2\\cdot t\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left(\\operatorname{sin}\\left(t\\right),\\operatorname{cos}\\left(t\\right)\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left(t^{2}+1,\\frac{t}{2}\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Implicit-Equation">Implicit Equation<a class="link-to-header" href="#Implicit-Equation"> #</a></h2>
+<p>Roughly speaking, an implicit equation is an equation where you don't just have a single <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y" data-settings="{}"></span></span> on one side. In other words, if you were to try to find a point on the implicit equation, you couldn't just plug in an <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="x" data-settings="{}"></span></span>-value— you would have to solve for <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y" data-settings="{}"></span></span> first. Fortunately, Desmos can plot these anyway. Here are some examples.</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\sqrt{y}=x&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;x^{2}+y^{2}=4&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;x+y=3&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#fa7e19&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\frac{1}{y}=x&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Implicit-Inequality">Implicit Inequality<a class="link-to-header" href="#Implicit-Inequality"> #</a></h2>
+<p>When you have an implicit equation but use a condition other than <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="=" data-settings="{}"></span></span>, you get an implicit inequality. These generally have large, shaded-in regions. In common usage, even "solved" inequalities are called "implicit inequalities". Here are some examples.</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y>x&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;x>2&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y>2&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#fa7e19&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;x^{2}+y^{2}<4&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Implicit">Implicit<a class="link-to-header" href="#Implicit"> #</a></h2>
+<p>Short for "Implicit Inequality". This can also be used to mean "Implicit Equation"</p>
+<h2 id="Note">Note<a class="link-to-header" href="#Note"> #</a></h2>
+<div class="tiny-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;This is a note!&quot;}]}}" data-settings="{}"></div>
+</div>
+<p>A "note" is an expression containing regular text, generally used to explain how a graph works.</p>
+<h2 id="Piecewise">Piecewise<a class="link-to-header" href="#Piecewise"> #</a></h2>
+<p>A <a href="/unofficial-desmos-wiki/misc/piecewises/">piecewise</a> is the "if-statement" of Desmos, allowing one to put branching logic into an expression. Here is the absolute-value function defined using a piecewise:</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a_{bsoluteValue}\left(x\right)=\left\{x>0:x,x<0:-x,0\right\}" data-settings="{}"></span></span></p>
+<h2 id="Action">Action<a class="link-to-header" href="#Action"> #</a></h2>
+<p>An <a href="https://help.desmos.com/hc/en-us/articles/4407725009165-Actions">action</a> is an expression using the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\to" data-settings="{}"></span></span> operator. It's used to update the value of an expression.</p>
+<h2 id="Ticker">Ticker<a class="link-to-header" href="#Ticker"> #</a></h2>
+<div class="tiny-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;a=0&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}],&quot;ticker&quot;:{&quot;handlerLatex&quot;:&quot;a\\to a+1&quot;,&quot;minStepLatex&quot;:&quot;0&quot;,&quot;playing&quot;:true,&quot;open&quot;:true}}}" data-settings="{ &quot;graphpaper&quot;: false }"></div>
+</div>
+<p>The action in a graph that can be run repeatedly in a loop. The following graph has a ticker which repeatedly increments <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a" data-settings="{}"></span></span></p>
+<h2 id="State-Graph-State-State-Object">State / Graph State / State Object<a class="link-to-header" href="#State-Graph-State-State-Object"> #</a></h2>
+<p>The above terms can refer to many things, but in many conversations they refer to a specific data structure that can be used to unambiguously and completely define a Desmos graph. Desmos uses graph state internally to store Desmos graphs. You can also use the <a href="https://www.desmos.com/api/v1.8/docs/index.html">Desmos API</a> function <code>Calc.getState()</code> to get the state of the current graph and <code>Calc.setState(state)</code> to modify the state (where <code>state</code> is the state object).</p>
+<h2 id="Model-Item-Model">Model / Item Model<a class="link-to-header" href="#Model-Item-Model"> #</a></h2>
+<p>A "model" is the internal representation of an expression <em>while the graph is running</em>. It contains both all the data necessary to store the item as graph state, but also contains information that's only useful while the graph is running and loaded in, such as a reference to the UI element for the expression, the actual value the expression evaluates to, et cetera.</p>
+<h2 id="Graphpaper-Viewport">Graphpaper / Viewport<a class="link-to-header" href="#Graphpaper-Viewport"> #</a></h2>
+<div class="small-narrow-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[]}}" data-settings="{}"></div>
+</div>
+<p>The part of the screen that shows the stuff that's actually being graphed. This is on the right of the screen on larger screens, and on the top of the screen on smaller/mobile screens.</p>
+<h2 id="List-Comprehension-(Listcomp)">List Comprehension (Listcomp)<a class="link-to-header" href="#List-Comprehension-(Listcomp)"> #</a></h2>
+<div class="small-narrow-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left[\\left(a,b\\right)\\operatorname{for}a=\\left[1...3\\right],b=\\left[1...3\\right]\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+</div>
+<p>A list comprehension is a feature in Desmos that aids in the construction of lists. For example, this list comprehension creates the list <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[2,4,6,8,10\right]" data-settings="{}"></span></span>:</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[2\cdot n\operatorname{for}n=\left[1,2,3,4,5\right]\right]" data-settings="{}"></span></span>.</p>
+<p>List comprehensions can also be used like cartesian products, iterating over multiple lists pairwise. Here is an example that generates a 3x3 grid of points:</p>
+<h2 id="Points">Points<a class="link-to-header" href="#Points"> #</a></h2>
+<p>2D coordinate points, which can be created in the form <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(x,y\right)" data-settings="{}"></span></span> (where <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="x" data-settings="{}"></span></span> and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y" data-settings="{}"></span></span> are the x- and y-coordinates of the point, respectively).</p>
+<h2 id="Regressions">Regressions<a class="link-to-header" href="#Regressions"> #</a></h2>
+<p>The Desmos feature that allows you to fit a curve to data. See more about <a href="https://help.desmos.com/hc/en-us/articles/4406972958733-Regressions">regressions</a> here.</p>
+<h2 id="Transformation">Transformation<a class="link-to-header" href="#Transformation"> #</a></h2>
+<p>A "transformation" is generally a combination of the three following operations:</p>
+<ul>
+<li>Translation (moving something around)</li>
+<li>Rotation (rotating something about a point, or axis in 3D)</li>
+<li>Scale (making something bigger or smaller)</li>
+</ul>
+<h2 id="List-Filter">List Filter<a class="link-to-header" href="#List-Filter"> #</a></h2>
+<p>A specific feature in Desmos that allows you to filter values out of lists. For instance, if <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L=\left[1,2,3,4,5\right]" data-settings="{}"></span></span>, then <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L\left[L>3\right]" data-settings="{}"></span></span> is <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[4,5\right]" data-settings="{}"></span></span> because we only include the elements which are greater than 3. Note that you can also do things like <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="A\left[B>3\right]" data-settings="{}"></span></span> where you're filtering one list using the criteria of another.</p>
+<h2 id="Bernard">Bernard<a class="link-to-header" href="#Bernard"> #</a></h2>
+<p>A famous shape that can generate in graphs of implicits with high-frequency data. Bernard is caused by a quirk in the quadtree algorithm used by Desmos. This is arguably the most famous example of Bernard:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\operatorname{tan}\\left(35.6\\cdot x\\right)=0&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Fill">Fill<a class="link-to-header" href="#Fill"> #</a></h2>
+<p>The interior of a parametric, implicit inequality, polygon, et cetera.</p>
+<h2 id="Stroke">Stroke<a class="link-to-header" href="#Stroke"> #</a></h2>
+<p>The line drawn by an equation, the edge of a polygon, et cetera.</p>
+<h2 id="Y-Up-Z-Up">Y-Up / Z-Up<a class="link-to-header" href="#Y-Up-Z-Up"> #</a></h2>
+<p>The convention for what axis should be considered "up" in a 3D coordinate system. Y-Up coordinate systems have Y as the up-axis and Z-Up coordinate systems have Z as the up axis.</p>
+<h2 id="Folder">Folder<a class="link-to-header" href="#Folder"> #</a></h2>
+<div class="tiny-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;folder&quot;,&quot;hidden&quot;:false,&quot;collapsed&quot;:false,&quot;title&quot;:&quot;This is a folder!&quot;},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=x&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;1&quot;}]}}" data-settings="{ &quot;graphpaper&quot;: false }"></div>
+</div>
+<p>Desmos supports folders, which allow you to put multiple expressions into a collapsible section for better organization.</p>
+<p>You can create a folder by typing the word "folder" into an empty expression, or by using the "+" in the top left corner and selecting "folder".</p>
+<h2 id="Label">Label<a class="link-to-header" href="#Label"> #</a></h2>
+<div class="small-narrow-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left(0,0\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;label&quot;:&quot;Label&quot;,&quot;showLabel&quot;:true,&quot;labelSize&quot;:&quot;1&quot;,&quot;labelOrientation&quot;:&quot;default&quot;,&quot;labelAngle&quot;:&quot;0&quot;,&quot;suppressTextOutline&quot;:false,&quot;interactiveLabel&quot;:false,&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+</div>
+<p>Labels are text attached to coordinate points.</p>
+<h2 id="DesModder">DesModder<a class="link-to-header" href="#DesModder"> #</a></h2>
+<p><a href="https://desmodder.com">DesModder</a> is a browser extension which adds a lot of quality of life functionality to Desmos while still keeping graphs completely compatible with unmodded Desmos.</p>
+<h2 id="Geo-Calc">Geo Calc<a class="link-to-header" href="#Geo-Calc"> #</a></h2>
+<p>Short for "Geometry Calculator", referring to Desmos's <a href="https://www.desmos.com/geometry">Geometry Calculator</a></p>
+<h2 id="Regression-Bug">Regression Bug<a class="link-to-header" href="#Regression-Bug"> #</a></h2>
+<p>See <a href="https://www.reddit.com/r/desmos/wiki/regression_bug/">this article on Reddit</a> for info on the infamous "<a href="/unofficial-desmos-wiki/historical/Regression Bug/">Regression Bug</a>" that caused Desmos to become accidentally Turing-complete before adding actions.</p>
+<h2 id="Broadcasting">Broadcasting<a class="link-to-header" href="#Broadcasting"> #</a></h2>
+<p><a href="../../list-manipulation/broadcasting/">Broadcasting</a> is the ability for Desmos lists to do elementwise operations when it otherwise wouldn't make sense to operate on the lists themselves in that way. An example of <a href="/unofficial-desmos-wiki/list-manipulation/broadcasting/">broadcasting</a> is how <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[1,2,3\right]+\left[4,5,6\right]" data-settings="{}"></span></span> is <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[5,7,9\right]" data-settings="{}"></span></span>.</p>
+<h2 id="Slider">Slider<a class="link-to-header" href="#Slider"> #</a></h2>
+<div class="tiny-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;a=5&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{ &quot;graphpaper&quot;: false }"></div>
+</div>
+<p>When you create a variable and set it equal to a constant number in Desmos, it creates a UI element that you can click and drag to change that variable's value. That UI element is called a slider.</p>
+<h2 id="Evaluation">Evaluation<a class="link-to-header" href="#Evaluation"> #</a></h2>
+<div class="small-narrow-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;1+2+3&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+</div>
+<p>In Desmos, an "evaluation" is the box that displays below an expression which explains what it evaluates to. In the provided example, the evaluation is the box containing <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="6" data-settings="{}"></span></span>.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

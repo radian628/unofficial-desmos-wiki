@@ -12,9 +12,9 @@ layout: base.liquid
 
 There are a lot of things that seem like they _should_ be possible in Desmos, but aren't. These are listed below, along with explanations as to why they don't work and (in some cases) partial fixes.
 
-## Recursion and/or Iteration
+## Iteration
 
-Desmos does not support recursion, nor does it support generalized iteration. However, you can simulate the _effects_ of iteration (and thus, by extension, recursion) using the ((actions)) system, though the speed at which iterative steps can occur is limited to your screen refresh rate.
+Desmos does not natively support generalized iteration. However, you can simulate the _effects_ of iteration (and thus, by extension, recursion) using the ((actions)) system, though the speed at which iterative steps can occur is limited to your screen refresh rate. You can also use recursion to fake iteration.
 
 ## Lists of Lists (Nested Lists)
 
@@ -36,9 +36,9 @@ This does not work. However, there are [many workarounds that allow for >10000-e
 
 Desmos does not support matrices outside of its (somewhat limited) [Matrix Calculator](https://www.desmos.com/matrix). However, you can emulate them with lists and implement the matrix operations yourself.
 
-## Complex Numbers
+## Complex Numbers in Points
 
-No Desmos calculator supports complex numbers. However, you can emulate them using points and by implementing the various complex number operations manually using those points. [Here is a graph that does just that](https://www.desmos.com/calculator/tuczbjt0ae).
+No Desmos calculator supports complex numbers as coordinates of points.
 
 ## Viewport/Graphpaper Bounds Variables
 

@@ -12,9 +12,9 @@ layout: base.liquid
 
 There are a lot of things that seem like they _should_ be possible in Desmos, but aren't. These are listed below, along with explanations as to why they don't work and (in some cases) partial fixes.
 
-## Recursion and/or Iteration
+## Generalized iteration
 
-Desmos does not support recursion, nor does it support generalized iteration. However, you can simulate the _effects_ of iteration (and thus, by extension, recursion) using the ((actions)) system, though the speed at which iterative steps can occur is limited to your screen refresh rate.
+Desmos does not support generalized iteration without actions. List comprehensions and recursion can be used to achieve almost complete iteration without actions.
 
 ## Lists of Lists (Nested Lists)
 
@@ -36,13 +36,11 @@ This does not work. However, there are [many workarounds that allow for >10000-e
 
 Desmos does not support matrices outside of its (somewhat limited) [Matrix Calculator](https://www.desmos.com/matrix). However, you can emulate them with lists and implement the matrix operations yourself.
 
-## Complex Numbers
-
-No Desmos calculator supports complex numbers. However, you can emulate them using points and by implementing the various complex number operations manually using those points. [Here is a graph that does just that](https://www.desmos.com/calculator/tuczbjt0ae).
-
-## Viewport/Graphpaper Bounds Variables
+## Current Viewport/Graphpaper Bounds Variables
 
 Desmos does not have a way of telling your graph where on the graphpaper the user has currently focused. The developers have cited flickering-related bugs as the main reason why they have not implemented this feature yet. The closest thing that exists are the {% mq "width" %} and {% mq "height" %} variables, which get the size of the viewport in pixels. In practice, they're most useful for finding the aspect ratio (ratio of width to height) of the viewport and adjusting onscreen elements to work better on larger and smaller screens.
+
+Desmos *does* however let you control the viewport with variables, but this will also prvent the user from moving it themselves. Note that in the 3d calculator this only lets you control the graph bounds and not the actual camera position or orientation.
 
 ### Orientation Variables (3D Calculator)
 

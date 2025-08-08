@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Making Music with Audiotrace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Making Music with Audiotrace</span>
+        <ul><li><a href="#What-is-Audiotrace">What is Audiotrace?</a></li><li><a href="#How-to-make-music-with-Audiotrace">How to make music with Audiotrace?</a></li><li><a href="#Simple-Example">Simple Example</a></li><li><a href="#Existing-Desmos-Music-Maker-Implementations">Existing Desmos Music Maker Implementations</a><ul><li><a href="#By-Adasba">By Adasba</a><ul><li><a href="#Usage">Usage</a></li></ul></li></ul></li><li><a href="#Interesting-Examples">Interesting Examples</a></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Making Music with Audiotrace</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/audiotrace/">audiotrace</a>
+            </li>
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/music/">music</a>
+            </li>
+          
+        </ul>
+        
+          <p>Note: This guide assumes that you have some knowledge of music theory— the guide itself more concerns how you would apply it to Desmos.</p>
+<h2 id="What-is-Audiotrace">What is Audiotrace?<a class="link-to-header" href="#What-is-Audiotrace"> #</a></h2>
+<p>Audiotrace is primarily an accessibility feature designed to help those who are visually impaired understand the shape of Desmos graphs. <a href="https://www.desmos.com/accessibility">Refer to this link if you're not sure how to use audiotrace.</a></p>
+<h2 id="How-to-make-music-with-Audiotrace">How to make music with Audiotrace?<a class="link-to-header" href="#How-to-make-music-with-Audiotrace"> #</a></h2>
+<p>If you already know a bit of music theory, these facts should get you up and running with audiotrace quickly:</p>
+<ul>
+<li>Audiotrace is controlled by the graphpaper bounds. That is, if you shift the graphpaper bounds, all the frequencies of the audio will change. For that reason, you should probably lock the viewport if you're working with audiotrace.</li>
+<li>The X-axis represents time and the Y-axis represents pitch. Higher y-values represent higher pitches.</li>
+<li>Static is added to sounds with Y-values below 0.</li>
+<li>Notes on the left of y-axis are a normal sin wave sound, notes on the right of the y-axis also have a double sound where both the note and freqency an octave above are played.</li>
+<li>The scale ranges in pitch from E4 to E5. Every 1/12th of the screen in the Y-direction is one semitone.</li>
+</ul>
+<h2 id="Simple-Example">Simple Example<a class="link-to-header" href="#Simple-Example"> #</a></h2>
+<p>Here's an E-major scale. Note that the audio won't play automatically.</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;randomSeed&quot;:&quot;&quot;,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-7.602813924771917,&quot;ymin&quot;:0,&quot;xmax&quot;:11.22071548699281,&quot;ymax&quot;:12},&quot;squareAxes&quot;:false,&quot;xAxisLabel&quot;:&quot;&quot;,&quot;yAxisLabel&quot;:&quot;&quot;,&quot;xAxisArrowMode&quot;:&quot;NONE&quot;,&quot;yAxisArrowMode&quot;:&quot;NONE&quot;,&quot;xAxisMinorSubdivisions&quot;:0,&quot;yAxisMinorSubdivisions&quot;:0,&quot;xAxisStep&quot;:0,&quot;yAxisStep&quot;:0,&quot;degreeMode&quot;:false,&quot;showGrid&quot;:true,&quot;showXAxis&quot;:true,&quot;showYAxis&quot;:true,&quot;xAxisNumbers&quot;:true,&quot;yAxisNumbers&quot;:true,&quot;polarNumbers&quot;:true,&quot;restrictGridToFirstQuadrant&quot;:false,&quot;polarMode&quot;:false,&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=\\left[0,2,4,5,7,9,11,11.999999\\right]\\left[0.5\\cdot x+5\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Existing-Desmos-Music-Maker-Implementations">Existing Desmos Music Maker Implementations<a class="link-to-header" href="#Existing-Desmos-Music-Maker-Implementations"> #</a></h2>
+<h3 id="By-Adasba">By Adasba<a class="link-to-header" href="#By-Adasba"> #</a></h3>
+<h4 id="Usage">Usage<a class="link-to-header" href="#Usage"> #</a></h4>
+<ol>
+<li>Generate code <a href="https://radian628.github.io/midi2desmos/build/">here</a></li>
+<li>Paste in <a href="https://www.desmos.com/calculator/aefoairhvy?tone">this graph</a></li>
+</ol>
+<h2 id="Interesting-Examples">Interesting Examples<a class="link-to-header" href="#Interesting-Examples"> #</a></h2>
+<ol>
+<li><a href="https://www.desmos.com/calculator/ttworpbaby">Fur Elise</a></li>
+</ol>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

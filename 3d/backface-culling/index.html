@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Backface Culling</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Backface Culling</span>
+        <ul><li><a href="#The-Problem">The Problem</a></li><li><a href="#The-Solution">The Solution</a><ul><li><a href="#Commonalities-Between-Both-Methods">Commonalities Between Both Methods</a></li><li><a href="#The-Normal-Dot-Product-Method">The Normal Dot Product Method</a></li><li><a href="#The-Winding-Order-Method">The Winding Order Method</a></li></ul></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Backface Culling</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/3d/">3d</a>
+            </li>
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/guide/">guide</a>
+            </li>
+          
+        </ul>
+        
+          <h2 id="The-Problem">The Problem<a class="link-to-header" href="#The-Problem"> #</a></h2>
+<p>When rendering 3D meshes, you often want to avoid rendering triangles that you don't need to render. Consider the rendering engine below:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;randomSeed&quot;:&quot;&quot;,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-2,&quot;ymin&quot;:-2,&quot;xmax&quot;:2,&quot;ymax&quot;:2},&quot;squareAxes&quot;:true,&quot;xAxisLabel&quot;:&quot;&quot;,&quot;yAxisLabel&quot;:&quot;&quot;,&quot;xAxisArrowMode&quot;:&quot;NONE&quot;,&quot;yAxisArrowMode&quot;:&quot;NONE&quot;,&quot;xAxisMinorSubdivisions&quot;:0,&quot;yAxisMinorSubdivisions&quot;:0,&quot;xAxisStep&quot;:0,&quot;yAxisStep&quot;:0,&quot;degreeMode&quot;:false,&quot;showGrid&quot;:true,&quot;showXAxis&quot;:true,&quot;showYAxis&quot;:true,&quot;xAxisNumbers&quot;:true,&quot;yAxisNumbers&quot;:true,&quot;polarNumbers&quot;:true,&quot;restrictGridToFirstQuadrant&quot;:false,&quot;polarMode&quot;:false,&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;C_{ameraX}=0&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;C_{ameraY}=0&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;C_{ameraZ}=0&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;5&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;folder&quot;,&quot;hidden&quot;:false,&quot;collapsed&quot;:true,&quot;title&quot;:&quot;Internals&quot;},{&quot;id&quot;:&quot;6&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#fa7e19&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;X_{VertexPositionsModelSpace}=\\left[-1,1,-1,1,-1,1,-1,1\\right]+1.3&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;7&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#6042a6&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;Y_{VertexPositionsModelSpace}=\\left[-1,-1,1,1,-1,-1,1,1\\right]+1.5&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;8&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#000000&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;Z_{VertexPositionsModelSpace}=\\left[-5,-5,-5,-5,-7,-7,-7,-7\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;9&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;X_{VertexPositionsViewSpace}=X_{VertexPositionsModelSpace}-C_{ameraX}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;10&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;Y_{VertexPositionsViewSpace}=Y_{VertexPositionsModelSpace}-C_{ameraY}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;11&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;Z_{VertexPositionsViewSpace}=Z_{VertexPositionsModelSpace}-C_{ameraZ}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;12&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#fa7e19&quot;,&quot;hidden&quot;:true,&quot;latex&quot;:&quot;S_{creenSpacePoints}=\\frac{\\left(X_{VertexPositionsViewSpace},Y_{VertexPositionsViewSpace}\\right)}{-Z_{VertexPositionsViewSpace}}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;13&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#6042a6&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;I_{ndicesP1}=\\left[1,2,3,7,1,2,1,5,2,6,5,6\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;14&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#000000&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;I_{ndicesP2}=\\left[2,4,7,4,2,5,5,3,4,4,6,8\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;15&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;I_{ndicesP3}=\\left[3,3,4,8,5,6,3,7,6,8,7,7\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;16&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:true,&quot;latex&quot;:&quot;U_{nsortedPolygons}=\\operatorname{polygon}\\left(S_{creenSpacePoints}\\left[I_{ndicesP1}\\right],S_{creenSpacePoints}\\left[I_{ndicesP2}\\right],S_{creenSpacePoints}\\left[I_{ndicesP3}\\right]\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;17&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;V_{ertexDistances}=\\sqrt{X_{VertexPositionsViewSpace}^{2}+Y_{VertexPositionsViewSpace}^{2}+Z_{VertexPositionsViewSpace}^{2}}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;18&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#fa7e19&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;P_{olygonAverageDist}=\\frac{V_{ertexDistances}\\left[I_{ndicesP1}\\right]+V_{ertexDistances}\\left[I_{ndicesP2}\\right]+V_{ertexDistances}\\left[I_{ndicesP3}\\right]}{3}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;19&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#6042a6&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;C_{olors}=\\operatorname{sort}\\left(\\operatorname{hsv}\\left(\\left[30,60...360\\right],1,1\\right),-P_{olygonAverageDist}\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;},{&quot;id&quot;:&quot;20&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\operatorname{sort}\\left(U_{nsortedPolygons},-P_{olygonAverageDist}\\right)&quot;,&quot;colorLatex&quot;:&quot;C_{olors}&quot;,&quot;lines&quot;:false,&quot;lineWidth&quot;:&quot;0&quot;,&quot;fill&quot;:true,&quot;fillOpacity&quot;:&quot;1&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{},&quot;folderId&quot;:&quot;5&quot;}]}}" data-settings="{}"></div>
+<p>This engine is rendering a cube composed of 12 triangles making up its six square faces. However, we should only actually <em>see</em> six faces of the cube. The other six should be currently hidden from view. Why render these polygons if they shouldn't be visible anyway? If we got rid of them, we could speed up rendering. This might not be such a big deal for a <em>cube</em>, but for a more complicated model it could mean the difference between 15 and 30 FPS.</p>
+<p>Furthermore, look at how the cube looks right now. Under certain circumstances— despite the fact that we've implemented depth sorting in this engine— it isn't <em>perfect</em>: Some polygons still appear in the wrong order regardless. Getting rid of these wrongly-ordered polygons would mitigate this issue.</p>
+<h2 id="The-Solution">The Solution<a class="link-to-header" href="#The-Solution"> #</a></h2>
+<p>The solution to this issue is to implement <strong>Backface Culling</strong>. The underlying idea of backface culling is the observation that <em>most meshes are "solid" objects with one side facing toward the camera and another side facing away from the camera, allowing us to safely discard any faces that are facing away</em>. These faces which are facing <em>away</em> are known as "backfaces."</p>
+<p>There are two main schools of thought when implementing backface culling, which I'll call the "Normal Dot Product" method and the "Winding Order" method. While both methods are quite fast and simple, they each have their trade-offs.</p>
+<h3 id="Commonalities-Between-Both-Methods">Commonalities Between Both Methods<a class="link-to-header" href="#Commonalities-Between-Both-Methods"> #</a></h3>
+<p>Both methods build on the same scaffolding: We are filtering the list of polygons to be drawn, removing all of the backfaces. Be careful when doing this— it will need to play nicely with depth sorting and any other filtering operation (e.g. frustum culling) that you perform on your scene. You'll also need to cull the mesh colors so that they remain 1:1 with the polygons.</p>
+<h3 id="The-Normal-Dot-Product-Method">The Normal Dot Product Method<a class="link-to-header" href="#The-Normal-Dot-Product-Method"> #</a></h3>
+<p>If you have <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">face normals</a> available for your mesh, this method may be for you. As a tl;dr, a face normal is a unit vector which is perpendicular to a face in a mesh. Crucially, it also points in the direction <em>outside</em> of the mesh. This is important if you want to, say, render the outside of the box, versus the inside of a cube-shaped room. For a box, you want the normals to point outward; for a room, you want the normals to point inward.</p>
+<p>In other words, a face normal is a compact way of describing the <em>orientation</em> of a face, which is exactly what we need. In order to detect whether a face is a backface using its normal, we can also define what I'll call a "camera vector": a vector pointing from the camera to one of the points in the triangle (doesn't matter which one).</p>
+<p>You can infer then that if the face normal and the camera vector are facing <em>toward</em> one another (i.e. are pointing in <em>opposite</em> directions), then the face is <em>not</em> a backface and should stay. Conversely, if the face normal and camera vector are facing in the <em>same</em> direction, then the face <em>is</em> a backface and should be removed.</p>
+<p>We can tell whether these vectors are pointing in the same direction (and therefore should be culled) by taking their dot product. If two vectors have an angle of less than 180 degrees, then their dot product is positive, and thus should be culled. Thus, a polygon should stay in the list <em>if and only if</em> this dot product is negative. In other words, given the definition of a dot product, we can use this as our list filter:</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="X_{Normal}\cdot \left(X_{Triangle}-X_{Camera}\right)+Y_{Normal}\cdot \left(Y_{Triangle}-Y_{Camera}\right)+Z_{Normal}\cdot \left(Z_{Triangle}-Z_{Camera}\right)<0" data-settings="{}"></span></span></p>
+<p>Note that the triangle coordinates can be on any point on the triangle, including one of its vertices.</p>
+<h3 id="The-Winding-Order-Method">The Winding Order Method<a class="link-to-header" href="#The-Winding-Order-Method"> #</a></h3>
+<p>The Winding Order Method is nice because it doesn't require face normals, which often have to be computed after-the-fact and don't play as nicely with rotated and/or transformed models. That being said, it may be slightly slower in the absence of these advantages (though this is debatable— Desmos performance is largely a mystery!).</p>
+<p>This method relies on the assumption that all polygons in the mesh have the same <em>winding order</em> when rendered. The "winding order" of a polygon describes whether its vertices are given in clockwise or counterclockwise order:</p>
+<div class="invert-if-dark difference-blend-if-dark">
+<p><img src="../../img/3d/winding-order.png" alt="see text above"></p>
+</div>
+<p>Importantly, the winding order of a polygon changes as soon as you flip it over. You can easily demonstrate this by taking a sheet of paper, drawing a bunch of arrows in a circle (or triangle like above) in a thick marker, and then flipping it over. You'll see that the arrows change direction— clockwise to counterclockwise, or vice-versa. What this means is that you can define the "front face" of a triangle by intentionally choosing its winding order when it's projected to 2D. For instance, you could arbitrarily say that any counterclockwise polygon is considered to be facing toward the camera. Therefore, if you were to see that a face is clockwise, you know that it's a backface and therefore must be culled.</p>
+<p>This might seem like an annoying technique to set up as it requires careful control over polygons. However, most 3D software today is <em>designed</em> to have this level of control when outputting meshes, because many if not all graphics APIs have backface culling <em>built in</em> using this exact method.</p>
+<p>How do we determine winding order? The answer is less complicated than you might expect. Consider one edge of a triangle. This edge has a definite <em>start</em> vertex and a definite <em>end</em> vertex, since we care about the order in which vertices are laid out to determine winding order. These vertices are 2D, since, again, winding order only really makes sense once we project 3D coordinates onto 2D space. Let's define the starting vertex as <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(x_{1},y_{1}\right)" data-settings="{}"></span></span> and the end vertex as <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(x_{2},y_{2}\right)" data-settings="{}"></span></span>.</p>
+<p>To get the "contribution" to the winding order from this edge, we calculate <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(x_{2}-x_{1}\right)\cdot \left(y_{2}+y_{1}\right)" data-settings="{}"></span></span>. We then repeat this for every other edge in the polygon, and sum all the results together. Assuming the third vertex in the triangle is defined as <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(x_{3},y_{3}\right)" data-settings="{}"></span></span>, the total winding order of a triangle is therefore as follows:</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(x_{2}-x_{1}\right)\cdot \left(y_{2}+y_{1}\right)+\left(x_{3}-x_{2}\right)\cdot \left(y_{3}+y_{2}\right)+\left(x_{1}-x_{3}\right)\cdot \left(y_{1}+y_{3}\right)" data-settings="{}"></span></span></p>
+<p>What does this number actually <em>mean</em> though? Long story short, if it's negative, the polygon is counterclockwise. If it's positive, it's clockwise. So, in other words, if you're culling clockwise polygons (which appears to be more standard), you only keep the polygons for which this winding order equation is <em>negative</em>.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

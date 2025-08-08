@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Floating Point Numbers in Desmos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Floating Point Numbers in Desmos</span>
+        <ul><li><a href="#The-Problem">The Problem</a></li><li><a href="#What-are-Floating-Point-Numbers">What are Floating Point Numbers?</a><ul><li><a href="#Binary-Numbers">Binary Numbers</a></li><li><a href="#Integers">Integers</a><ul><li><a href="#Signed-Integers">Signed Integers</a></li></ul></li><li><a href="#Floating-Point-Numbers">Floating Point-Numbers</a></li></ul></li><li><a href="#Floating-Point-Imprecision">Floating Point Imprecision</a><ul><li><a href="#Why-is-21024-Undefined">Why is 2^1024 Undefined?</a></li><li><a href="#Why-is-253-(253-+-1)-equal-to-0">Why is 2^53 - (2^53 + 1) equal to 0?</a></li><li><a href="#What-about-the-weird-251-+-x2-251-staircase">What about the weird 2^51 + x^2 - 2^51 staircase?</a></li></ul></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Floating Point Numbers in Desmos</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a>
+            </li>
+          
+        </ul>
+        
+          <h2 id="The-Problem">The Problem<a class="link-to-header" href="#The-Problem"> #</a></h2>
+<p>If you've used Desmos for a while, you may have encountered strange behavior like this:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Why is this undefined?&quot;},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;2^{1024}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Why is this 0?&quot;},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;2^{53}-\\left(2^{53}+1\\right)&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;5&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Why does this graph produce a weird staircase?&quot;},{&quot;id&quot;:&quot;6&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;2^{51}+x^{2}-2^{51}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<p>All of these bugs are actually caused by the same underlying issue: <strong>Floating Point Imprecision</strong></p>
+<h2 id="What-are-Floating-Point-Numbers">What are Floating Point Numbers?<a class="link-to-header" href="#What-are-Floating-Point-Numbers"> #</a></h2>
+<p>To understand floating point imprecision, you have to understand floating point numbers. If you want a more in-depth explanation of how these numbers work, see <a href="https://en.wikipedia.org/wiki/Floating-point_arithmetic">this Wikipedia article</a>.</p>
+<h3 id="Binary-Numbers">Binary Numbers<a class="link-to-header" href="#Binary-Numbers"> #</a></h3>
+<p>We work with decimal, or base-10 numbers— there are ten symbols we use to represent these numbers: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. When we chain digits together to make larger numbers, we use powers of ten for place value. For instance, 384 is <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="3\cdot 10^{2}+8\cdot 10^{1}+4\cdot 10^{0}" data-settings="{}"></span></span>.</p>
+<p>Computers, on the other hand, work in binary, or base-2 numbers. There are only two symbols they use: 0 and 1. When we chain digits together in binaery, we use powers of <em>two</em> for place value, not powers of <em>ten</em>. Binary can represent the exact same numbers as decimal. It just represents them differently. For example, 384 in binary is represented as the number 110000000, which can be thought of to be expanded as <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="1\cdot 2^{8}+1\cdot 2^{7}+0\cdot 2^{6}+0\cdot 2^{5}+0\cdot 2^{4}+0\cdot 2^{3}+0\cdot 2^{2}+0\cdot 2^{1}+0\cdot 2^{0}" data-settings="{}"></span></span>.</p>
+<h3 id="Integers">Integers<a class="link-to-header" href="#Integers"> #</a></h3>
+<p>The simplest values that computers can represent are integers. For the purposes of this explanation, these can be thought of establishing a one-to-one correspondence between <em>sequences of bytes</em> and <em>whole numbers</em>. For instance, the binary sequence 00000000 could represent the number 0; the sequence 00000001 could represent 1, the sequence 00000010 could represent 2, et cetera. The number of bytes allowed in the sequence is generally fixed. When you hear about "8-bit" numbers, that means that eight bits (binary digits) of data are included in the number. Because each bit doubles the number of possible binary sequences, there are <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2\cdot 2\cdot 2\cdot 2\cdot 2\cdot 2\cdot 2\cdot 2=2^{8}=256" data-settings="{}"></span></span> possible 8-bit numbers. Generally, since the representation of these numbers counts up from 0, 8-bit numbers can range from 0 to 255. This limit to how big or small a number can be is the most important concept here, because it is precisely what causes all of the floating point errors you saw at the start of this article.</p>
+<h4 id="Signed-Integers">Signed Integers<a class="link-to-header" href="#Signed-Integers"> #</a></h4>
+<p>Integers can also be <em>signed</em>, which means that they allow for negative numbers. The simplest way of doing this is to simply designate one of the bits as a "sign bit." If the bit is 1, the number represents a negative number. If the bit is 0, it represents a positive number. The most common approach in use today for integers, however, is <a href="https://en.wikipedia.org/wiki/Two%27s_complement">the "two's complement" approach</a>. Under this approach, a signed 8-bit generally ranges from -128 to 127. Notice how even though the range has been shifted, the integer can still store <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{8}=256" data-settings="{}"></span></span> distinct values.</p>
+<h3 id="Floating-Point-Numbers">Floating Point-Numbers<a class="link-to-header" href="#Floating-Point-Numbers"> #</a></h3>
+<p>The problem with integers, however, is that they can't represent numbers like 1.5, which are <em>between</em> two integers. <em>Floating-point numbers</em> are designed to get around this limitation. You can think of them like scientific notation: In scientific notation, we represent numbers using a mantissa to represent the "number" part and an exponent to represent what order of magnitude the number lies in. For instance <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="1.234\cdot 10^{-6}" data-settings="{}"></span></span> is <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="0.000001234" data-settings="{}"></span></span>. The mantissa is 1.234 and the exponent is -6.</p>
+<p>Floating-point numbers do the exact same thing, except the exponent is a signed binary integer as described above, and the exponent represents a <em>power of two</em>, not a <em>power of ten</em>. The mantissa is a bit weirder, being a "normalized" integer that is divided such that it always is in the range [1, 2). In practice, it can't get infinitesimally close to 2, due to the limited precision of the mantissa. Think of this like how the mantissa in scientific notation ranges from [1, 10)— if this range actually included 10, we could just change it back to 1 and increase the exponent, so why include anything greater than 10? Similarly, if we had the mantissa be 0.9, we could simply just set it to 9 and decrease the exponent by 1. Restricting it to this range means that there is only <em>one</em> valid representation of a given number in scientific notation.</p>
+<p>Desmos in particular uses what are called "IEEE-754 double-precision floating point numbers," which are 64 bits in size. 53 bits are used for the mantissa (52 for the actual data, 1 for the sign) and 11 are used for the exponent.</p>
+<h2 id="Floating-Point-Imprecision">Floating Point Imprecision<a class="link-to-header" href="#Floating-Point-Imprecision"> #</a></h2>
+<h3 id="Why-is-21024-Undefined">Why is 2^1024 Undefined?<a class="link-to-header" href="#Why-is-21024-Undefined"> #</a></h3>
+<p>I hope you can see the problem here now. Because the exponent of Desmos's floating pooint numbers is a 11-bit signed integer, it can represent <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{11}=2048" data-settings="{}"></span></span> values. These values range from -1024 to 1023, because it is a signed number. The highest number the mantissa can represent is <em>just under two</em>. Therefore, the largest number that can be represented in Desmos is <em>approximately</em> <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{1023}\cdot 1.999999999999999" data-settings="{}"></span></span>. This is <em>just under</em> <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{1024}" data-settings="{}"></span></span>. <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{1024}" data-settings="{}"></span></span> is just <em>barely</em> out of the range of representable values. Since it is out of range, it is instead treated as "undefined."</p>
+<h3 id="Why-is-253-(253-+-1)-equal-to-0">Why is 2^53 - (2^53 + 1) equal to 0?<a class="link-to-header" href="#Why-is-253-(253-+-1)-equal-to-0"> #</a></h3>
+<p>The previous issue was due to lack of precision in the exponent. This one is due to lack of precision in the mantissa. Consider the integer <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}" data-settings="{}"></span></span>. Because we want the mantissa to stay between 1 and 2, the exponent of <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}" data-settings="{}"></span></span> in this case would be <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="53" data-settings="{}"></span></span>. The mantissa would thus be <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="1" data-settings="{}"></span></span>.</p>
+<p>However, remember that the unsigned part of the mantissa only stores 52 bits. The most significant bit represents the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{52}" data-settings="{}"></span></span>s place due to our exponent of <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="53" data-settings="{}"></span></span>. The next bit represents the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{51}" data-settings="{}"></span></span>s bit. The next represents the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{50}" data-settings="{}"></span></span>s bit. If we continue this pattern for all the 52 bits of the mantissa, the <em>least significant bit</em> in the mantissa ends up representing the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{1}" data-settings="{}"></span></span>s place, or, in other words, the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2" data-settings="{}"></span></span>s. place. As a consequence, when working with numbers as large as <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}" data-settings="{}"></span></span>, making the smallest possible change to the mantissa will either increase or decrease our number by 2. What this means is that we can <em>only represent multiples of 2</em>.</p>
+<p>Ultimately, what this means is that <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}+1" data-settings="{}"></span></span> <em>cannot</em> be represented as a floating-point number in Desmos, because it is larger than <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}" data-settings="{}"></span></span> yet isn't a multiple of 2. It's instead rounded down back to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}" data-settings="{}"></span></span>. And as a result, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}+1" data-settings="{}"></span></span> is equal to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}" data-settings="{}"></span></span>.</p>
+<p>Because of this, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}-\left(2^{53}+1\right)" data-settings="{}"></span></span> evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}-2^{53}" data-settings="{}"></span></span>, which evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="0" data-settings="{}"></span></span>.</p>
+<p>Exercise for the reader: What do you think would happen if you were to replace the 1 with a 2 to get <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="2^{53}-\left(2^{53}+2\right)" data-settings="{}"></span></span>?</p>
+<h3 id="What-about-the-weird-251-+-x2-251-staircase">What about the weird 2^51 + x^2 - 2^51 staircase?<a class="link-to-header" href="#What-about-the-weird-251-+-x2-251-staircase"> #</a></h3>
+<p>This happens for essentially the same reason as the previous example. Adding a very large floating point number to a very small floating point number effectively rounds off the less-significant bits of the mantissa in the smaller number. So, as a result, when we subtract the large number again to get the parabola back at the origin, it appears to have a strange "stairstep" effect.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

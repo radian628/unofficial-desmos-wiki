@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Piecewises</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Piecewises</span>
+        <ul><li><a href="#Branching">Branching</a></li><li><a href="#Left-to-right-Evaluation">Left-to-right Evaluation</a></li><li><a href="#Default-Values-and-Domain-Restrictions">Default Values and Domain Restrictions</a></li><li><a href="#Logical-Operators">Logical Operators</a><ul><li><a href="#AND">AND</a></li><li><a href="#OR">OR</a></li><li><a href="#NOT">NOT</a></li><li><a href="#Logical-Operators-with-Clever-Conditions">Logical Operators with Clever Conditions</a><ul><li><a href="#AND">AND</a></li><li><a href="#OR">OR</a></li><li><a href="#NOT">NOT</a></li></ul></li></ul></li><li><a href="#Use-with-Actions">Use with Actions</a></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Piecewises</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a>
+            </li>
+          
+        </ul>
+        
+          <p>Piecewise functions are the "if-statements" of Desmos, allowing you to add arbitrary conditional logic to your Desmos expressions.</p>
+<h2 id="Branching">Branching<a class="link-to-header" href="#Branching"> #</a></h2>
+<p>Piecewises can be used to add multiple "branches" to a Desmos expression, choosing which expression to evaluate based on a comparison. For instance, this piecewise evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="x" data-settings="{}"></span></span> if <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="x" data-settings="{}"></span></span> is greater than 0, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="-x" data-settings="{}"></span></span> if <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="x" data-settings="{}"></span></span> is less than 0, and 0 if neither of these conditions apply.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a_{bsoluteValue}\left(x\right)=\left\{x>0:x,x<0:-x,0\right\}" data-settings="{}"></span></span></p>
+<h2 id="Left-to-right-Evaluation">Left-to-right Evaluation<a class="link-to-header" href="#Left-to-right-Evaluation"> #</a></h2>
+<p>Piecewises are evaluated left-to-right. That is, they will try the leftmost condition first, then the next one, then the next one, then the next one, et cetera. That means that if you have more than one true condition in a piecewise, only the first one will be chosen.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left\{1=2:2,5=5:3,10=10:4\right\}" data-settings="{}"></span></span></p>
+<p>This example, for instance, evaluates to 3, even though the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="10=10: 4" data-settings="{}"></span></span> branch would suggest that it could evaluate to 4. This is because the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="5=5: 3" data-settings="{}"></span></span> branch is the leftmost true branch.</p>
+<h2 id="Default-Values-and-Domain-Restrictions">Default Values and Domain Restrictions<a class="link-to-header" href="#Default-Values-and-Domain-Restrictions"> #</a></h2>
+<p>Piecewises have special behavior if the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex=":" data-settings="{}"></span></span> is omitted, allowing them to be used as domain restrictions. Consider the following graph:</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;y=x\\cdot \\left\\{x>-2\\right\\}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<p>The line is drawn only where <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="x" data-settings="{}"></span></span> is greater than -2. This is possible because— without anything after the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex=":" data-settings="{}"></span></span> to evaluate to, the piecewise defaults to evaluating to 1, effectively keeping its input the same under multiplication. However, if no condition is given <em>and</em> there is no fallback branch at the end without a condition, the piecewise will default to NaN (Not a Number) instead. NaN multiplied by anything is also NaN, so the line disappears.</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;No ':', so this evaluates to 1.&quot;},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left\\{1=1\\right\\}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;No fallback, so this evaluates to NaN.&quot;},{&quot;id&quot;:&quot;4&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left\\{1=2\\right\\}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;5&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;A fallback exists, so this evaluates to 3.&quot;},{&quot;id&quot;:&quot;6&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left\\{1=2,3\\right\\}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<h2 id="Logical-Operators">Logical Operators<a class="link-to-header" href="#Logical-Operators"> #</a></h2>
+<p>Unfortunately, Desmos doesn't support logical operators (AND, OR, NOT, etc.) natively. However, you can emulate them by nesting piecewises. For simplicity's sake, the first condition in these examples will be notated <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a=b" data-settings="{}"></span></span> and the second will be notated <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="c=d" data-settings="{}"></span></span>, but these could really be any conditions. <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="T" data-settings="{}"></span></span> represents the value to return if true; <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="F" data-settings="{}"></span></span> represents what to return if false.</p>
+<h3 id="AND">AND<a class="link-to-header" href="#AND"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left\{ \left\{a=b\right\}\left\{c=d\right\}=1: T, F \right\}" data-settings="{}"></span></span></p>
+<h3 id="OR">OR<a class="link-to-header" href="#OR"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left\{\left\{a=b,c=d\right\}=1:T,F\right\}" data-settings="{}"></span></span></p>
+<h3 id="NOT">NOT<a class="link-to-header" href="#NOT"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left\{a=b:F,T\right\}" data-settings="{}"></span></span></p>
+<h3 id="Logical-Operators-with-Clever-Conditions">Logical Operators with Clever Conditions<a class="link-to-header" href="#Logical-Operators-with-Clever-Conditions"> #</a></h3>
+<p>Alternatively, you can define your own custom boolean type where (for example) 0 represents "false" and 1 represents "true". With numbers representing booleans, you can create logical operators accordingly and use them in piecewises by testing if a value is equal to 1 or 0.</p>
+<h4 id="AND">AND<a class="link-to-header" href="#AND"> #</a></h4>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a_{nd}\left(p,q\right)=p\cdot q" data-settings="{}"></span></span></p>
+<h4 id="OR">OR<a class="link-to-header" href="#OR"> #</a></h4>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="o_{r}\left(p,q\right)=\operatorname{min}\left(p+q,1\right)" data-settings="{}"></span></span></p>
+<h4 id="NOT">NOT<a class="link-to-header" href="#NOT"> #</a></h4>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="n_{ot}\left(p\right)=1-p" data-settings="{}"></span></span></p>
+<h2 id="Use-with-Actions">Use with Actions<a class="link-to-header" href="#Use-with-Actions"> #</a></h2>
+<p>Actions can be placed within piecewises to cause them to run conditionally. For instance, try using the following piecewise action, which will increment <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a" data-settings="{}"></span></span> until it reaches 3.</p>
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;a=0&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left\\{a<3:a\\to a+1\\right\\}&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+<p>Multiple actions can be encased in a piecewise, but take care to surround them with parentheses where necessary. These two actions mean different things:</p>
+<p>In this first one, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="b\to 1" data-settings="{}"></span></span> is the fallback condition that runs if the condition is false.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left\{a=1:a\to 0,b\to 1\right\}" data-settings="{}"></span></span></p>
+<p>In this second one, both actions run when <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a=1" data-settings="{}"></span></span>, and nothing runs if that's false.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left\{a=1:\left(a\to 0,b\to 1\right)\right\}" data-settings="{}"></span></span></p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Development</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Development</span>
+        <ul><li><a href="#Where-to-Contribute">Where to Contribute</a></li><li><a href="#Contribution-Philosophy">Contribution Philosophy</a></li><li><a href="#How-to-Contribute">How to Contribute</a><ul><li><a href="#Prerequisites">Prerequisites</a></li><li><a href="#Steps-to-Contribute">Steps to Contribute</a></li></ul></li><li><a href="#How-do-I-make-a-page">How do I make a page?</a><ul><li><a href="#I-like-to-learn-by-example!">I like to learn by example!</a></li><li><a href="#Shortcodes">Shortcodes</a></li><li><a href="#Crosslinks">Crosslinks</a><ul><li><a href="#Internal-Crosslinks">Internal Crosslinks</a></li><li><a href="#External-Crosslinks">External Crosslinks</a></li></ul></li><li><a href="#Tags">Tags</a><ul><li><a href="#Explanation">Explanation</a></li><li><a href="#Guide">Guide</a></li></ul></li></ul></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Development</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/meta/">meta</a>
+            </li>
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a>
+            </li>
+          
+        </ul>
+        
+          <h2 id="Where-to-Contribute">Where to Contribute<a class="link-to-header" href="#Where-to-Contribute"> #</a></h2>
+<div class="big-text">
+<p><a href="https://github.com/radian628/unofficial-desmos-wiki">This GitHub Repository!</a></p>
+</div>
+<h2 id="Contribution-Philosophy">Contribution Philosophy<a class="link-to-header" href="#Contribution-Philosophy"> #</a></h2>
+<p>This site doesn't have very high standards. We'll basically take anything you throw at us, whether that be articles, article ideas, complaints about articles, et cetera. Don't feel the need to ask for permission or dismiss your own ability to write for this wiki. As long as you can imagine someone using your article to help make a Desmos graph or some form of tooling for Desmos, it's 100% welcome here. And if you're not sure, open an <a href="https://github.com/radian628/unofficial-desmos-wiki/issues">issue</a> here. Even unfinished articles or article ideas are completely fine. <a href="https://en.wikipedia.org/wiki/Wikipedia:Be_bold">This editing philosophy was inspired by Wikipedia's "Be Bold" policy on edits.</a></p>
+<h2 id="How-to-Contribute">How to Contribute<a class="link-to-header" href="#How-to-Contribute"> #</a></h2>
+<p>This is a guide for how to contribute to the wiki. It's geared toward people with little programming experience, if any. If you're already an experienced programmer and have NodeJS installed, all you really need to know is that:</p>
+<ol>
+<li>To build it, you need to do <code>npm i</code> and <code>npm run serve</code>.</li>
+<li>There's some custom shortcodes and macros and whatnot that this site uses. These are described in the "How do I make a page?" section.</li>
+<li>Contributions are accepted through PRs and commits to <a href="https://github.com/radian628/unofficial-desmos-wiki">this GitHub repository</a>.</li>
+</ol>
+<h3 id="Prerequisites">Prerequisites<a class="link-to-header" href="#Prerequisites"> #</a></h3>
+<ul>
+<li>Some form of Git client (If you're not sure, I recommend <a href="https://desktop.github.com/">GitHub Desktop</a>) for sending over your changes.</li>
+<li>A GitHub account. The site is hosted on GitHub.</li>
+<li>Some kind of code editor for editing the files that make up the website. I recommend <a href="https://code.visualstudio.com/">VSCode</a> if you're not sure what to choose.</li>
+<li>(REQUIRED for MacOS and Linux, OPTIONAL for Windows) NodeJS and NPM, which can both be installed <a href="https://nodejs.org/">by downloading NodeJS from here</a>.</li>
+</ul>
+<h3 id="Steps-to-Contribute">Steps to Contribute<a class="link-to-header" href="#Steps-to-Contribute"> #</a></h3>
+<p>The steps below assume that you are using GitHub Desktop. However, if you know what you're doing with Git then that shouldn't matter.</p>
+<ol>
+<li>Fork <a href="https://github.com/radian628/unofficial-desmos-wiki">this repository</a>. It contains all the code that's used to generate the site.
+<img src="../../img/meta/fork.png" alt="Image of the 'fork' button on the radian628/unofficial-desmos-wiki repository page"></li>
+<li>Clone the repository.</li>
+</ol>
+<div class="side-by-side">
+<p><img src="../../img/meta/clone1.png" alt="Image of the 'Clone repository' option in the GitHub Desktop dropdown"></p>
+<p><img src="../../img/meta/clone2.png" alt="Searching the word 'unofficial' in the GitHub Desktop repository list. The repository found is listed as 'radian628/unofficial-desmos-wiki'"></p>
+</div>
+<p>(note: If you clone your fork, this should say <code>YOURUSERNAME/unofficial-desmos-wiki</code> where <code>YOURUSERNAME</code> is your GitHub username)</p>
+<ol start="3">
+<li>Install dependencies. If you're on Windows, run the file <code>init.ps1</code>, which will open a terminal that installs NodeJS, NPM, and all the dependencies of the project. It will then generate a local copy the website.
+On any other platform (or if you already have NodeJS and NPM installed), you can alternatively run <code>npm i</code> to install dependencies and <code>npm run serve</code> to generate the website. This will require that you have NodeJS and NPM installed beforehand (as per the prerequisites listed above)</li>
+<li>The terminal will tell you where the server is running. This should be a localhost URL— e.g. http://localhost:8080. Open that URL in your browser to view the local copy of the site.</li>
+<li>Make your changes. The site in the browser will update to reflect the changes you made. <em>See the "How do I make a page?" section below for more details on how to make changes.</em></li>
+<li>Upload your changes back to your fork on GitHub by committing and then pushing.</li>
+</ol>
+<div class="side-by-side">
+<p><img src="../../img/meta/commit.png" alt="The GitHub Desktop commit screen with staged changes. The commit summary is listed as &quot;you need a summary to commit!&quot;"></p>
+<p><img src="../../img/meta/push.png" alt="The &quot;push origin&quot; button in GitHub Desktop"></p>
+</div>
+<ol start="7">
+<li>Submit a <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">pull request</a>.</li>
+</ol>
+<h2 id="How-do-I-make-a-page">How do I make a page?<a class="link-to-header" href="#How-do-I-make-a-page"> #</a></h2>
+<p>This site uses <a href="https://11ty.dev/">11ty</a> for static site generation with the <a href="https://shopify.github.io/liquid/">Liquid</a> templating engine.</p>
+<p>All of the pages that make up the site are <a href="https://www.markdownguide.org/">Markdown</a> (<code>.md</code>) files under the <code>src</code> directory. Create a file ending in <code>.md</code> there. I recommend looking at other <code>.md</code> files to get a sense of the syntax and how it's used.</p>
+<p>All files use Markdown for syntax (with HTML support) with YAML Front Matter for site navigation and metadata (e.g. page titles). Learning YAML syntax doesn't matter all that much— you can probably infer how the Front Matter should look based on how it looks on most pages. Front Matter is the stuff delimited by <code>---</code>s at the start of the pages.</p>
+<h3 id="I-like-to-learn-by-example!">I like to learn by example!<a class="link-to-header" href="#I-like-to-learn-by-example!"> #</a></h3>
+<p>Here's <a href="../example/">an example page</a> and its <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/src/meta/example.md">source</a>.</p>
+<h3 id="Shortcodes">Shortcodes<a class="link-to-header" href="#Shortcodes"> #</a></h3>
+<p>Use shortcodes to embed Desmos content and equations into pages. This wiki uses <a href="https://github.com/radian628/11ty-desmos">11ty-desmos</a> for embedding Desmos content.</p>
+<p>When in doubt, look over other pages to see how they're using the shortcodes.</p>
+<h3 id="Crosslinks">Crosslinks<a class="link-to-header" href="#Crosslinks"> #</a></h3>
+<p>Crosslinks come in two forms: Internal crosslinks, and external crosslinks.</p>
+<h4 id="Internal-Crosslinks">Internal Crosslinks<a class="link-to-header" href="#Internal-Crosslinks"> #</a></h4>
+<p>Any page can define a <code>crosslinks</code> frontmatter attribute that denotes a list of phrases that will be converted into links to that page fully automatically. As more pages are added, including ones that might have names that correspond to common words, this auto-crosslinking behavior may be revised, with auto-crosslinks being treated more like external crosslinks.</p>
+<h4 id="External-Crosslinks">External Crosslinks<a class="link-to-header" href="#External-Crosslinks"> #</a></h4>
+<p>External crosslinks (crosslinks to other sites) are specified in a <code>crosslinks.json</code> file in the root directory of this repository. Any phrase surrounded by double parens which corresponds to a key in <code>crosslinks.json</code> will be turned into a crosslink, similar to what Wikipedia does with double brackets (double brackets aren't used here because they mess up Markdown syntax highlighting). As an example, <code>((list))</code> becomes <a href="https://help.desmos.com/hc/en-us/articles/4407889068557-Lists">list</a>.</p>
+<h3 id="Tags">Tags<a class="link-to-header" href="#Tags"> #</a></h3>
+<p>This wiki uses tags to organize pages. See the <a href="/">main page</a> for a list of all the tags in use. You can also create your own tags if you deem it necessary.</p>
+<p>Remember that even if an article you make seems ambiguous, don't overthink tagging. We can always change the tags later if necessary.</p>
+<p>There's a few tags in use in this site that have some potential to be confused:</p>
+<h4 id="Explanation">Explanation<a class="link-to-header" href="#Explanation"> #</a></h4>
+<p>Use this tag for a page that explains some concept in a more theoretical sense. For instance, the <a href="/unofficial-desmos-wiki/list-manipulation/broadcasting/">broadcasting</a> article falls into this category because it explains how a more general technique works.</p>
+<h4 id="Guide">Guide<a class="link-to-header" href="#Guide"> #</a></h4>
+<p>Use this tag for a page that explains some concept in a more practical sense— The <a href="../../3d/">Guide to 3D</a> article falls into this category because it walks the user through creating a specific graph.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

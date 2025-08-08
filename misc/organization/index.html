@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Organizing Graphs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Organizing Graphs</span>
+        <ul><li><a href="#It's-a-lot-like-programming">It's a lot like programming</a><ul><li><a href="#Use-Descriptive-Variable-Names">Use Descriptive Variable Names</a></li><li><a href="#The-DRY-(Don't-Repeat-Yourself)-Principle">The DRY (Don't Repeat Yourself) Principle</a></li><li><a href="#Use-Folders">Use Folders</a></li><li><a href="#Build-Scripts">Build Scripts</a></li></ul></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Organizing Graphs</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/guide/">guide</a>
+            </li>
+          
+        </ul>
+        
+          <p>This is a guide on how to organize your larger graphs.</p>
+<h2 id="It's-a-lot-like-programming">It's a lot like programming<a class="link-to-header" href="#It's-a-lot-like-programming"> #</a></h2>
+<p>Organizing graphs is a lot like organizing code. As such, many of the same tips apply. If you're a programmer and you treat Desmos like you're organizing a codebase, you will likely achieve great success in doing so.</p>
+<h3 id="Use-Descriptive-Variable-Names">Use Descriptive Variable Names<a class="link-to-header" href="#Use-Descriptive-Variable-Names"> #</a></h3>
+<p>With Desmos's status as a "mathematics" tool, it can be tempting to use single-letter variable names, like you may often see in mathematical equations. However, this hinders your graph's readability considerably, especially if it's large. How are you going to remember what any of these variables mean a week from now, especially if there are 30 of them?</p>
+<p>The solution is to use subscripted variables. If you type an underscore (<code>_</code>) after a single-letter variable name, you will go into "subscript" mode. You can put any combination of numbers and letters into the subscript. For instance, if you type <code>t_est</code> (just to be clear, you have to <em>type</em> this, not copy-and-paste), you will get the variable name <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t_{est}" data-settings="{}"></span></span>. With the ability to use subscripts, you can now write variable names that consist of entire words, allowing them to be descriptive and thus more memorable. To be clear, variables with the same starting letter but different subscripts are different variables (and vice-versa). For instance, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t_{est}" data-settings="{}"></span></span>, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="t_{123}" data-settings="{}"></span></span>, and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="b_{est}" data-settings="{}"></span></span> are all different variables.</p>
+<p>Of course, there are downsides to this strategy: These variables take far longer to type out and take up more space. Both issues can be partially remedied with tools like <a href="https://desmodder.com">DesModder</a>. <a href="/unofficial-desmos-wiki/tools/desmodder/">DesModder</a> has Intellisense features that can auto-complete these long variable names, and has plugins like Multiline Expressions and Compact View for allowing you to see more expressions on the screen at once, mitigating the issue of space usage.</p>
+<h3 id="The-DRY-(Don't-Repeat-Yourself)-Principle">The DRY (Don't Repeat Yourself) Principle<a class="link-to-header" href="#The-DRY-(Don't-Repeat-Yourself)-Principle"> #</a></h3>
+<p>This is a big one. One of the major tenets of programming is to avoid repeating yourself. If you repeat yourself, you:</p>
+<ol>
+<li>Add extra work for yourself copying and pasting.</li>
+<li>Miss out on the opportunity of abstracting away common patterns in your code.</li>
+<li>Make more work for yourself when you have to change something (because you then must change all of its copies).</li>
+</ol>
+<p>When applied to Desmos, you can apply the DRY principle by:</p>
+<ul>
+<li>Putting common behavior in functions.</li>
+<li>Making use of <a href="/unofficial-desmos-wiki/misc/wackscope/">wackscopes</a> to avoid duplicating sub-expressions within functions.</li>
+<li>Writing build scripts to generate Desmos code at compile time. (this will be elaborated on later)</li>
+</ul>
+<h3 id="Use-Folders">Use Folders<a class="link-to-header" href="#Use-Folders"> #</a></h3>
+<p>One of the most powerful tools you have for organizing Desmos graphs is folders. Folders can be created by typing the word <code>folder</code> into an expression box, or by using the "+" dropdown in the top left of the expressions panel. They can then be given a descriptive name and then be filled with relevant expressions.</p>
+<h3 id="Build-Scripts">Build Scripts<a class="link-to-header" href="#Build-Scripts"> #</a></h3>
+<p>In some rare cases, your graph may require things that are unavoidably inconvenient to do in regular Desmos. For instance, you might need to frequently use functions nested with themselves many times (i.e. something like <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="f\left(f\left(f\left(f\left(f\left(f\left(x\right)\right)\right)\right)\right)\right)" data-settings="{}"></span></span>). This is annoying to type out, especially if you have to do it with several different functions or find that you have to switch it to a different function.</p>
+<p>Another case of unavoidable inconvenience is when your graph has to load external resources, such as SVG images or 3D models. These are generally impracticably annoying to import by hand.</p>
+<p>To simplify these sorts of cases, you can avoid writing them out altogether and instead use an external script. The simplest way to do this is to use the <a href="https://www.desmos.com/api/v1.8/docs/index.html">API</a> function <code>Calc.setExpression</code> to create expressions. If you want to generate an entire graph from code, use the <code>Calc.getState</code> function to get the entire state of a graph, modify it to your liking, and then use <code>Calc.setState</code> to put it back with your changes.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

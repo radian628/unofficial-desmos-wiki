@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Things Desmos Can't Do (Yet)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Things Desmos Can't Do (Yet)</span>
+        <ul><li><a href="#Generalized-iteration">Generalized iteration</a></li><li><a href="#Lists-of-Lists-(Nested-Lists)">Lists of Lists (Nested Lists)</a><ul><li><a href="#Polygon-.vertices">Polygon .vertices</a></li><li><a href="#Higher-dimensional-indexing">Higher-dimensional indexing</a></li></ul></li><li><a href="#Lists-greater-than-10000-elements-long">Lists greater than 10000 elements long</a></li><li><a href="#Matrices">Matrices</a></li><li><a href="#Current-ViewportGraphpaper-Bounds-Variables">Current Viewport/Graphpaper Bounds Variables</a><ul><li><a href="#Orientation-Variables-(3D-Calculator)">Orientation Variables (3D Calculator)</a></li></ul></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Things Desmos Can't Do (Yet)</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a>
+            </li>
+          
+        </ul>
+        
+          <p>There are a lot of things that seem like they <em>should</em> be possible in Desmos, but aren't. These are listed below, along with explanations as to why they don't work and (in some cases) partial fixes.</p>
+<h2 id="Generalized-iteration">Generalized iteration<a class="link-to-header" href="#Generalized-iteration"> #</a></h2>
+<p>Desmos does not support generalized iteration without actions. List comprehensions and recursion can be used to achieve almost complete iteration without actions.</p>
+<h2 id="Lists-of-Lists-(Nested-Lists)">Lists of Lists (Nested Lists)<a class="link-to-header" href="#Lists-of-Lists-(Nested-Lists)"> #</a></h2>
+<p>Desmos does not support lists of lists, lists of lists of lists, or any other nesting of lists directly. However, there are a few partial workarounds for this:</p>
+<h3 id="Polygon-.vertices">Polygon .vertices<a class="link-to-header" href="#Polygon-.vertices"> #</a></h3>
+<p>Polygons in the <a href="https://www.desmos.com/geometry">geometry calculator</a> have a <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex=".\operatorname{vertices}" data-settings="{}"></span></span> property which can be used to access their points. Because polygons can themselves be put into lists, this feature can be used to access a <em>list of points</em> inside of a <em>list of polygons</em>. In other words, you have a <em>list of lists of points</em>.</p>
+<h3 id="Higher-dimensional-indexing">Higher-dimensional indexing<a class="link-to-header" href="#Higher-dimensional-indexing"> #</a></h3>
+<p>If your inner lists are all the same length, lists can be indexed in a multi-dimensional manner. For instance, for a list representing a 10 by 10 grid, you could use a 100-element list to store all the elements. Here is a function that, given such a list <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L" data-settings="{}"></span></span>, gets an item at a 2D position: <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="g_{etItem}\left(x,y\right)=L\left[1+\left(x-1\right)+\left(y-1\right)\cdot 10\right]" data-settings="{}"></span></span>. Note that we are trying to preserve Desmos's "indices start at 1" convention here.</p>
+<h2 id="Lists-greater-than-10000-elements-long">Lists greater than 10000 elements long<a class="link-to-header" href="#Lists-greater-than-10000-elements-long"> #</a></h2>
+<p>This does not work. However, there are <a href="../../list-manipulation/more-than-10k-elements/">many workarounds that allow for &gt;10000-element lists</a>. Do keep in mind that all of these have their own caveats.</p>
+<h2 id="Matrices">Matrices<a class="link-to-header" href="#Matrices"> #</a></h2>
+<p>Desmos does not support matrices outside of its (somewhat limited) <a href="https://www.desmos.com/matrix">Matrix Calculator</a>. However, you can emulate them with lists and implement the matrix operations yourself.</p>
+<h2 id="Current-ViewportGraphpaper-Bounds-Variables">Current Viewport/Graphpaper Bounds Variables<a class="link-to-header" href="#Current-ViewportGraphpaper-Bounds-Variables"> #</a></h2>
+<p>Desmos does not have a way of telling your graph where on the graphpaper the user has currently focused. The developers have cited flickering-related bugs as the main reason why they have not implemented this feature yet. The closest thing that exists are the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{width}" data-settings="{}"></span></span> and <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{height}" data-settings="{}"></span></span> variables, which get the size of the viewport in pixels. In practice, they're most useful for finding the aspect ratio (ratio of width to height) of the viewport and adjusting onscreen elements to work better on larger and smaller screens.</p>
+<p>Desmos <em>does</em> however let you control the viewport with variables, but this will also prvent the user from moving it themselves. Note that in the 3d calculator this only lets you control the graph bounds and not the actual camera position or orientation.</p>
+<h3 id="Orientation-Variables-(3D-Calculator)">Orientation Variables (3D Calculator)<a class="link-to-header" href="#Orientation-Variables-(3D-Calculator)"> #</a></h3>
+<p>In the <a href="https://www.desmos.com/3d">3D calculator</a>, Desmos does not have variables for determining the current camera orientation. As such, you cannot make graphs that change shape based on the direction in which the user is facing.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

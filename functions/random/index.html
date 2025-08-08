@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>random()</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">random()</span>
+        <ul><li><a href="#Before-we-Begin:-What-is-a-Random-Seed">Before we Begin: What is a Random Seed?</a><ul><li><a href="#What-are-seeds-for">What are seeds for?</a></li></ul></li><li><a href="#WARNING:-Seeds-are-weird-in-Desmos!">WARNING: Seeds are weird in Desmos!</a></li><li><a href="#random()">random()</a><ul><li><a href="#Explanation">Explanation</a></li><li><a href="#Examples">Examples</a></li></ul></li><li><a href="#random(count)">random(count)</a><ul><li><a href="#Explanation">Explanation</a></li><li><a href="#Examples">Examples</a></li></ul></li><li><a href="#random(count-seed)">random(count, seed)</a><ul><li><a href="#Explanation">Explanation</a></li><li><a href="#Examples">Examples</a></li></ul></li><li><a href="#random(list-count-seed)">random(list, count?, seed?)</a><ul><li><a href="#Explanation">Explanation</a></li><li><a href="#Examples">Examples</a></li></ul></li><li><a href="#random(distribution-count-seed)">random(distribution, count?, seed?)</a><ul><li><a href="#Explanation">Explanation</a></li><li><a href="#Examples">Examples</a></li></ul></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">random()</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/function/">function</a>
+            </li>
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/random/">random</a>
+            </li>
+          
+        </ul>
+        
+          <p>The <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\right)" data-settings="{}"></span></span> function in Desmos has many overloads (possible sets of parameters) that might make it confusing to use. These are as follows:</p>
+<h2 id="Before-we-Begin:-What-is-a-Random-Seed">Before we Begin: What is a Random Seed?<a class="link-to-header" href="#Before-we-Begin:-What-is-a-Random-Seed"> #</a></h2>
+<p>For the most part, randomness on a computer is not <em>truly</em> "random". Instead, these "random" functions tend to take in some sort of specific input, scramble it to the point of being unrecognizable, and then output the "scrambled" value as output. Crucially, if you have the same input, you will always get the same output. If the input <code>3</code> is scrambled to <code>0.3194380234</code>, then using <code>3</code> as the input to the random function will <em>always</em> give you <code>0.3194380234</code>. This input value <code>3</code> is referred to as the <em>seed</em>, because you're using it as a "seed" to "grow" the output random value. Just like the same seed produces the same kind of tree, the same seed in a random number generator should produce the same output.</p>
+<h3 id="What-are-seeds-for">What are seeds for?<a class="link-to-header" href="#What-are-seeds-for"> #</a></h3>
+<p>Seeds are nice if you want consistent, repeatable output.</p>
+<h2 id="WARNING:-Seeds-are-weird-in-Desmos!">WARNING: Seeds are weird in Desmos!<a class="link-to-header" href="#WARNING:-Seeds-are-weird-in-Desmos!"> #</a></h2>
+<div class="small-narrow-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\operatorname{random}\\left(1,1\\right)\\left[1\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\operatorname{random}\\left(1,1\\right)\\left[1\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+</div>
+<p>In Desmos, there are several overloads of the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\right)" data-settings="{}"></span></span> function that let you specify a seed. Keep in mind that these seeds are only local to <em>one specific call</em> of the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\right)" data-settings="{}"></span></span> function. What this means is that even if you use the same seed for two calls to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\right)" data-settings="{}"></span></span>, they will produce <em>different</em> outputs. See the graph for an example of this. Think of it as if the specific function call is part of the seed as well.</p>
+<p>In other words, you can still use seeds to keep <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\right)" data-settings="{}"></span></span> predictable, but don't expect <em>two different calls</em> to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\right)" data-settings="{}"></span></span> with the same seed to be the same. If you desire consistency, assign the random value to a variable and use <em>that</em> everywhere you need.</p>
+<p>Note that Desmos also uses a <a href="https://www.desmos.com/api/v1.8/docs/index.html#document-randomness">graph-wide random seed</a> to determine random values as well.</p>
+<h2 id="random()">random()<a class="link-to-header" href="#random()"> #</a></h2>
+<h3 id="Explanation">Explanation<a class="link-to-header" href="#Explanation"> #</a></h3>
+<p>This overload generates a random number between 0 and 1.</p>
+<h3 id="Examples">Examples<a class="link-to-header" href="#Examples"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\right)" data-settings="{}"></span></span></p>
+<h2 id="random(count)">random(count)<a class="link-to-header" href="#random(count)"> #</a></h2>
+<h3 id="Explanation">Explanation<a class="link-to-header" href="#Explanation"> #</a></h3>
+<p>This overload generates a list of <code>count</code> random numbers between 0 and 1.</p>
+<h3 id="Examples">Examples<a class="link-to-header" href="#Examples"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(5\right)" data-settings="{}"></span></span> - Generate five random numbers between 0 and 1.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(3\right)" data-settings="{}"></span></span> - Generate three random numbers between 0 and 1.</p>
+<h2 id="random(count-seed)">random(count, seed)<a class="link-to-header" href="#random(count-seed)"> #</a></h2>
+<h3 id="Explanation">Explanation<a class="link-to-header" href="#Explanation"> #</a></h3>
+<p>This overload generates a list of <code>count</code> random numbers between 0 and 1 using the random seed <code>seed</code>. Specifying a random seed allows the function to be used deterministically (i.e. the same inputs will always map to the same outputs).</p>
+<h3 id="Examples">Examples<a class="link-to-header" href="#Examples"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(3,1\right)" data-settings="{}"></span></span> - Generate three random numbers with the seed 1.</p>
+<h2 id="random(list-count-seed)">random(list, count?, seed?)<a class="link-to-header" href="#random(list-count-seed)"> #</a></h2>
+<h3 id="Explanation">Explanation<a class="link-to-header" href="#Explanation"> #</a></h3>
+<p>Pick <code>count</code> random numbers from a list <code>list</code>. If you omit the second parameter, this overload will output a single number instead of a list. You may optionally specify a seed.</p>
+<h3 id="Examples">Examples<a class="link-to-header" href="#Examples"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\left[1,3,5\right]\right)" data-settings="{}"></span></span> - Pick either 1, 3, or 5.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\left[1,3,5\right],10\right)" data-settings="{}"></span></span> - Create a list of 10 random numbers which can be 1, 3, or 5.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\left[1,3,5\right],1,10\right)" data-settings="{}"></span></span> - Pick either 1, 3, or 5 once, based on the seed 10.</p>
+<h2 id="random(distribution-count-seed)">random(distribution, count?, seed?)<a class="link-to-header" href="#random(distribution-count-seed)"> #</a></h2>
+<h3 id="Explanation">Explanation<a class="link-to-header" href="#Explanation"> #</a></h3>
+<p>Sample <code>count</code> random numbers from a distribution. If <code>count</code> is omitted, this function will output a number instead of a list.</p>
+<h3 id="Examples">Examples<a class="link-to-header" href="#Examples"> #</a></h3>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\operatorname{normaldist}\left(\right)\right)" data-settings="{}"></span></span> - Sample a value from a standard normal distribution.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\operatorname{normaldist}\left(\right),100\right)" data-settings="{}"></span></span> - Sample 100 values from a standard normal distribution.</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{random}\left(\operatorname{normaldist}\left(\right),100,5\right)" data-settings="{}"></span></span> - Sample 100 values from a standard normal distribution, with the seed 5.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

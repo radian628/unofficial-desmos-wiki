@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Example Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Example Page</span>
+        <ul><li><a href="#Markdown-Basics">Markdown Basics</a><ul><li><a href="#Text">Text</a></li><li><a href="#Italics-and-Bold">Italics & Bold</a></li><li><a href="#Links">Links</a></li><li><a href="#Lists">Lists</a></li><li><a href="#Header-3">Header 3</a><ul><li><a href="#Header-4">Header 4</a><ul><li><a href="#Header-5">Header 5</a><ul><li><a href="#Header-6">Header 6</a></li></ul></li></ul></li></ul></li></ul></li><li><a href="#Desmos-Embeds-and-Equations">Desmos Embeds and Equations</a><ul><li><a href="#Equations">Equations</a></li><li><a href="#LaTeX-Equations">LaTeX Equations</a></li><li><a href="#Desmos-Graphs">Desmos Graphs</a></li></ul></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Example Page</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/meta/">meta</a>
+            </li>
+          
+        </ul>
+        
+          <h2 id="Markdown-Basics">Markdown Basics<a class="link-to-header" href="#Markdown-Basics"> #</a></h2>
+<p><a href="https://www.markdownguide.org/">Look here</a> for a more complete guide to Markdown.</p>
+<h3 id="Text">Text<a class="link-to-header" href="#Text"> #</a></h3>
+<p>When you type text in Markdown, it's rendered as-is.</p>
+<h3 id="Italics-and-Bold">Italics &amp; Bold<a class="link-to-header" href="#Italics-and-Bold"> #</a></h3>
+<p><em>Italics</em> <code>*Italics*</code></p>
+<p><strong>Bold</strong> <code>**Bold**</code></p>
+<h3 id="Links">Links<a class="link-to-header" href="#Links"> #</a></h3>
+<p><a href="https://www.desmos.com/calculator">Hyperlink</a> <code>[Hyperlink](https://www.desmos.com/calculator)</code></p>
+<h3 id="Lists">Lists<a class="link-to-header" href="#Lists"> #</a></h3>
+<ul>
+<li>This</li>
+<li>is</li>
+<li>an</li>
+<li>unordered</li>
+<li>list</li>
+</ul>
+<pre><code class="language-md">- This
+- is
+- an
+- unordered
+- list
+</code></pre>
+<ol>
+<li>This</li>
+<li>is</li>
+<li>an</li>
+<li>ordered</li>
+<li>list</li>
+</ol>
+<pre><code class="language-md">1. This
+2. is
+3. an
+4. ordered
+5. list
+</code></pre>
+<h3 id="Header-3">Header 3<a class="link-to-header" href="#Header-3"> #</a></h3>
+<h4 id="Header-4">Header 4<a class="link-to-header" href="#Header-4"> #</a></h4>
+<h5 id="Header-5">Header 5<a class="link-to-header" href="#Header-5"> #</a></h5>
+<h6 id="Header-6">Header 6<a class="link-to-header" href="#Header-6"> #</a></h6>
+<h2 id="Desmos-Embeds-and-Equations">Desmos Embeds and Equations<a class="link-to-header" href="#Desmos-Embeds-and-Equations"> #</a></h2>
+<h3 id="Equations">Equations<a class="link-to-header" href="#Equations"> #</a></h3>
+<p>Generate the equation <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="y=x^{2}+1+\frac{\operatorname{sin}\left(x\right)}{2}" data-settings="{}"></span></span> with the code <code>{% mq 'y=x^2 + 1 + sin(x)/2' %}</code>. <a href="https://www.desmodder.com/text-mode/">Learn more about the equation syntax (called "Text Mode") here.</a>.</p>
+<h3 id="LaTeX-Equations">LaTeX Equations<a class="link-to-header" href="#LaTeX-Equations"> #</a></h3>
+<p>Text Mode may not be sufficient if you're trying to render incomplete equations. Fortunately, there is a <code>latex</code> shortcode that does just that:</p>
+<p><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="f\left(x\right)=" data-settings="{}"></span></span> is <code>{% latex 'f\\left(x\\right)=' %}</code></p>
+<h3 id="Desmos-Graphs">Desmos Graphs<a class="link-to-header" href="#Desmos-Graphs"> #</a></h3>
+<div class="small-narrow-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;\\left[\\left(a,b\\right)\\operatorname{for}a=\\left[1...3\\right],b=\\left[1...3\\right]\\right]&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+</div>
+<p>Use the <code>desmos</code> shortcode to render an entire Desmos graph. You can optionally surround the graph in a <code>&lt;div&gt;&lt;/div&gt;</code> element with some special CSS classes to control its size and coloring. These classes are:</p>
+<ul>
+<li><code>big-desmos</code> - Make the desmos embed take up approximately the entire screen.</li>
+<li><code>small-narrow-desmos</code> - Make the desmos embed take up a smaller amount and only be 50% width. Good for pairing with <code>float-right</code></li>
+<li><code>float-right</code> - Allow the text to "flow" around the Desmos embed, appearing side-by-side with it.</li>
+<li><code>tiny-desmos</code> - 50% width and very small size.</li>
+<li><code>dont-invert-colors</code> - By default, Desmos graphs in this site will adjust their coloring to match dark theme. However, this change also messes with all the colors on the graphpaper, which can be bad for graphs which need specific color information. Use this class to preserve the colors of things being graphed, aside from the graphpaper.</li>
+</ul>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

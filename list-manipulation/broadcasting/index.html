@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Broadcasting Explained</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Broadcasting Explained</span>
+        
+      </nav>
+      <main>
+        <h1 data-weight="0">Broadcasting Explained</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/list-manipulation/">list-manipulation</a>
+            </li>
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a>
+            </li>
+          
+        </ul>
+        
+          <p>Broadcasting is a feature in Desmos that allows for operations involving <a href="https://help.desmos.com/hc/en-us/articles/4407889068557-Lists">lists</a> that would normally not work with lists. In short, under certain contexts, operations on Desmos lists will instead be applied separately on each <em>element</em> of the list, before being merged back together in the same order to create a new list. This is best shown with an example.</p>
+<p>In an ordinary programming language, an expression like <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[1,2,3\right]+1" data-settings="{}"></span></span> would be an error— it doesn't usually make sense to add a <em>list of numbers</em> to a <em>number</em>. However, Desmos uses broadcasting to apply the addition operation to each element separately. As a result, <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[1,2,3\right]+1" data-settings="{}"></span></span> evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[2,3,4\right]" data-settings="{}"></span></span>. Broadcasting works on list-list operations too— <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[1,2,3\right]+\left[4,5,6\right]" data-settings="{}"></span></span> evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[5,7,9\right]" data-settings="{}"></span></span>, for example. Here are a few more examples:</p>
+<ul>
+<li><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[1,2,3\right]^{2}" data-settings="{}"></span></span> evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[1,4,9\right]" data-settings="{}"></span></span></li>
+<li><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{mod}\left(\left[1,2,3\right],2\right)" data-settings="{}"></span></span> evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[1,0,1\right]" data-settings="{}"></span></span></li>
+<li><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left(\left[2,3,4\right],\left[5,6,7\right]\right)" data-settings="{}"></span></span> evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[\left(2,5\right),\left(3,6\right),\left(4,7\right)\right]" data-settings="{}"></span></span></li>
+<li><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left\{\left[1,2,3\right]=2:10,\left[4,5,6\right]\right\}" data-settings="{}"></span></span> evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[4,10,6\right]" data-settings="{}"></span></span></li>
+</ul>
+<p>In some cases Desmos may end up broadcasting a list in <em>one</em> context, but <em>not</em> broadcast it in another context, even if both contexts exist within the <em>same expression</em>:</p>
+<ul>
+<li><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L=\left[1,2,10\right]" data-settings="{}"></span></span></li>
+<li><span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{max}\left(L\right)+L" data-settings="{}"></span></span></li>
+</ul>
+<p>The second expression here evaluates to <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\left[11,12,20\right]" data-settings="{}"></span></span>. In the <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{max}\left(L\right)" data-settings="{}"></span></span> portion, the list <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L" data-settings="{}"></span></span> is <em>not</em> being broadcasted when it's used in <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{max}" data-settings="{}"></span></span>, because <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="\operatorname{max}" data-settings="{}"></span></span> treats it as a list to retrieve its maximum element (in this case <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="10" data-settings="{}"></span></span>). However, when <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L" data-settings="{}"></span></span> is added to its maximum via the "<span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="+L" data-settings="{}"></span></span>" part, it <em>is</em> being broadcasted, because Desmos is trying to add a list to a number.</p>
+<p>In some rare cases, you might want to force Desmos to broadcast a list. In these case you can use a list comprehension with the list you want to force-broadcast as a parameter. However, these cases tend to be very rare, so don't do this by default.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>

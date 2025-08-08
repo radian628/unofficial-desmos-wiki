@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/unofficial-desmos-wiki/css/base.css" />
+    <title>Desmos for Programmers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    
+<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+
+<script defer>
+window.addEventListener("load", () => {
+  for (const e of document.getElementsByClassName("eleventy-desmos-mq-container")) {  
+    const staticMath = Desmos.MathQuill.StaticMath(e);
+    staticMath.latex(e.dataset.latex);
+    e.querySelector(".dcg-mq-root-block").style.display = "inline";
+
+    const settings = JSON.parse(e.dataset.settings);
+    if (settings.copyButton) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.toggle("eleventy-desmos-copy-button", true);
+      copyButton.innerText = "Copy to Clipboard"
+      e.parentElement.appendChild(copyButton);
+      copyButton.onclick = () => {
+        navigator.clipboard.writeText(e.dataset.latex);
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerHTML = "Copy to Clipboard";
+        }, 750);
+      }
+    }
+  }
+
+  for (const e of document.getElementsByClassName("eleventy-desmos-dcg-container")) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      if (!Array.from(entries).some(e => e.isIntersecting)) return;
+      const Calc = Desmos.GraphingCalculator(e, JSON.parse(e.dataset.settings));
+      Calc.setState(JSON.parse(e.dataset.state))
+      observer.disconnect()
+    });
+    observer.observe(e, { threshold: 0.01 });
+  }
+
+})</script>
+    
+    <script src="/unofficial-desmos-wiki/pagefind/pagefind-ui.js"></script>
+  </head>
+  <body>
+    <header class="header-side-by-side">
+      <a href="/unofficial-desmos-wiki/">
+        <div class="site-name">Desmos Wiki
+          <span class="unofficial">(Unofficial)</span>
+        </div>
+      </a>
+      <div id="searchbar"></div>
+      <script>
+        new PagefindUI({ element: "#searchbar"})
+      </script>
+      <button id="light-dark-toggle"></button>
+    </header>
+    <div class="main-content-side-by-side">
+      <nav class="header-nav">
+        <span class="header-nav-title">Desmos for Programmers</span>
+        <ul><li><a href="#Desmos-as-a-Functional-Programming-Language">Desmos as a Functional Programming Language</a></li><li><a href="#Lists-are-one-indexed">Lists are one-indexed</a></li><li><a href="#Numbers-are-usually-double-precision-floating-point">Numbers are usually double-precision floating point</a></li><li><a href="#Scoping-is-really-weird">Scoping is really weird</a></li><li><a href="#Actions-are-simultaneous-not-sequential">Actions are simultaneous, not sequential</a></li></ul>
+      </nav>
+      <main>
+        <h1 data-weight="0">Desmos for Programmers</h1>
+        <ul class="tags">
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/guide/">guide</a>
+            </li>
+          
+            <li class="tag">
+              <a href="/unofficial-desmos-wiki/tag/explanation/">explanation</a>
+            </li>
+          
+        </ul>
+        
+          <p>This is a guide to how to use the more complex features of Desmos, specifically geared to leverage prior programming experience and to avoid common pitfalls that programmers might fall into. There's no real structure to it— most of the sections stand on their own.</p>
+<h2 id="Desmos-as-a-Functional-Programming-Language">Desmos as a Functional Programming Language<a class="link-to-header" href="#Desmos-as-a-Functional-Programming-Language"> #</a></h2>
+<p>Desmos is effectively a programming language. Think of it like if you took a functional language and removed the first-class functions and the recursion. Think of actions like managed side effects, similar to the IO monads from Haskell.</p>
+<h2 id="Lists-are-one-indexed">Lists are one-indexed<a class="link-to-header" href="#Lists-are-one-indexed"> #</a></h2>
+<p>Desmos lists are one-indexed. In other words, if <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L" data-settings="{}"></span></span> is a list, then <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L\left[1\right]" data-settings="{}"></span></span> is its first element, <em>not</em> <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="L\left[0\right]" data-settings="{}"></span></span>.</p>
+<h2 id="Numbers-are-usually-double-precision-floating-point">Numbers are usually double-precision floating point<a class="link-to-header" href="#Numbers-are-usually-double-precision-floating-point"> #</a></h2>
+<p>Desmos numbers are generally IEEE double-precision (64-bit) floating-point numbers. Desmos <em>will</em> under certain circumstances use constant collapsing with exact rational numbers represented internally as a pair of integers, but many operations will force it to fall back on floats (such as graphing a line or performing a summation operation).</p>
+<h2 id="Scoping-is-really-weird">Scoping is really weird<a class="link-to-header" href="#Scoping-is-really-weird"> #</a></h2>
+<p>See the article on <a href="/unofficial-desmos-wiki/misc/wackscope/">wackscopes</a> for more about this phenomenon. Desmos scoping is strange because you can define a variable that uses variables that <em>don't exist</em>, then use that variable as an intermediate in a function where those variables <em>do exist</em>, and it'll work just fine despite the error message.</p>
+<h2 id="Actions-are-simultaneous-not-sequential">Actions are simultaneous, not sequential<a class="link-to-header" href="#Actions-are-simultaneous-not-sequential"> #</a></h2>
+<div class="small-narrow-desmos float-right">
+<div class="eleventy-desmos-dcg-container" data-state="{&quot;version&quot;:9,&quot;graph&quot;:{&quot;viewport&quot;:{&quot;xmin&quot;:-10,&quot;xmax&quot;:10,&quot;ymin&quot;:-10,&quot;ymax&quot;:10},&quot;userLockedViewport&quot;:true},&quot;expressions&quot;:{&quot;list&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#c74440&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;a=3&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;2&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#2d70b3&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;b=4&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}},{&quot;id&quot;:&quot;3&quot;,&quot;secret&quot;:false,&quot;type&quot;:&quot;expression&quot;,&quot;color&quot;:&quot;#388c46&quot;,&quot;hidden&quot;:false,&quot;latex&quot;:&quot;a\\to b,b\\to a&quot;,&quot;regressionParameters&quot;:{},&quot;slider&quot;:{&quot;hardMin&quot;:false,&quot;hardMax&quot;:false},&quot;displayEvaluationAsFraction&quot;:false,&quot;vizProps&quot;:{}}]}}" data-settings="{}"></div>
+</div>
+<p>When you define several actions separated by commas (e.g. something like <span class="dcg-calculator-api-container"><span class="eleventy-desmos-mq-container dcg-mq-math-mode" data-latex="a\to b,b\to a" data-settings="{}"></span></span>), they are all executed simultaneously, not in sequence. This phenomenon allows actions like this to swap values, as is shown in the example.</p>
+
+        
+      </main>
+    </div>
+    <footer>
+  <h2>Licensing</h2>
+  <ul>
+    <li>The source code that generates this site is licensed under the <a href="https://github.com/radian628/unofficial-desmos-wiki/blob/main/LICENSE.txt">MIT License</a>.</li>
+    <li>All graphs and equations are licensed under <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>, which essentially means "do whatever you want," so feel free to copy them to your own projects!</li>
+    <li>The wiki articles themselves are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a> so that the articles on this wiki may forever be free.</li>
+  </ul>
+</footer>
+    <script>
+      const ldt = document.getElementById("light-dark-toggle");
+
+      let colorScheme = localStorage.getItem("color-scheme");
+
+      if (!colorScheme) {
+        localStorage.setItem("color-scheme", "light");
+        let colorScheme = "light";
+      }
+
+      function setTheme() {
+        const colorScheme = localStorage.getItem("color-scheme");
+
+        document.body.classList.toggle("dark", colorScheme === "dark");
+
+        ldt.innerText = colorScheme === "light" ? "☀️" : "🌙"
+      }
+      
+      ldt.onclick = () => {
+        localStorage.setItem("color-scheme", 
+          localStorage.getItem("color-scheme") === "light" ? "dark" : "light")
+        setTheme();
+      }
+
+      setTheme();
+    </script>
+  </body>
+</html>
